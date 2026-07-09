@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "postgres": {
+      "type": "remote",
+      "url": "https://72-62-242-236.sslip.io/postgres/mcp",
+      "headers": {
+        "Authorization": "Bearer <MCP_TOKEN>"
+      },
+      "enabled": true
+    },
+    "lightrag": {
+      "type": "remote",
+      "url": "https://72-62-242-236.sslip.io/lightrag/mcp",
+      "headers": {
+        "Authorization": "Bearer <MCP_TOKEN>"
+      },
+      "enabled": true
+    }
+  }
+}

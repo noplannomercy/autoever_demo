@@ -1,0 +1,14 @@
+[Unit]
+Description=Autoever Demo - LightRAG MCP (Streamable HTTP)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/autoever_demo/lightrag-mcp
+EnvironmentFile=/opt/autoever_demo/lightrag-mcp.env
+ExecStart=/usr/bin/node server.mjs
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

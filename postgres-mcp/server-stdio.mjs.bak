@@ -1,0 +1,64 @@
+// [BACKUP] 구버전 stdio 트랜스포트. 로컬 모드로 되돌릴 때 server.mjs로 복사.
+// Postgres MCP (read + write), scoped to one DB via PG_CONN.
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+import pg from "pg";
+
+const CONN = process.env.PG_CONN || "";
+if (!CONN) {
+  console.error("[postgres-mcp] PG_CONN not set — refusing to start");
+  process.exit(1);
+}
+const pool = new pg.Pool({ connectionString: CONN, max: 4 });
+
+const fmt = (res) => {
+  if (Array.isArray(res.rows) && res.rows.length) {
+    const rows = res.rows.slice(0, 200);
+    let out = JSON.stringify(rows, (_k, v) => (typeof v === "bigint" ? v.toString() : v), 2);
+    if (res.rows.length > 200) out += `\n... (${res.rows.length}행 중 200행만 표시)`;
+    return out;
+  }
+  return `OK — command=${res.command}, rowCount=${res.rowCount}`;
+};
+
+const server = new McpServer({ name: "postgres", version: "0.1.0" });
+
+server.tool(
+  "pg_query",
+  "Run a READ-ONLY SQL query (SELECT/WITH/EXPLAIN) against the demo_legacy DB. Returns rows as JSON. " +
+    "Use this for all lookups and analysis. For writes use pg_execute.",
+  { sql: z.string().describe("a SELECT / WITH / EXPLAIN statement") },
+  async ({ sql }) => {
+    if (!/^\s*(select|with|explain)\b/i.test(sql)) {
+      return { content: [{ type: "text", text: "pg_query는 읽기 전용입니다. 쓰기는 pg_execute를 쓰세요." }], isError: true };
+    }
+    try {
+      return { content: [{ type: "text", text: fmt(await pool.query(sql)) }] };
+    } catch (e) {
+      return { content: [{ type: "text", text: `SQL error: ${e.message}` }], isError: true };
+    }
+  }
+);
+
+server.tool(
+  "pg_execute",
+  "Run a WRITING SQL statement (INSERT/UPDATE/DELETE/CREATE/ALTER/DROP) against demo_legacy. " +
+    "Use ONLY when the user explicitly asks to change/insert/fix/delete data. " +
+    "Returns affected rowCount. Scoped to demo_legacy only (pylon_dev은 접근 불가).",
+  { sql: z.string().describe("an INSERT/UPDATE/DELETE/DDL statement") },
+  async ({ sql }) => {
+    if (/^\s*(select|with|explain)\b/i.test(sql)) {
+      return { content: [{ type: "text", text: "조회는 pg_query를 쓰세요." }], isError: true };
+    }
+    try {
+      return { content: [{ type: "text", text: fmt(await pool.query(sql)) }] };
+    } catch (e) {
+      return { content: [{ type: "text", text: `SQL error: ${e.message}` }], isError: true };
+    }
+  }
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+console.error("[postgres-mcp] connected (read+write, demo_legacy)");

@@ -1,0 +1,15 @@
+[Unit]
+Description=Autoever Demo - Postgres MCP (Streamable HTTP)
+After=network.target docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/autoever_demo/postgres-mcp
+EnvironmentFile=/opt/autoever_demo/postgres-mcp.env
+ExecStart=/usr/bin/node server.mjs
+Restart=on-failure
+RestartSec=3
+# 127.0.0.1 바인딩 — 외부는 Caddy를 통해서만
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+{
+  "name": "postgres-mcp",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Read+Write Postgres MCP scoped to the demo_legacy DB",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "express": "^5.0.0",
+    "pg": "^8.13.1",
+    "zod": "^3.23.8"
+  }
+}

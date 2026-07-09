@@ -1,0 +1,60 @@
+// [BACKUP] 구버전 stdio 트랜스포트. 로컬 모드로 되돌릴 때 server.mjs로 복사.
+// Minimal MCP stdio server: exposes LightRAG /query as a single tool.
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const BASE = (process.env.LIGHTRAG_BASE_URL || "").replace(/\/$/, "");
+const KEY = process.env.LIGHTRAG_API_KEY || "";
+if (!BASE) {
+  console.error("[lightrag-mcp] LIGHTRAG_BASE_URL not set — refusing to start");
+  process.exit(1);
+}
+
+const server = new McpServer({ name: "lightrag", version: "0.1.0" });
+
+server.tool(
+  "lightrag_query",
+  "Query the LightRAG knowledge base of business rules / reverse-documentation. " +
+    "Use for 'why / what does the policy or rule say' questions — NOT for live row data. " +
+    "Returns the answer WITH inline source-document citations and a References list " +
+    "(e.g. [[4] 규칙_01_중도해지_위약금.md]). Always surface those citations to the user.",
+  {
+    query: z.string().describe("natural-language question to ask the knowledge base"),
+    mode: z.enum(["mix", "hybrid", "local", "global", "naive"]).default("mix")
+      .describe("retrieval mode; 'mix' = vector + graph (recommended)"),
+  },
+  async ({ query, mode }) => {
+    const headers = { "Content-Type": "application/json" };
+    if (KEY) headers["X-API-Key"] = KEY;
+    try {
+      const res = await fetch(`${BASE}/query`, {
+        method: "POST", headers,
+        body: JSON.stringify({ query, mode, include_references: true }),
+      });
+      const text = await res.text();
+      if (!res.ok) {
+        return { content: [{ type: "text", text: `LightRAG HTTP ${res.status}: ${text}` }], isError: true };
+      }
+      let out = text;
+      try {
+        const j = JSON.parse(text);
+        out = j.response ?? j.data ?? j.result ?? text;
+        if (Array.isArray(j.references) && j.references.length) {
+          const cited = new Set([...String(out).matchAll(/\[(\d+)\]/g)].map((m) => m[1]));
+          const used = j.references.filter((r) => cited.has(String(r.reference_id)));
+          const list = (used.length ? used : j.references)
+            .map((r) => `  [${r.reference_id}] ${r.file_path}`).join("\n");
+          out = `${out}\n\n── 출처 문서 (LightRAG 검색) ──\n${list}`;
+        }
+      } catch { /* plain text */ }
+      return { content: [{ type: "text", text: String(out) }] };
+    } catch (e) {
+      return { content: [{ type: "text", text: `LightRAG request failed: ${e?.message || e}` }], isError: true };
+    }
+  }
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+console.error(`[lightrag-mcp] connected → ${BASE}`);

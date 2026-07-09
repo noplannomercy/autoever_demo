@@ -1,0 +1,26 @@
+# /etc/caddy/Caddyfile  (또는 docker caddy 볼륨)
+# {$MCP_DOMAIN} 에 VPS를 가리키는 도메인을 넣으면 Caddy가 Let's Encrypt 인증서 자동 발급.
+# 도메인이 없으면 맨 아래 "도메인 없을 때" 블록 참고.
+
+{$MCP_DOMAIN} {
+	# Postgres MCP
+	handle /postgres/* {
+		reverse_proxy 127.0.0.1:8011
+	}
+	# LightRAG MCP
+	handle /lightrag/* {
+		reverse_proxy 127.0.0.1:8012
+	}
+	handle {
+		respond "autoever demo mcp gateway" 200
+	}
+}
+
+# ── 도메인 없이 IP만 있을 때 (자체서명, 데모 한정) ───────────────
+# https://72.62.242.236 로 받되 자체서명 인증서 사용.
+# OpenCode 쪽에서 TLS 검증을 꺼야 함(아래 SETUP 참고).
+# :443 {
+# 	tls internal
+# 	handle /postgres/* { reverse_proxy 127.0.0.1:8011 }
+# 	handle /lightrag/* { reverse_proxy 127.0.0.1:8012 }
+# }

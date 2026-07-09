@@ -1,0 +1,17 @@
+# 시크릿 실값 — 절대 업로드 금지
+SECRETS.local.md
+opencode.json
+stage/opencode.json
+*.env
+.env*
+!*.env.example
+
+# 빌드/대용량
+node_modules/
+*.zip
+*.log
+logs/
+
+*.7z
+*.rar
+*.tar.gz
