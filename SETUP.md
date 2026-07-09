@@ -1,5 +1,7 @@
 # 오토에버 데모 — 콘텐츠 운영 런북 (운영자/빌더용)
 
+> 저장소: **https://github.com/noplannomercy/autoever_demo** (public) · 시크릿 실값은 로컬 `SECRETS.local.md`(비공개) 참조
+
 > 이 문서는 **콘텐츠(데이터·규정) 적재·갱신·리셋 + 트러블슈팅** 전용이다.
 > **연결·실행(OpenCode 전역설정)은 → `docs/00_사용자환경구성.md`**, 최초 서버 배포는 → `docs/05_운영배포.md`.
 > 연결은 OpenCode 전역설정의 remote MCP로 한다 — **폴더에서 opencode를 켤 필요 없음.** SSH 터널·로컬 node도 불필요.
