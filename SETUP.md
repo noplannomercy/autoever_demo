@@ -52,7 +52,7 @@ ssh root@72.62.242.236 'docker exec -i postgres-vector psql -U postgres -d demo_
 (상세: `docs/02_데이터모델.md`)
 
 ### 3-2. LightRAG 규정 → `rules/회수규정_*.md` (13장)
-> ⚠️ 9621은 방화벽으로 외부 차단됨(2026-07-09 보안 조치) — **서버 위에서** 실행해야 한다. rules/는 서버 `/opt/autoever_demo/rules`에 있음 (갱신 시 scp로 동기화 후 실행).
+> ⚠️ 9621은 **API 키 인증**(X-API-Key)이 걸려 있다(2026-07-09). 키는 VPS `/opt/autoever_demo/lightrag-mcp.env` 또는 `SECRETS.local.md` 참조. 아래는 서버 위 실행 기준 (rules/는 서버 `/opt/autoever_demo/rules`에 있음, 갱신 시 scp 동기화).
 ```bash
 ssh root@72.62.242.236
 cd /opt/autoever_demo/rules
@@ -63,7 +63,7 @@ node ingest_rules.mjs      # 13장 적재. 기존분은 409 스킵, 신규만 20
 ```
 적재 검증 (서버에서):
 ```bash
-curl -s -X POST http://127.0.0.1:9621/query -H "Content-Type: application/json" \
+curl -s -X POST http://127.0.0.1:9621/query -H "Content-Type: application/json" -H "X-API-Key: $LIGHTRAG_API_KEY" \
   --data-binary '{"query":"입금 충당 우선순위 순서가 뭐야?","mode":"mix","include_references":true}'
 # → "연체이자→이자→원금→수수료" + 회수규정_02 인용
 ```
