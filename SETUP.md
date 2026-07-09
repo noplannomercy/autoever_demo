@@ -56,6 +56,7 @@ ssh root@72.62.242.236 'docker exec -i postgres-vector psql -U postgres -d demo_
 ```bash
 ssh root@72.62.242.236
 cd /opt/autoever_demo/rules
+export LIGHTRAG_API_KEY=$(grep ^LIGHTRAG_API_KEY /opt/autoever_demo/lightrag-mcp.env | cut -d= -f2)   # 9621에 키 인증 있음
 node clean_kb.mjs          # dry-run: KB 현황 확인(회수규정_ 보존 / 그 외 삭제대상)
 node clean_kb.mjs --yes    # (오염분 있을 때만) 청소
 node ingest_rules.mjs      # 13장 적재. 기존분은 409 스킵, 신규만 200
