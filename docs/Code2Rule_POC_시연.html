@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code2Rule POC 시연 — 현대오토에버</title>
+<style>
+  :root{
+    --paper:#FAF9F6; --ink:#0F2440; --muted:#5A6B82; --faint:#8B97A8;
+    --gold:#C9A227; --gold-deep:#A8861B; --red:#C43D2F; --green:#1E7A46;
+    --panel:#0D1B2A; --panel-line:#22354D; --panel-text:#D7E1EE; --panel-dim:#7A8CA3;
+    --sans:'Pretendard','Pretendard Variable','Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    --mono:'D2Coding','Cascadia Code','JetBrains Mono',Consolas,'Courier New',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);overflow:hidden}
+
+  /* ── 덱 프레임 ─────────────────────────── */
+  .deck{position:relative;width:100vw;height:100vh}
+  .slide{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    padding:7vh 8vw 10vh;opacity:0;visibility:hidden;transform:translateY(14px);
+    transition:opacity .45s ease,transform .45s ease,visibility .45s;
+  }
+  .slide.on{opacity:1;visibility:visible;transform:none}
+  .slide-body{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
+
+  /* 좌측 골드 룰 + 파트 라벨 */
+  .rail{position:fixed;left:0;top:0;bottom:0;width:4.2vw;min-width:44px;display:flex;align-items:center;justify-content:center;z-index:5}
+  .rail::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+  .rail span{writing-mode:vertical-rl;letter-spacing:.55em;font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase}
+
+  /* 하단 진행바 + 카운터 */
+  .hud{position:fixed;left:0;right:0;bottom:0;z-index:6}
+  .bar{height:4px;background:rgba(15,36,64,.08)}
+  .bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .4s ease}
+  .count{position:fixed;right:2.2vw;bottom:2.6vh;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.12em}
+
+  /* ── 타이포 ─────────────────────────── */
+  .eyebrow{font-size:clamp(11px,.9vw,14px);font-weight:800;letter-spacing:.42em;color:var(--gold-deep);margin-bottom:2.6vh;text-transform:uppercase}
+  .huge{font-size:clamp(44px,7.4vw,124px);font-weight:900;letter-spacing:-.035em;line-height:1.08}
+  .big {font-size:clamp(30px,4.2vw,68px);font-weight:900;letter-spacing:-.03em;line-height:1.18}
+  .mid {font-size:clamp(22px,2.7vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.3}
+  .lead{font-size:clamp(15px,1.35vw,22px);color:var(--muted);line-height:1.75;margin-top:2.8vh;max-width:62ch}
+  .goldline{color:var(--gold-deep)}
+  .redline{color:var(--red)}
+  .greenline{color:var(--green)}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .footnote{margin-top:6vh;font-size:clamp(11px,.95vw,14px);color:var(--faint)}
+
+  /* ── 원장(ledger) 표 ─────────────────── */
+  .ledger{width:100%;border-collapse:collapse;margin-top:3.5vh}
+  .ledger th{font-size:clamp(11px,.9vw,13px);font-weight:700;letter-spacing:.2em;color:var(--faint);text-align:left;padding:0 1.2em 1em 0;border-bottom:2px solid var(--ink)}
+  .ledger td{font-size:clamp(15px,1.5vw,24px);padding:.85em 1.2em .85em 0;border-bottom:1px solid rgba(15,36,64,.14)}
+  .ledger td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;font-weight:700}
+  .ledger .hit td{color:var(--red);font-weight:800}
+
+  /* ── 다크 스크린 패널 ─────────────────── */
+  .panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:10px;overflow:hidden;box-shadow:0 24px 60px -24px rgba(15,36,64,.45)}
+  .panel-bar{display:flex;align-items:center;gap:10px;padding:11px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--panel-line)}
+  .dots{display:flex;gap:6px}
+  .dots i{width:11px;height:11px;border-radius:50%;background:#3A4A61}
+  .dots i:first-child{background:#C4554D}.dots i:nth-child(2){background:#C9A227}.dots i:last-child{background:#3E7A5E}
+  .panel-title{font-family:var(--mono);font-size:12px;color:var(--panel-dim);letter-spacing:.08em}
+  .panel-body{padding:clamp(16px,2vw,28px);font-family:var(--mono);font-size:clamp(12.5px,1.15vw,17px);line-height:1.85;color:var(--panel-text)}
+
+  .msg-user{color:#fff;font-weight:700}
+  .msg-user::before{content:"❯ ";color:var(--gold)}
+  .tool{color:var(--panel-dim);padding-left:1.35em}
+  .tool::before{content:"⚡ ";color:var(--gold)}
+  .msg-agent{padding-left:1.35em;color:var(--panel-text)}
+  .gap-red{color:#FF7A6B;font-weight:700}
+  .ok-green{color:#5FCF8F;font-weight:700}
+  .cm{color:#8FA3BC;font-style:italic}
+  .kw{color:#7FB4FF}.str{color:#E8C97A}
+  .diff-add{display:block;background:rgba(30,122,70,.28);color:#8FE0B0}
+  .diff-del{display:block;background:rgba(196,61,47,.24);color:#FF9C8F;text-decoration:line-through;text-decoration-thickness:1px;text-decoration-color:rgba(255,156,143,.5)}
+  .diff-ctx{display:block;color:var(--panel-dim)}
+  .diff-core{outline:2px solid var(--gold);outline-offset:-2px}
+
+  /* ── 배지·마크 ─────────────────────── */
+  .badge{display:inline-flex;align-items:center;gap:.6em;font-weight:800;font-size:clamp(13px,1.1vw,17px);letter-spacing:.06em}
+  .badge .dot{width:2.2em;height:2.2em;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95em;color:#fff}
+  .badge.human .dot{background:var(--gold)}
+  .badge.agent .dot{background:var(--ink)}
+  .badge.human{color:var(--gold-deep)}
+  .badge.agent{color:var(--ink)}
+
+  .gapmark{display:inline-flex;align-items:baseline;gap:.45em;font-weight:900}
+  .gapmark .ne{color:var(--red);font-size:1.4em}
+
+  /* ── 2단 레이아웃 ─────────────────── */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center;margin-top:3.5vh}
+  .cols.w64{grid-template-columns:1.35fr 1fr}
+  .cols.w46{grid-template-columns:1fr 1.35fr}
+
+  /* ── 카드 ─────────────────── */
+  .cards{display:grid;gap:1.4vw;margin-top:4vh}
+  .cards.c3{grid-template-columns:repeat(3,1fr)}
+  .cards.c4{grid-template-columns:repeat(4,1fr)}
+  .card{border-top:3px solid var(--ink);padding:1.6em 0 0}
+  .card h3{font-size:clamp(15px,1.4vw,22px);font-weight:800;margin-bottom:.5em}
+  .card p{font-size:clamp(12.5px,1.05vw,16px);color:var(--muted);line-height:1.7}
+  .card.gold{border-top-color:var(--gold)}
+  .card.red{border-top-color:var(--red)}
+  .card.green{border-top-color:var(--green)}
+
+  /* ── 교차 리듬 칩 (룰 슬라이드) ─────── */
+  .rhythm{display:grid;grid-template-columns:repeat(6,1fr);gap:1vw;margin-top:6vh}
+  .chip{padding:2.2em 1.2em;border-radius:10px;font-weight:800;font-size:clamp(13px,1.25vw,20px);line-height:1.5;min-height:22vh;display:flex;flex-direction:column;justify-content:flex-start}
+  .chip small{display:block;font-weight:700;font-size:.68em;letter-spacing:.18em;opacity:.65;margin-bottom:1em}
+  .chip.a{background:var(--ink);color:#fff}
+  .chip.h{background:var(--gold);color:#2E2508}
+
+  /* ── before/after ─────────────────── */
+  .ba{display:grid;grid-template-columns:1fr auto 1fr;gap:2.5vw;align-items:center;margin-top:4vh}
+  .ba .cell{text-align:center;padding:2.2em 1em;border:1px solid rgba(15,36,64,.15);border-radius:10px}
+  .ba .cell b{display:block;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(30px,3.6vw,58px);font-weight:800;letter-spacing:-.02em}
+  .ba .cell span{display:block;margin-top:.6em;font-size:clamp(12px,1vw,15px);color:var(--muted);letter-spacing:.08em}
+  .ba .arrow{font-size:clamp(26px,2.6vw,42px);color:var(--gold);font-weight:900}
+
+  /* ── SVG 공통 ─────────────────── */
+  .fig{margin-top:4vh}
+  .fig svg{width:100%;height:auto;display:block}
+  svg text{font-family:var(--sans)}
+  svg .mono{font-family:var(--mono)}
+
+  /* ── 스피커 노트 ─────────────────── */
+  .notes{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:#E7EDF5;padding:2.2vh 8vw;font-size:15px;line-height:1.7;z-index:20;display:none;box-shadow:0 -18px 40px rgba(15,36,64,.35)}
+  .notes.on{display:block}
+  .notes b{color:var(--gold)}
+
+  .hint{position:fixed;left:5.4vw;bottom:2.6vh;font-size:11px;color:var(--faint);letter-spacing:.1em;z-index:6}
+
+  /* ── 인쇄 ─────────────────── */
+  @page{size:338mm 190mm;margin:0}
+  @media print{
+    body{overflow:visible}
+    .deck{width:auto;height:auto}
+    .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;height:100vh;overflow:hidden;page-break-after:always;padding:6vh 8vw}
+    .slide:last-of-type{page-break-after:auto}
+    .rail,.hud,.count,.hint,.notes{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){.slide{transition:none}}
+  @media (max-width:820px){
+    body{overflow:auto}
+    .slide{position:relative;opacity:1;visibility:visible;transform:none;min-height:100vh;height:auto;padding:8vh 7vw}
+    .cols,.cols.w64,.cols.w46{grid-template-columns:1fr}
+    .rhythm{grid-template-columns:repeat(2,1fr)}
+    .cards.c3,.cards.c4{grid-template-columns:1fr}
+    .hud,.count,.hint,.rail{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="rail"><span id="railLabel">CODE2RULE</span></div>
+
+<main class="deck" id="deck">
+
+<!-- 1 ─ 타이틀 -->
+<section class="slide" data-part="Code2Rule" data-note="인사 후 10초 침묵해도 되는 슬라이드. 부제만 또박또박.">
+  <div class="slide-body">
+    <div class="eyebrow">현대오토에버 · POC 시연</div>
+    <h1 class="huge">Code2Rule</h1>
+    <p class="mid" style="margin-top:2.5vh">코드가 규칙이 되고,<br>에이전트가 일을 합니다.</p>
+    <div style="display:flex;align-items:center;gap:1.6vw;margin-top:7vh">
+      <span style="border:2px solid var(--ink);border-radius:8px;padding:.7em 1.4em;font-weight:800;font-size:clamp(13px,1.15vw,18px)">규정집</span>
+      <span style="color:var(--red);font-weight:900;font-size:clamp(18px,1.7vw,26px)">≠</span>
+      <span style="border:2px solid var(--ink);border-radius:8px;padding:.7em 1.4em;font-weight:800;font-size:clamp(13px,1.15vw,18px)">업무 데이터</span>
+      <span style="color:var(--red);font-weight:900;font-size:clamp(18px,1.7vw,26px)">≠</span>
+      <span style="border:2px solid var(--ink);border-radius:8px;padding:.7em 1.4em;font-weight:800;font-size:clamp(13px,1.15vw,18px)">레거시 코드</span>
+      <span style="color:var(--faint);font-size:clamp(13px,1.1vw,17px);margin-left:1vw">— 이 세 층을 하나의 에이전트가 넘나듭니다</span>
+    </div>
+    <p class="footnote num">여신/할부 레거시 × AI Agent · 2026</p>
+  </div>
+</section>
+
+<!-- 2 ─ 훅 -->
+<section class="slide" data-part="문제" data-note="배경 멘트: 업무 로직은 전부 DB 패키지 안에 있고, 문서는 낡았고, 만든 사람은 퇴사했습니다. — 그래서 이 숫자가 나옵니다.">
+  <div class="slide-body">
+    <div class="eyebrow">우리가 겪는 시간</div>
+    <h1 class="huge">2줄 고치려고,<br><span class="redline">2주.</span></h1>
+    <p class="lead">업무 로직은 DB 패키지 안에, 문서는 낡았고, 만든 사람은 퇴사했습니다.<br>
+    코드 두 줄의 영향을 확인하는 데 조직 전체가 2주를 씁니다.</p>
+    <p class="mid goldline" style="margin-top:4vh">오늘, 몇 분으로 줄입니다.</p>
+  </div>
+</section>
+
+<!-- 3 ─ 3층 분산 -->
+<section class="slide" data-part="문제" data-note="핵심 프레임: 규정·데이터·코드. 이 슬라이드의 ≠ 마크가 오늘 계속 재등장한다고 예고.">
+  <div class="slide-body">
+    <div class="eyebrow">왜 2주나 걸리는가</div>
+    <h2 class="big">규정 · 데이터 · 코드 —<br>셋이 맞는지, 아무도 자신하지 못합니다.</h2>
+    <div class="fig">
+      <svg viewBox="0 0 1200 300" role="img" aria-label="규정, 데이터, 코드 세 층이 서로 어긋나 있는 구조">
+        <g font-size="21" font-weight="800">
+          <rect x="30"  y="40" width="340" height="200" rx="8" fill="none" stroke="#0F2440" stroke-width="2.5"/>
+          <rect x="430" y="40" width="340" height="200" rx="8" fill="none" stroke="#0F2440" stroke-width="2.5"/>
+          <rect x="830" y="40" width="340" height="200" rx="8" fill="none" stroke="#0F2440" stroke-width="2.5"/>
+          <text x="60" y="95"  fill="#0F2440">규정집</text>
+          <text x="460" y="95" fill="#0F2440">업무 데이터</text>
+          <text x="860" y="95" fill="#0F2440">레거시 코드</text>
+        </g>
+        <g font-size="16" fill="#5A6B82">
+          <text x="60" y="130">회수규정 13장</text>
+          <text x="60" y="158">“어떻게 해야 하는가”</text>
+          <text x="460" y="130">8개 테이블 · 2만여 행</text>
+          <text x="460" y="158">“실제로 어떻게 되어 있는가”</text>
+          <text x="860" y="130">DB 저장 패키지 · 함수 5개</text>
+          <text x="860" y="158">“실제로 어떻게 계산하는가”</text>
+        </g>
+        <g font-size="15" fill="#8B97A8">
+          <text x="60" y="215">담당: 준법/기획</text>
+          <text x="460" y="215">담당: 운영</text>
+          <text x="860" y="215">담당: 퇴사자</text>
+        </g>
+        <g font-size="46" font-weight="900" fill="#C43D2F">
+          <text x="384" y="155">≠</text>
+          <text x="784" y="155">≠</text>
+        </g>
+        <text x="30" y="288" font-size="17" fill="#5A6B82">셋을 대조하는 일은 지금까지 전부 사람의 몫이었습니다.</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 4 ─ 판단 비용 -->
+<section class="slide" data-part="문제" data-note="기존 PPTX 1장 압축. 셋 대조가 반복 비용이라는 것만 전달하고 빨리 넘어감.">
+  <div class="slide-body">
+    <div class="eyebrow">반복되는 비용</div>
+    <h2 class="big">기준 확인은 한 번이 아니라,<br>매번입니다.</h2>
+    <div class="cards c3">
+      <div class="card"><h3>문의 대응</h3><p>“이 수수료 왜 이렇게 나왔죠?” — 규정 찾고, 데이터 뽑고, 코드 읽는 사람이 각각 다릅니다.</p></div>
+      <div class="card"><h3>장애 분석</h3><p>계산이 틀렸을 때, 규정이 틀렸는지 코드가 틀렸는지 데이터가 틀렸는지부터 갈립니다.</p></div>
+      <div class="card"><h3>감사 대응</h3><p>“근거를 제시하세요” — 처리 이력과 규정 조항을 사람이 수작업으로 짝지어 냅니다.</p></div>
+    </div>
+    <p class="footnote">설계 · 개발 · 운영 어느 단계에서도 이 대조 비용은 사라지지 않습니다.</p>
+  </div>
+</section>
+
+<!-- 5 ─ 무대 소개 -->
+<section class="slide" data-part="무대" data-note="“실제 회사처럼 세 층으로 만들었습니다.” 숫자는 전부 실측 — 합성이지만 규모감 있는 데이터.">
+  <div class="slide-body">
+    <div class="eyebrow">오늘의 무대</div>
+    <h2 class="big">가상의 여신/할부사를<br>통째로 준비했습니다.</h2>
+    <table class="ledger">
+      <tr><th>층</th><th>구성</th><th style="text-align:right">규모</th></tr>
+      <tr><td>규정집 <span style="color:var(--faint)">— LightRAG 지식베이스</span></td><td>회수규정 + 코드 역문서</td><td class="n">13장 + 1건</td></tr>
+      <tr><td>업무 데이터 <span style="color:var(--faint)">— PostgreSQL</span></td><td>고객 2,000 · 계약 3,000 · 상환 12,600 · 청구 2,500 · 입금 2,100 · 연체 229</td><td class="n">8 테이블</td></tr>
+      <tr><td>레거시 코드 <span style="color:var(--faint)">— DB 저장 패키지</span></td><td>청구 · 연체이자 · 위약금 · 충당 · 연체전환</td><td class="n">함수 5개</td></tr>
+    </table>
+    <p class="footnote">규정 · 데이터 · 코드가 서로 맞는지 아무도 자신 못 하는 상태 — 익숙하시죠. 이 위에서 시작합니다.</p>
+  </div>
+</section>
+
+<!-- 6 ─ 오늘의 룰 -->
+<section class="slide" data-part="무대" data-note="오늘의 룰 한 줄. 여섯 칩이 오늘 시연의 목차다 — 에이전트 3번, 사람 3번.">
+  <div class="slide-body">
+    <div class="eyebrow">오늘의 룰</div>
+    <h2 class="big">에이전트가 말하면,<br><span class="goldline">사람이 데이터로 검증합니다.</span></h2>
+    <div class="rhythm">
+      <div class="chip a"><small>에이전트 1</small>문제를 찾고</div>
+      <div class="chip h"><small>사람 검증 ①</small>SQL로 확인</div>
+      <div class="chip a"><small>에이전트 2</small>원인을 추적하고</div>
+      <div class="chip h"><small>사람 검증 ②</small>diff 읽고 승인</div>
+      <div class="chip a"><small>에이전트 3</small>고치고 배포하면</div>
+      <div class="chip h"><small>사람 검증 ③</small>같은 쿼리 재실행</div>
+    </div>
+    <p class="footnote">AI를 믿어서가 아니라, 검증할 수 있어서 씁니다.</p>
+  </div>
+</section>
+
+<!-- 7 ─ 장면1 문제 발견 -->
+<section class="slide" data-part="시연 · 장면 1" data-note="민원 접수 설정. 도구 두 개를 스스로 골라 쓰는 것 강조 — 규정은 LightRAG, 데이터는 Postgres.">
+  <div class="slide-body">
+    <div class="eyebrow">장면 1 · 에이전트</div>
+    <h2 class="mid">“위약금이 잘못 나간 게 있대요.”</h2>
+    <div class="cols w64">
+      <div class="panel">
+        <div class="panel-bar"><span class="dots"><i></i><i></i><i></i></span><span class="panel-title">opencode — demo_legacy</span></div>
+        <div class="panel-body">
+          <p class="msg-user">VIP 고객인데 중도해지 위약금이 부과된 계약이 있는지 확인해줘</p>
+          <p class="tool">lightrag_query → 회수규정_05 중도해지환불정산</p>
+          <p class="tool">pg_query → billing ⨯ loan_contract ⨯ customer</p>
+          <p class="msg-agent">규정상 VIP는 위약금 <b>전액 면제</b>입니다(회수규정_05).<br>
+          그런데 실제 데이터에는 <span class="gap-red">4건, 총 ₩3,440,000</span>이 부과되어 있습니다.</p>
+        </div>
+      </div>
+      <div>
+        <p class="gapmark big">규정 <span class="ne">≠</span> 데이터</p>
+        <p class="huge num redline" style="font-size:clamp(36px,4.6vw,76px);margin-top:2vh">₩3,440,000</p>
+        <p class="lead" style="margin-top:1.5vh">규정과 데이터를 <b>스스로 둘 다</b> 조회해 대조했습니다.<br>어느 한쪽만 봐서는 절대 나오지 않는 답입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 ─ 장면2 사람 검증① -->
+<section class="slide" data-part="시연 · 장면 2" data-note="멘트: AI 말을 믿는 게 아니라, 검증하고 씁니다. SQLTools에서 담당자가 직접 실행하는 장면.">
+  <div class="slide-body">
+    <div class="badge human" style="margin-bottom:2.4vh"><span class="dot">①</span>사람 검증</div>
+    <h2 class="mid">“정말이야?” — 담당자가 직접 확인합니다.</h2>
+    <div class="cols w46">
+      <div>
+        <p class="lead">에이전트가 말한 4건을 담당자가 SQLTools에서<br><b>같은 조건으로 직접 조회</b>합니다.</p>
+        <p class="mid" style="margin-top:3vh">AI 말을 믿는 게 아니라,<br><span class="goldline">검증하고 씁니다.</span></p>
+      </div>
+      <div class="panel">
+        <div class="panel-bar"><span class="dots"><i></i><i></i><i></i></span><span class="panel-title">SQLTools — demo_legacy</span></div>
+        <div class="panel-body">
+<span class="kw">SELECT</span> b.contract_id, c.grade, b.amount<br>
+<span class="kw">FROM</span> billing b<br>
+<span class="kw">JOIN</span> loan_contract lc <span class="kw">ON</span> lc.contract_id = b.contract_id<br>
+<span class="kw">JOIN</span> customer c <span class="kw">ON</span> c.customer_id = lc.customer_id<br>
+<span class="kw">WHERE</span> b.bill_type = <span class="str">'중도해지위약금'</span><br>
+&nbsp;&nbsp;<span class="kw">AND</span> c.grade = <span class="str">'VIP'</span> <span class="kw">AND</span> b.amount &gt; 0;<br><br>
+<span class="cm">-- 4 rows</span><br>
+&nbsp;63&nbsp;&nbsp;│ VIP │ <span class="gap-red">1,460,000</span><br>
+133&nbsp;&nbsp;│ VIP │ <span class="gap-red">1,060,000</span><br>
+203&nbsp;&nbsp;│ VIP │ <span class="gap-red">&nbsp;&nbsp;660,000</span><br>
+273&nbsp;&nbsp;│ VIP │ <span class="gap-red">&nbsp;&nbsp;260,000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 ─ 장면3 원인 추적 (킬러) -->
+<section class="slide" data-part="시연 · 장면 3" data-note="하이라이트. 멘트: 5년 전 ‘나중에 전산화하자’고 미룬 결정이 수기 정정 구멍으로 돌아왔습니다.">
+  <div class="slide-body">
+    <div class="eyebrow">장면 3 · 에이전트 — 원인 추적</div>
+    <h2 class="big">원인은 5년 전<br>주석 한 줄에 있었습니다.</h2>
+    <div class="cols w64">
+      <div class="panel">
+        <div class="panel-bar"><span class="dots"><i></i><i></i><i></i></span><span class="panel-title">pkg_collection.sql — f_calc_penalty()</span></div>
+        <div class="panel-body">
+<span class="diff-ctx">CREATE FUNCTION pkg_collection.f_calc_penalty(p_contract_id bigint)</span>
+<span class="diff-ctx">BEGIN</span>
+<span class="diff-ctx">  SELECT lc.principal, lc.status ...   <span class="cm">-- 고객 등급은 조회하지 않음</span></span>
+<span class="diff-ctx">  RETURN v_principal * 0.02;</span>
+<span class="diff-core" style="display:block;padding:.2em .4em;color:#FFD98A"><span class="cm">-- 등급별 예외(면제)는 영업지원팀 수기 정정으로 운영 중 (2021-06)</span></span>
+<span class="diff-ctx">END;</span>
+        </div>
+      </div>
+      <div>
+        <p class="lead"><b>에이전트가 스스로 찾아낸 것:</b><br><br>
+        ① 위약금은 <span class="num">f_calc_penalty</span>가 계산하는데, <b class="redline">고객 등급을 아예 보지 않는다</b><br><br>
+        ② 면제는 코드가 아니라 <b>사람의 수기 정정</b>으로 운영 중 — 코드 주석이 증언<br><br>
+        ③ 결론: 데이터 정정만으론 <b>다음 분기에 재발</b>한다</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 ─ 장면3 보강: 수기 프로세스의 구멍 -->
+<section class="slide" data-part="시연 · 장면 3" data-note="42건 중 38건은 사람이 지웠고 4건을 빠뜨렸다 — 데이터로 입증된 문장. 임원용 한 방.">
+  <div class="slide-body">
+    <div class="eyebrow">데이터가 입증하는 결론</div>
+    <h2 class="big">사람이 매번 고치는 프로세스는,<br><span class="redline">언젠가 빠뜨립니다.</span></h2>
+    <div class="fig">
+      <svg viewBox="0 0 1200 210" role="img" aria-label="VIP 중도해지 42건 중 38건 수기 정정, 4건 누락">
+        <text x="0" y="26" font-size="18" fill="#5A6B82">VIP 중도해지 위약금 42건</text>
+        <rect x="0"    y="46" width="1085" height="66" fill="#0F2440" opacity=".88" rx="4"/>
+        <rect x="1093" y="46" width="107"  height="66" fill="#C43D2F" rx="4"/>
+        <text x="24"   y="88" font-size="22" font-weight="800" fill="#FAF9F6">38건 — 영업지원팀이 수기로 0원 정정</text>
+        <text x="1093" y="140" font-size="20" font-weight="900" fill="#C43D2F" text-anchor="start"></text>
+        <text x="1146" y="88" font-size="22" font-weight="900" fill="#fff" text-anchor="middle">4건</text>
+        <text x="1200" y="150" font-size="19" font-weight="800" fill="#C43D2F" text-anchor="end">빠뜨린 4건 = ₩3,440,000 오부과</text>
+        <text x="0" y="196" font-size="17" fill="#5A6B82">5년간 대부분 사람이 막아냈습니다. 그래서 아무도 몰랐습니다.</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 11 ─ 장면4 2줄 diff -->
+<section class="slide" data-part="시연 · 장면 4" data-note="diff는 에이전트가 만들고 배포는 안 한 상태. 핵심 2줄(JOIN, IF)에 골드 테두리.">
+  <div class="slide-body">
+    <div class="eyebrow">장면 4 · 에이전트 — 수정안</div>
+    <h2 class="big">고치는 건, <span class="goldline">딱 2줄</span>이었습니다.</h2>
+    <div class="cols w64">
+      <div class="panel">
+        <div class="panel-bar"><span class="dots"><i></i><i></i><i></i></span><span class="panel-title">diff — legacy_src/pkg_collection.sql</span></div>
+        <div class="panel-body" style="line-height:1.7">
+<span class="diff-ctx">&nbsp;DECLARE</span>
+<span class="diff-ctx">&nbsp;  v_principal bigint;</span>
+<span class="diff-add">+  v_grade     text;</span>
+<span class="diff-ctx">&nbsp;BEGIN</span>
+<span class="diff-del">-  SELECT lc.principal, lc.status</span>
+<span class="diff-add">+  SELECT lc.principal, lc.status, c.grade</span>
+<span class="diff-ctx">&nbsp;    FROM loan_contract lc</span>
+<span class="diff-add diff-core">+    JOIN customer c ON c.customer_id = lc.customer_id</span>
+<span class="diff-ctx">&nbsp;  WHERE lc.contract_id = p_contract_id;</span>
+<span class="diff-add diff-core">+  IF v_grade = 'VIP' THEN RETURN 0; END IF; <span class="cm">-- 회수규정_05</span></span>
+        </div>
+      </div>
+      <div>
+        <p class="lead">등급을 조회하고, VIP면 면제한다.<br>규정 조항(<b>회수규정_05</b>)이 주석으로 남습니다.</p>
+        <p class="mid" style="margin-top:3vh">이 2줄을 확인하는 데<br>원래 <span class="redline">2주</span>가 걸렸습니다.</p>
+        <p class="lead">에이전트는 아직 배포하지 않았습니다.<br><b>승인을 기다립니다.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 ─ 장면5 승인·배포 -->
+<section class="slide" data-part="시연 · 장면 5" data-note="멘트: 통제는 사람에게 있습니다. 에이전트는 승인 없이 배포하지 않습니다.">
+  <div class="slide-body">
+    <div class="badge human" style="margin-bottom:2.4vh"><span class="dot">②</span>사람 검증</div>
+    <h2 class="big">통제는 <span class="goldline">사람에게</span> 있습니다.</h2>
+    <div class="cols w46">
+      <div>
+        <p class="lead">diff가 2줄이라 담당자가 <b>눈으로 읽고</b> 판단할 수 있습니다.<br>
+        읽을 수 있는 변경만 승인할 수 있고,<br>승인 없이는 아무것도 배포되지 않습니다.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-bar"><span class="dots"><i></i><i></i><i></i></span><span class="panel-title">opencode — 승인 대기</span></div>
+        <div class="panel-body">
+          <p class="msg-agent" style="padding-left:0">diff를 제시했습니다. <b>승인 전에는 배포하지 않습니다.</b></p>
+          <p class="msg-user" style="margin-top:.8em">승인. 배포하고 검증까지 해줘.</p>
+          <p class="tool">pg_execute → CREATE OR REPLACE FUNCTION f_calc_penalty ...</p>
+          <p class="msg-agent"><span class="ok-green">배포 완료.</span> 자체 검증: VIP 42건 전부 0원,<br>일반 386건은 기존대로 원금의 2% — 의도한 변화만 발생.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 ─ 장면6 같은 쿼리, 달라진 결과 -->
+<section class="slide" data-part="시연 · 장면 6" data-note="장면 2와 같은 쿼리를 그대로 재실행 — 눈앞에서 숫자가 바뀐다. 일반 계약 불변이 통제의 증거.">
+  <div class="slide-body">
+    <div class="badge human" style="margin-bottom:2.4vh"><span class="dot">③</span>사람 검증</div>
+    <h2 class="big">같은 쿼리, 달라진 결과.</h2>
+    <p class="lead num">SELECT pkg_collection.f_calc_penalty(63), pkg_collection.f_calc_penalty(7);</p>
+    <div class="ba">
+      <div class="cell"><b class="redline">1,460,000</b><span>배포 전 · VIP 계약 63</span></div>
+      <div class="arrow">→</div>
+      <div class="cell"><b class="greenline">0</b><span>배포 후 · 회수규정_05 면제 적용</span></div>
+    </div>
+    <div class="ba" style="margin-top:1.6vh">
+      <div class="cell"><b>340,000</b><span>배포 전 · 일반 계약 7</span></div>
+      <div class="arrow" style="color:var(--faint)">→</div>
+      <div class="cell"><b>340,000</b><span>배포 후 · 불변 — 의도한 변화만</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 ─ 정직성 -->
+<section class="slide" data-part="시연 · 보너스" data-note="금융권 신뢰 요건. 없는 건 없다고 답한다 — 환각 방지가 설계에 들어있음.">
+  <div class="slide-body">
+    <div class="eyebrow">한 가지 더</div>
+    <h2 class="big">모르는 것은, 모른다고 답합니다.</h2>
+    <div class="cols">
+      <div class="panel">
+        <div class="panel-bar"><span class="dots"><i></i><i></i><i></i></span><span class="panel-title">환각 점검 — 데이터</span></div>
+        <div class="panel-body">
+          <p class="msg-user">계약 999999 정보 보여줘</p>
+          <p class="msg-agent">해당 계약은 <b>데이터에 없습니다.</b><br>유사 ID를 추정하거나 지어내지 않습니다.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-bar"><span class="dots"><i></i><i></i><i></i></span><span class="panel-title">환각 점검 — 규정</span></div>
+        <div class="panel-body">
+          <p class="msg-user">신용카드 연체 규정 알려줘</p>
+          <p class="msg-agent">지식베이스에 <b>정의되지 않은 규정</b>입니다.<br>인용은 실제 검색된 문서명만 사용합니다.</p>
+        </div>
+      </div>
+    </div>
+    <p class="footnote">모든 답변에는 근거 블록이 붙습니다 — 데이터는 테이블·행 ID, 규정은 문서명까지.</p>
+  </div>
+</section>
+
+<!-- 15 ─ 아키텍처 -->
+<section class="slide" data-part="원리" data-note="부품 설명은 짧게. 오늘 못 보여준 갭 탐지 2종(충당순서 6건, NSF 5건)도 같은 구조로 동작한다고 언급.">
+  <div class="slide-body">
+    <div class="eyebrow">어떻게 동작하는가</div>
+    <h2 class="big">에이전트 하나, 도구 셋.</h2>
+    <div class="fig">
+      <svg viewBox="0 0 1200 330" role="img" aria-label="OpenCode 에이전트가 MCP를 통해 PostgreSQL과 LightRAG에 연결되는 구조">
+        <rect x="20"  y="105" width="240" height="120" rx="10" fill="#0F2440"/>
+        <text x="140" y="155" font-size="21" font-weight="800" fill="#FAF9F6" text-anchor="middle">AI Agent</text>
+        <text x="140" y="185" font-size="15" fill="#AAB6C6" text-anchor="middle">질의 해석 · 도구 선택 · 대조</text>
+        <rect x="360" y="105" width="200" height="120" rx="10" fill="none" stroke="#C9A227" stroke-width="3"/>
+        <text x="460" y="155" font-size="20" font-weight="800" fill="#A8861B" text-anchor="middle">MCP</text>
+        <text x="460" y="185" font-size="14" fill="#5A6B82" text-anchor="middle">HTTPS · 인증 · 권한 분리</text>
+        <g>
+          <rect x="680" y="20"  width="500" height="80" rx="10" fill="none" stroke="#0F2440" stroke-width="2"/>
+          <text x="705" y="55" font-size="18" font-weight="800" fill="#0F2440">lightrag_query — 규정 · 역문서</text>
+          <text x="705" y="82" font-size="14" fill="#5A6B82">“어떻게 해야 하는가” + 출처 문서 인용</text>
+          <rect x="680" y="125" width="500" height="80" rx="10" fill="none" stroke="#0F2440" stroke-width="2"/>
+          <text x="705" y="160" font-size="18" font-weight="800" fill="#0F2440">pg_query — 실데이터 조회 (읽기 전용)</text>
+          <text x="705" y="187" font-size="14" fill="#5A6B82">“실제로 어떻게 되어 있는가”</text>
+          <rect x="680" y="230" width="500" height="80" rx="10" fill="none" stroke="#C43D2F" stroke-width="2"/>
+          <text x="705" y="265" font-size="18" font-weight="800" fill="#C43D2F">pg_execute — 정정 · 배포 (승인 전제)</text>
+          <text x="705" y="292" font-size="14" fill="#5A6B82">쓰기는 별도 도구 — 명시 요청 + 승인에서만</text>
+        </g>
+        <g stroke="#8B97A8" stroke-width="2.5" fill="none">
+          <path d="M260 165 L360 165"/>
+          <path d="M560 150 C 620 130, 630 60, 680 60"/>
+          <path d="M560 165 L680 165"/>
+          <path d="M560 180 C 620 200, 630 270, 680 270"/>
+        </g>
+      </svg>
+    </div>
+    <p class="footnote">같은 구조로 충당순서 위반 6건, NSF 연체전환 누락 5건도 탐지합니다 — 오늘 보신 건 세 가지 갭 중 하나입니다.</p>
+  </div>
+</section>
+
+<!-- 16 ─ 안전장치 -->
+<section class="slide" data-part="원리" data-note="금융권 청중의 첫 질문 ‘위험하지 않나’에 대한 선제 답변. AGENTS.md에 계약된 수칙들.">
+  <div class="slide-body">
+    <div class="eyebrow">안전장치</div>
+    <h2 class="big">빠른 것보다 먼저,<br>통제 가능해야 합니다.</h2>
+    <table class="ledger">
+      <tr><th>수칙</th><th>내용</th></tr>
+      <tr><td><b>계획 먼저</b></td><td>모든 변경은 실행할 SQL과 대상 범위를 먼저 제시</td></tr>
+      <tr><td><b>전후 대조</b></td><td>변경 전 조회(before) → 실행 → 재조회(after)를 건수와 함께 보고</td></tr>
+      <tr><td><b>범위 한정</b></td><td>WHERE 없는 UPDATE/DELETE 금지 — 항상 식별자로 한정</td></tr>
+      <tr><td><b>권한 분리</b></td><td>읽기(pg_query)와 쓰기(pg_execute)는 별개 도구 — 쓰기는 승인 전제</td></tr>
+      <tr><td><b>근거 의무</b></td><td>답변마다 데이터 출처(테이블·행 ID)와 규정 출처(문서명) 첨부</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 17 ─ 로드맵 -->
+<section class="slide" data-part="적용" data-note="오늘 보여준 건 4단계(최종형). 실제 도입은 1단계부터 — 보안 검토와 함께 단계 확장.">
+  <div class="slide-body">
+    <div class="eyebrow">실환경 적용</div>
+    <h2 class="big">오늘 보신 건 4단계.<br>시작은 <span class="goldline">1단계부터.</span></h2>
+    <div class="cards c4">
+      <div class="card gold"><h3>1 · 문서 생성</h3><p>코드·규정 분석으로 업무 문서 자동 생성. 현재 적용 가능한 1차 범위.</p></div>
+      <div class="card"><h3>2 · 업무 챗봇</h3><p>규정 질의 응답, 출처 기반 답변. 읽기만.</p></div>
+      <div class="card"><h3>3 · Read-only 연계</h3><p>실데이터 조회 결합. 권한·마스킹 적용.</p></div>
+      <div class="card red"><h3>4 · 실행형 Agent</h3><p>승인 기반 정정·배포. 오늘 보신 장면 — 통제 관문 통과 후.</p></div>
+    </div>
+    <p class="footnote">단계마다 넘어야 할 관문: 인프라(폐쇄망·VPC) · 보안(마스킹·접근권한) · 운영통제(승인·롤백) · 감사(이력·책임 추적)</p>
+  </div>
+</section>
+
+<!-- 18 ─ 검증 완료 -->
+<section class="slide" data-part="적용" data-note="클로징 직전 신뢰 앵커. 목업 아니냐는 질문에 대한 답 — 실계약사 3만 라인·폐쇄망 검증.">
+  <div class="slide-body">
+    <div class="eyebrow">그리고 이것은 목업이 아닙니다</div>
+    <h2 class="huge" style="font-size:clamp(34px,5vw,84px)">이 사이클, 실계약사<br><span class="goldline">3만 라인급 패키지</span>로<br>이미 검증을 마쳤습니다.</h2>
+    <p class="lead">폐쇄망 환경 · 동일한 추적 → 수정 → 배포 → 검증 사이클 · 리허설 실측 통과</p>
+  </div>
+</section>
+
+<!-- 19 ─ 클로징 -->
+<section class="slide" data-part="Code2Rule" data-note="한 줄씩 끊어서. 마지막 줄에서 멈추고 질문 받기.">
+  <div class="slide-body">
+    <p class="big" style="color:var(--muted)">KB만 있으면, 챗봇.</p>
+    <p class="big" style="margin-top:1.2vh">데이터가 붙으면, 에이전트.</p>
+    <p class="huge goldline" style="margin-top:1.6vh;font-size:clamp(38px,5.6vw,92px)">코드까지 고치면, SDLC.</p>
+    <p class="footnote num">Code2Rule · 현대오토에버 POC — 감사합니다</p>
+  </div>
+</section>
+
+</main>
+
+<div class="hud"><div class="bar"><i id="bar"></i></div></div>
+<div class="count num" id="count">1 / 19</div>
+<div class="hint">← → 이동 · N 발표자 노트 · P 인쇄</div>
+<div class="notes" id="notes"><b>NOTE</b> <span id="noteText"></span></div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),
+      bar=document.getElementById('bar'),count=document.getElementById('count'),
+      rail=document.getElementById('railLabel'),notes=document.getElementById('notes'),
+      noteText=document.getElementById('noteText'),cur=0;
+  function go(n){
+    cur=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,i){s.classList.toggle('on',i===cur)});
+    bar.style.width=((cur+1)/slides.length*100)+'%';
+    count.textContent=(cur+1)+' / '+slides.length;
+    rail.textContent=slides[cur].dataset.part||'CODE2RULE';
+    noteText.textContent=slides[cur].dataset.note||'';
+    if(location.hash!=='#'+(cur+1)) history.replaceState(null,'','#'+(cur+1));
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown') go(cur+1);
+    else if(e.key==='ArrowLeft'||e.key==='PageUp') go(cur-1);
+    else if(e.key==='Home') go(0);
+    else if(e.key==='End') go(slides.length-1);
+    else if(e.key==='n'||e.key==='N') notes.classList.toggle('on');
+    else if(e.key==='p'||e.key==='P') window.print();
+  });
+  document.getElementById('deck').addEventListener('click',function(e){
+    if(window.innerWidth<=820) return;
+    go(e.clientX>window.innerWidth/2?cur+1:cur-1);
+  });
+  var h=parseInt(location.hash.slice(1),10);
+  go(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>
