@@ -15,3 +15,5 @@ logs/
 *.7z
 *.rar
 *.tar.gz
+.gstack/
+*.pptx
