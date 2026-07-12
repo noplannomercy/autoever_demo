@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Code2Rule POC — 원페이저</title>
+<style>
+  :root{
+    --paper:#FAF9F6; --ink:#0F2440; --muted:#5A6B82; --faint:#8B97A8;
+    --gold:#C9A227; --gold-deep:#A8861B; --red:#C43D2F; --green:#1E7A46; --panel:#0D1B2A;
+    --sans:'Pretendard','Noto Sans KR','Malgun Gothic',sans-serif;
+    --mono:'D2Coding','Cascadia Code',Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  @page{size:A4 portrait;margin:0}
+  html,body{width:210mm;height:297mm}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:297mm;padding:11mm 13mm;display:flex;flex-direction:column;position:relative;overflow:hidden;border-left:2.2mm solid var(--gold)}
+
+  /* 헤더 */
+  .head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:0.8mm solid var(--ink);padding-bottom:3.5mm}
+  .wordmark{font-size:24pt;font-weight:900;letter-spacing:-.04em}
+  .wordmark .g{color:var(--gold-deep)}
+  .head .meta{font-size:7.5pt;color:var(--faint);letter-spacing:.14em;font-weight:700}
+  .tagline{margin-top:3mm;font-size:12.5pt;font-weight:800;line-height:1.4}
+  .tagline .g{color:var(--gold-deep)}
+
+  /* 섹션 공통 */
+  h2{font-size:8pt;font-weight:800;letter-spacing:.3em;color:var(--gold-deep);margin:5.5mm 0 2.2mm}
+  p,li,td{font-size:8.6pt;line-height:1.55;color:var(--ink)}
+  .dim{color:var(--muted)}
+
+  /* 문제 */
+  .problem{display:flex;gap:4mm;align-items:center}
+  .problem .big{font-size:15pt;font-weight:900;line-height:1.25;white-space:nowrap}
+  .problem .big .r{color:var(--red)}
+  .chips{display:flex;gap:1.6mm;align-items:center;flex-wrap:nowrap}
+  .chip{border:0.5mm solid var(--ink);border-radius:1.6mm;padding:1.4mm 2.6mm;font-size:7.5pt;font-weight:800;white-space:nowrap}
+  .ne{color:var(--red);font-weight:900;font-size:11pt}
+
+  /* 시연 타임라인 */
+  .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:1.6mm}
+  .step{border-top:0.9mm solid var(--ink);padding-top:1.6mm}
+  .step.h{border-top-color:var(--gold)}
+  .step small{display:block;font-size:6.4pt;font-weight:800;letter-spacing:.12em;color:var(--faint);margin-bottom:.8mm}
+  .step.h small{color:var(--gold-deep)}
+  .step b{display:block;font-size:8.2pt;font-weight:800;line-height:1.3}
+  .step span{display:block;font-size:7pt;color:var(--muted);line-height:1.45;margin-top:.8mm}
+
+  /* 숫자 스트립 */
+  .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:2mm;background:var(--panel);border-radius:2mm;padding:4mm 5mm}
+  .nums div{text-align:center}
+  .nums b{display:block;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:11.5pt;font-weight:800;color:#FAF9F6;letter-spacing:-.02em;white-space:nowrap}
+  .nums b .g{color:var(--gold)}.nums b .gr{color:#5FCF8F}.nums b .rd{color:#FF7A6B}
+  .nums div>span{display:block;font-size:6.6pt;color:#8FA3BC;margin-top:1mm;letter-spacing:.06em}
+
+  /* 2단 본문 */
+  .cols{display:grid;grid-template-columns:1.15fr 1fr;gap:6mm}
+
+  /* 원장 표 */
+  table{width:100%;border-collapse:collapse}
+  th{font-size:6.6pt;font-weight:700;letter-spacing:.14em;color:var(--faint);text-align:left;padding-bottom:1.2mm;border-bottom:0.5mm solid var(--ink)}
+  td{padding:1.5mm 1mm 1.5mm 0;border-bottom:0.2mm solid rgba(15,36,64,.14);font-size:7.8pt;vertical-align:top}
+  td.n{font-family:var(--mono);text-align:right;white-space:nowrap;font-weight:700}
+  td.mono{font-family:var(--mono);white-space:nowrap;font-weight:700}
+  td.k{white-space:nowrap;padding-right:2.5mm}
+  td b{font-weight:800}
+
+  /* 로드맵 */
+  .road{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6mm}
+  .road div{border-top:0.9mm solid var(--ink);padding-top:1.4mm}
+  .road div:first-child{border-top-color:var(--gold)}
+  .road div:last-child{border-top-color:var(--red)}
+  .road b{display:block;font-size:7.6pt;font-weight:800}
+  .road span{display:block;font-size:6.6pt;color:var(--muted);line-height:1.4;margin-top:.6mm}
+
+  /* 푸터 */
+  .closing{margin-top:auto;border-top:0.8mm solid var(--ink);padding-top:3.5mm;display:flex;justify-content:space-between;align-items:baseline}
+  .closing .line{font-size:12pt;font-weight:900}
+  .closing .line .g{color:var(--gold-deep)}
+  .closing .src{font-size:6.8pt;color:var(--faint);font-family:var(--mono)}
+
+  .bgz{position:absolute;right:-6mm;bottom:6mm;font-family:var(--mono);font-size:90mm;font-weight:800;color:rgba(201,162,39,.06);line-height:1;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="bgz">0</div>
+
+  <div class="head">
+    <div class="wordmark">Code<span class="g">2</span>Rule</div>
+    <div class="meta">현대오토에버 · POC 시연 요약 · 2026</div>
+  </div>
+  <p class="tagline">KB만 있으면 챗봇. 데이터가 붙으면 에이전트. <span class="g">코드까지 고치면 SDLC.</span></p>
+
+  <h2>문제</h2>
+  <div class="problem">
+    <div class="big">2줄 고치려고, <span class="r">2주.</span></div>
+    <div>
+      <div class="chips"><span class="chip">규정집</span><span class="ne">≠</span><span class="chip">업무 데이터</span><span class="ne">≠</span><span class="chip">레거시 코드</span></div>
+      <p class="dim" style="font-size:7.4pt;margin-top:1.4mm">기준은 문서에, 상태는 데이터에, 계산은 코드에 — 셋이 맞는지 아무도 자신하지 못하고, 대조는 전부 사람의 몫.</p>
+    </div>
+  </div>
+
+  <h2>시연 — 에이전트가 3번 일하고, 사람이 3번 검증한다</h2>
+  <div class="flow">
+    <div class="step"><small>에이전트 1</small><b>문제 발견</b><span>규정(면제)과 데이터(부과)를 스스로 대조 → VIP 위약금 갭 적발</span></div>
+    <div class="step h"><small>사람 검증 ①</small><b>SQL 직접 확인</b><span>같은 조건 재조회 — 4건, 같은 금액</span></div>
+    <div class="step"><small>에이전트 2</small><b>원인 추적</b><span>함수가 등급을 안 봄 + "수기 정정 운영 (2021-06)" 주석 발견</span></div>
+    <div class="step h"><small>사람 검증 ②</small><b>diff 승인</b><span>2줄 패치를 눈으로 읽고 승인 — 승인 전 배포 없음</span></div>
+    <div class="step"><small>에이전트 3</small><b>배포·자체검증</b><span>VIP 42건 전부 0원, 일반 386건 불변 확인</span></div>
+    <div class="step h"><small>사람 검증 ③</small><b>같은 쿼리 재실행</b><span>1,460,000 → 0. 일반 계약은 그대로</span></div>
+  </div>
+
+  <div style="margin-top:4mm" class="nums">
+    <div><b>2주 <span class="g">→</span> 몇 분</b><span>2줄 확인에 걸리던 시간</span></div>
+    <div><b><span class="rd">6 · 5 · 4</span>건</b><span>규정↔데이터 갭 발견</span></div>
+    <div><b><span class="rd">₩3,440,000</span> <span class="g">→</span> <span class="gr">0</span></b><span>VIP 위약금 오부과 해소</span></div>
+    <div><b>검증 <span class="g">3회</span></b><span>통제는 사람에게</span></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <h2>구조 — 에이전트 하나, 도구 셋</h2>
+      <table>
+        <tr><th>도구</th><th>역할</th><th style="text-align:right">권한</th></tr>
+        <tr><td class="mono">lightrag_query</td><td>규정·역문서 검색, 출처 문서 인용</td><td class="n">읽기</td></tr>
+        <tr><td class="mono">pg_query</td><td>실데이터 조회 (읽기 전용)</td><td class="n">읽기</td></tr>
+        <tr><td class="mono">pg_execute</td><td>정정·배포 — <b>승인 전제</b>, WHERE 필수, 전후 대조</td><td class="n" style="color:var(--red)">쓰기</td></tr>
+      </table>
+      <p class="dim" style="font-size:7.2pt;margin-top:1.8mm">스택: LibreChat(폐쇄망 웹) · OpenCode+SQLTools · Caddy · MCP 서버 2종 · PostgreSQL · LightRAG — 전부 오픈소스+표준 프로토콜. 실환경 전환은 블록을 고객사 표준(AWS 관리형)으로 치환하는 일.</p>
+    </div>
+    <div>
+      <h2>신뢰 장치</h2>
+      <table>
+        <tr><td class="k"><b>환각 방지</b></td><td>없는 데이터·규정은 "없음"으로 답변</td></tr>
+        <tr><td class="k"><b>근거 의무</b></td><td>답변마다 데이터 출처(테이블·행 ID) + 규정 출처(문서명)</td></tr>
+        <tr><td class="k"><b>실증</b></td><td>실계약사 <b>3만 라인급</b> 패키지·폐쇄망에서 동일 사이클 검증 완료</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h2>도입 로드맵 — 오늘 본 것은 4단계, 시작은 1단계부터</h2>
+  <div class="road">
+    <div><b>1 · 문서 생성</b><span>코드·규정 분석 → 업무 문서 자동화. 현재 적용 가능한 1차 범위</span></div>
+    <div><b>2 · 업무 챗봇</b><span>규정 질의응답, 출처 기반. 읽기만</span></div>
+    <div><b>3 · Read-only 연계</b><span>실데이터 조회 결합, 권한·마스킹</span></div>
+    <div><b>4 · 실행형 Agent</b><span>승인 기반 정정·배포 — 통제 관문 통과 후</span></div>
+  </div>
+  <p class="dim" style="font-size:6.8pt;margin-top:1.6mm">단계별 관문: 인프라(폐쇄망·VPC) · 보안(마스킹·접근권한) · 운영통제(승인·롤백) · 감사(이력·책임 추적)</p>
+
+  <div class="closing">
+    <div class="line">사람이 매번 고치는 프로세스는 언젠가 빠뜨립니다. <span class="g">원인은 코드에서 제거합니다.</span></div>
+    <div class="src">Code2Rule POC</div>
+  </div>
+</div>
+</body>
+</html>
