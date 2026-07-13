@@ -106,6 +106,20 @@
   .card.red{border-top-color:var(--red)}
   .card.green{border-top-color:var(--green)}
 
+  /* 반복 비용 — 업무 상황 카드 */
+  .cost-cards{gap:1.25vw}
+  .cost-cards .card{position:relative;overflow:hidden;min-height:178px;padding:1.45em 1.5em 1.35em;border:1px solid rgba(15,36,64,.11);border-top:0;border-radius:16px;background:linear-gradient(145deg,#FFFFFF 0%,#F7F9FC 100%);box-shadow:0 10px 28px rgba(15,36,64,.09)}
+  .cost-cards .card::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--accent)}
+  .cost-cards .card::after{content:attr(data-step);position:absolute;right:.25em;bottom:-.25em;font-family:var(--mono);font-size:76px;font-weight:800;line-height:1;color:var(--accent);opacity:.08;pointer-events:none}
+  .cost-cards .card:nth-child(1){--accent:#C9A227}
+  .cost-cards .card:nth-child(2){--accent:#C43D2F}
+  .cost-cards .card:nth-child(3){--accent:#44705A}
+  .cost-cards .card-head{display:flex;align-items:center;gap:.7em;margin-bottom:.75em}
+  .cost-cards .icon{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:10px;background:color-mix(in srgb,var(--accent) 13%,white);color:var(--accent)}
+  .cost-cards .icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .cost-cards .card h3{margin:0;font-size:clamp(16px,1.3vw,20px)}
+  .cost-cards .card p{position:relative;z-index:1;margin:0;max-width:29ch;line-height:1.65}
+
   /* ── 교차 리듬 칩 (룰 슬라이드) ─────── */
   .rhythm{display:grid;grid-template-columns:repeat(6,1fr);gap:1vw;margin-top:6vh}
   .chip{padding:2.2em 1.2em;border-radius:10px;font-weight:800;font-size:clamp(13px,1.25vw,20px);line-height:1.5;min-height:22vh;display:flex;flex-direction:column;justify-content:flex-start}
@@ -256,10 +270,30 @@
     <h2 class="big">규정 · 데이터 · 코드 —<br>셋이 맞는지, 아무도 자신하지 못합니다.</h2>
     <div class="fig">
       <svg viewBox="0 0 1200 300" role="img" aria-label="규정, 데이터, 코드 세 층이 서로 어긋나 있는 구조">
+        <defs>
+          <linearGradient id="layer-policy" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#FFFDF6"/>
+            <stop offset="1" stop-color="#F5EBC8"/>
+          </linearGradient>
+          <linearGradient id="layer-data" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#F7FBFF"/>
+            <stop offset="1" stop-color="#DDEAF6"/>
+          </linearGradient>
+          <linearGradient id="layer-code" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#F8FAFC"/>
+            <stop offset="1" stop-color="#E2E8F0"/>
+          </linearGradient>
+          <filter id="layer-shadow" x="-10%" y="-15%" width="120%" height="140%">
+            <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0F2440" flood-opacity=".12"/>
+          </filter>
+        </defs>
         <g font-size="21" font-weight="800">
-          <rect x="30"  y="40" width="340" height="200" rx="8" fill="none" stroke="#0F2440" stroke-width="2.5"/>
-          <rect x="430" y="40" width="340" height="200" rx="8" fill="none" stroke="#0F2440" stroke-width="2.5"/>
-          <rect x="830" y="40" width="340" height="200" rx="8" fill="none" stroke="#0F2440" stroke-width="2.5"/>
+          <rect x="30"  y="40" width="340" height="200" rx="18" fill="url(#layer-policy)" stroke="#C9A227" stroke-width="1.5" filter="url(#layer-shadow)"/>
+          <rect x="430" y="40" width="340" height="200" rx="18" fill="url(#layer-data)" stroke="#5B87AD" stroke-width="1.5" filter="url(#layer-shadow)"/>
+          <rect x="830" y="40" width="340" height="200" rx="18" fill="url(#layer-code)" stroke="#53677E" stroke-width="1.5" filter="url(#layer-shadow)"/>
+          <path d="M48 40h304a18 18 0 0 1 18 18v4H30v-4a18 18 0 0 1 18-18Z" fill="#C9A227"/>
+          <path d="M448 40h304a18 18 0 0 1 18 18v4H430v-4a18 18 0 0 1 18-18Z" fill="#5B87AD"/>
+          <path d="M848 40h304a18 18 0 0 1 18 18v4H830v-4a18 18 0 0 1 18-18Z" fill="#53677E"/>
           <text x="60" y="95"  fill="#0F2440">규정집</text>
           <text x="460" y="95" fill="#0F2440">업무 데이터</text>
           <text x="860" y="95" fill="#0F2440">레거시 코드</text>
@@ -292,10 +326,10 @@
   <div class="slide-body">
     <div class="eyebrow">반복되는 비용</div>
     <h2 class="big">기준 확인은 한 번이 아니라,<br>매번입니다.</h2>
-    <div class="cards c3">
-      <div class="card"><h3>문의 대응</h3><p>“이 수수료 왜 이렇게 나왔죠?” — 규정 찾고, 데이터 뽑고, 코드 읽는 사람이 각각 다릅니다.</p></div>
-      <div class="card"><h3>장애 분석</h3><p>계산이 틀렸을 때, 규정이 틀렸는지 코드가 틀렸는지 데이터가 틀렸는지부터 갈립니다.</p></div>
-      <div class="card"><h3>감사 대응</h3><p>“근거를 제시하세요” — 처리 이력과 규정 조항을 사람이 수작업으로 짝지어 냅니다.</p></div>
+    <div class="cards c3 cost-cards">
+      <div class="card" data-step="01"><div class="card-head"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3v-7a4 4 0 0 1-1-2.6V7a4 4 0 0 1 4-4h11a4 4 0 0 1 4 4Z"/><path d="M7 9h10M7 13h6"/></svg></span><h3>문의 대응</h3></div><p>“이 수수료 왜 이렇게 나왔죠?” — 규정 찾고, 데이터 뽑고, 코드 읽는 사람이 각각 다릅니다.</p></div>
+      <div class="card" data-step="02"><div class="card-head"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.7 6.3 3-3 3 3-3 3M13 8l-9 9v3h3l9-9M4 4l16 16"/></svg></span><h3>장애 분석</h3></div><p>계산이 틀렸을 때, 규정이 틀렸는지 코드가 틀렸는지 데이터가 틀렸는지부터 갈립니다.</p></div>
+      <div class="card" data-step="03"><div class="card-head"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8l1 3h3v15H4V6h3Z"/><path d="M8 12h8M8 16h5M9 3v4h6V3"/></svg></span><h3>감사 대응</h3></div><p>“근거를 제시하세요” — 처리 이력과 규정 조항을 사람이 수작업으로 짝지어 냅니다.</p></div>
     </div>
     <p class="footnote">설계 · 개발 · 운영 어느 단계에서도 이 대조 비용은 사라지지 않습니다.</p>
   </div>
