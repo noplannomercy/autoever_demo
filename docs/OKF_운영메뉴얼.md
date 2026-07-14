@@ -22,19 +22,28 @@ DB)을 **합성**해서 온보딩·분석·수정을 빠르게 하는 체계.
 
 ## 2. 표준 폴더 구성
 
+**대원칙: 원료는 `raw/`, 지식은 `okf/` — 최상위는 이 이분법이다.**
+
 ```
 <project>/                      ← 로컬 git 저장소 (관리 단위)
 ├── AGENTS.md                   # 프로젝트 프롬프트: 서버 툴 사용법 + 로컬 라우팅 블록(§8)
-├── instructions/
-│   └── okf-<방언>.md           # 역문서화 지침 (postgres/oracle 등 방언별)
-├── src/ 또는 legacy_src/        # 원본 소스 — 진실원천, 역문서화 대상
-├── okf/                        # as-is 역문서 번들 (OKF v0.1)
+├── instructions/               # 역문서화 지침 (okf-postgres / okf-oracle / okf-docs)
+├── raw/                        # 원료 전부 — 진실원천. 하위는 원본 형태 보존(자율)
+│   ├── code/                   #   소스 (함수·패키지·스키마 DDL)
+│   ├── docs/                   #   문서 원료 (규정·매뉴얼·회의록)
+│   └── scripts/                #   export·시드·배포 스크립트
+├── okf/                        # 지식 번들 (OKF v0.1) — 하위는 §2.1 표준 카테고리만
 │   ├── index.md                #   번들 진입점 + 역할분담 명시
-│   ├── functions/              #   함수군/패키지당 문서 1편 + index.md
-│   └── tables/                 #   테이블당 문서 1편 + index.md
+│   ├── functions/  tables/     #   코드 유래
+│   └── rules/  terms/  …       #   문서 유래
 ├── smes/                       # 전문가 유권해석 (규정 공백 보강, 서버 미적재)
 └── refs/                       # 인시던트 기록·참고자료 (데이터 맥락, 서버 미적재)
 ```
+
+- 같은 도메인의 코드·문서 지식은 **한 번들**에 산다 — functions/ 문서가
+  /rules/ 문서를 크로스링크하는 것이 이 구조의 핵심 가치.
+- raw/ 하위 구조는 표준을 강제하지 않는다 — 레거시 export가 오는 모양
+  그대로 보존한다 (기존 프로젝트의 legacy_src 등은 소급 개명하지 않음).
 
 - 원본 지침: `C:\workspace\openwiki\instructions\okf-postgres.md` (PL/pgSQL),
   `okf-oracle.md` (PL/SQL — Robotics 프롬프트 픽스의 원천)
