@@ -196,37 +196,42 @@
     <p class="sec-lede">본 사업은 계획 수립 단계가 아니다. <b>지난 3개월간 PoC 반복으로 기준 시스템(autoever_demo)을 도출·검증했고, 요구사항 분석까지 마친 상태</b>다. 아래 실적이 §2 이후 모든 계획의 근거가 된다.</p>
     <div class="done-list">
       <div class="done-row">
-        <span class="wbs">0.1</span><span class="dt">04.13–06.15</span>
-        <span class="t">PoC 반복 수행 — 접근 방식 검증<small>역문서화·검색·에이전트 구성을 반복 실험, 최종 아키텍처로 수렴</small></span>
-        <span class="out">기준 모델 autoever_demo 도출</span><span class="badge">완료</span>
+        <span class="wbs">0.1</span><span class="dt">04.13–05.29</span>
+        <span class="t">PoC 5회 반복 — 기술 가능성 검증<small>아키텍처 5차례 반복 실험 · PoC5 결과: 정책 질의·디버깅·리스크 분석·리팩토링 설계 4개 시나리오 전 항목 달성</small></span>
+        <span class="out">PoC 아키텍처·결과 보고서 5본</span><span class="badge">완료</span>
       </div>
       <div class="done-row">
-        <span class="wbs">0.2</span><span class="dt">06.16–07.02</span>
-        <span class="t">기준 시스템 구축 — 역문서화 + Agentic RAG<small>PL/SQL 역문서 KB + 실데이터 조회 + 코드 수정·배포까지 전 구간 시연 가능</small></span>
+        <span class="wbs">0.2</span><span class="dt">04.30 · 05.09</span>
+        <span class="t">고객 시연 2회<small>1차: PoC2 시연 미팅 · 2차: 목업 데이터 전체 파이프라인(역문서→KB→질의+백오피스) 시연 확인</small></span>
+        <span class="out">시연 미팅 증적</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.3</span><span class="dt">05.11–05.18</span>
+        <span class="t">고객 액션플랜·경과보고 발송<small>액션플랜 v0.1~0.5 (P0 기한 5/23 · P1 기한 5/30 명기) + 경과보고·추진 로드맵</small></span>
+        <span class="out">액션플랜 · 경과보고서</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.4</span><span class="dt">06.12–07.02</span>
+        <span class="t">기준 시스템 구축 — 역문서화 + Agentic RAG<small>지식베이스 설계 재개 → PL/SQL 역문서 KB + 실데이터 조회 + 코드 수정·배포까지 전 구간 시연 가능</small></span>
         <span class="out">검증 질의 6건 E2E 통과</span><span class="badge">완료</span>
       </div>
       <div class="done-row">
-        <span class="wbs">0.3</span><span class="dt">07.09</span>
-        <span class="t">재현 배포 검증<small>빈 서버에 문서·산출물만으로 전체 스택 재구축 성공 — 이식성 입증</small></span>
-        <span class="out">외부 서버 배포 테스트 결과서</span><span class="badge">완료</span>
+        <span class="wbs">0.5</span><span class="dt">07.09</span>
+        <span class="t">재현 배포 검증 · 폐쇄망 시연 환경 구성<small>빈 서버에 문서·산출물만으로 전체 스택 재구축 성공 + 고객 VDI 제약 대응 웹 채널 구성</small></span>
+        <span class="out">배포 테스트 결과서 · 시연 구성서</span><span class="badge">완료</span>
       </div>
       <div class="done-row">
-        <span class="wbs">0.4</span><span class="dt">07.09</span>
-        <span class="t">폐쇄망 시연 환경 구성<small>고객 VDI 제약(설치 불가·사이트 필터) 대응 웹 채널 구성</small></span>
-        <span class="out">폐쇄망 시연 구성서</span><span class="badge">완료</span>
-      </div>
-      <div class="done-row">
-        <span class="wbs">0.5</span><span class="dt">07.10–07.11</span>
+        <span class="wbs">0.6</span><span class="dt">07.10–07.11</span>
         <span class="t">시연·보고 자산 제작<small>프레젠테이션 덱 22장 + A4 원페이저 — 의사결정자 설명용</small></span>
         <span class="out">시연 덱 · 원페이저 PDF</span><span class="badge">완료</span>
       </div>
       <div class="done-row">
-        <span class="wbs">0.6</span><span class="dt">07월 초</span>
+        <span class="wbs">0.7</span><span class="dt">07월 초</span>
         <span class="t">문서화 대상 식별<small>DB 딕셔너리 의존성 분석 — payments/cbreports 도메인 250개 확정</small></span>
         <span class="out">대상 목록 + 추출 쿼리·스냅샷</span><span class="badge">완료</span>
       </div>
       <div class="done-row">
-        <span class="wbs">0.7</span><span class="dt">07.14</span>
+        <span class="wbs">0.8</span><span class="dt">07.14</span>
         <span class="t">요구사항 분석 — 유저스토리 15건 전 건 답변 + SRS 초안<small>요구사항 R-01~18 · 완료기준 C1~C4 · 미확정 TBD 6건 정리</small></span>
         <span class="out">SRS v0.1 (본 문서의 세트)</span><span class="badge">완료</span>
       </div>
@@ -264,9 +269,10 @@
         <div class="vline" style="left:76.73%"><span class="vtag">O = KB 오픈</span></div>
 
         <div class="ph"><span class="p-no">PHASE 0</span><span class="p-t">실적</span><span class="p-a">04.13 – 07.15 · 완료</span></div>
-        <div class="g-row"><span class="lbl" style="left:28.4%"><span class="who">수행</span><b>0.1</b> PoC 반복 → 기준 모델 도출</span><div class="bar done" style="left:4.36%;width:22.91%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.2–0.5</b> 기준 시스템 구축·배포 검증·시연 자산</span><div class="bar done" style="left:27.64%;width:9.09%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.6–0.7</b> 대상 250개 식별 · 유저스토리 답변 · SRS 초안</span><div class="bar done" style="left:33.09%;width:5.09%"></div></div>
+        <div class="g-row"><span class="lbl" style="left:22.4%"><span class="who">수행</span><b>0.1</b> PoC 5회 반복 — 기술 가능성 검증</span><div class="bar done" style="left:4.36%;width:16.73%"></div></div>
+        <div class="g-row"><span class="lbl" style="left:18.4%"><span class="who">공동</span><b>0.2–0.3</b> 고객 시연 2회 · 액션플랜·경과보고 발송</span><div class="bar done" style="left:10.55%;width:6.54%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.4–0.6</b> 기준 시스템 구축·배포 검증·시연 자산</span><div class="bar done" style="left:26.18%;width:10.55%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.7–0.8</b> 대상 250개 식별 · 유저스토리 답변 · SRS 초안</span><div class="bar done" style="left:33.09%;width:5.09%"></div></div>
 
         <div class="ph"><span class="p-no">PHASE 1</span><span class="p-t">준비기</span><span class="p-a">07.15 – 08.20 · 절대 날짜 (환경 불요 작업)</span></div>
         <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.1</b> SRS 리뷰·합의 → v1.0</span><div class="bar joint" style="left:40.36%;width:3.64%"></div><span class="ms-lbl" style="left:44%">M1</span><div class="ms" style="left:44%"></div></div>
