@@ -181,7 +181,7 @@
     </div>
     <div class="goldrule"></div>
     <div class="strip">
-      <div class="cell"><div class="v num">250</div><div class="k">문서화 대상 패키지 — 전체 1,690개 중 의존성 분석으로 식별 완료</div></div>
+      <div class="cell"><div class="v num">1,613<small>→148</small></div><div class="k">전체 패키지 DBA 실사 → 1단계 역문서화 대상 선별 (QA 기준 · 운영계 재확정 예정)</div></div>
       <div class="cell"><div class="v num">15<small>/15</small></div><div class="k">현업 유저스토리 — 전 건 답변·요구사항 반영 완료</div></div>
       <div class="cell"><div class="v num">18</div><div class="k">SRS 요구사항 확정 (R-01~18) — 초안 작성 완료</div></div>
       <div class="cell"><div class="v num">6<small>/6</small></div><div class="k">기준 시스템(데모) 검증 질의 — E2E 전 건 통과</div></div>
@@ -226,9 +226,9 @@
         <span class="out">시연 덱 · 원페이저 PDF</span><span class="badge">완료</span>
       </div>
       <div class="done-row">
-        <span class="wbs">0.7</span><span class="dt">07월 초</span>
-        <span class="t">문서화 대상 식별<small>DB 딕셔너리 의존성 분석 — payments/cbreports 도메인 250개 확정</small></span>
-        <span class="out">대상 목록 + 추출 쿼리·스냅샷</span><span class="badge">완료</span>
+        <span class="wbs">0.7</span><span class="dt">07.01–07.10</span>
+        <span class="t">레거시 DB 실사·대상 확정 (QA 기준)<small>패키지 1,613개·독립 함수 7,020개 전수 분석(유효성·의존성·규모) → 3단 티어링 확정 → payments 도메인 148개 / 296,558라인 선별 + 추출 27회차 절차 설계</small></span>
+        <span class="out">추출 대장 · 티어링 의사결정 기록 4본</span><span class="badge">완료</span>
       </div>
       <div class="done-row">
         <span class="wbs">0.8</span><span class="dt">07.14</span>
@@ -236,7 +236,7 @@
         <span class="out">SRS v0.1 (본 문서의 세트)</span><span class="badge">완료</span>
       </div>
     </div>
-    <div class="callout"><b>이 구간의 의미</b> — 신기술 사업의 최대 리스크(“되는지 안 되는지”)는 이미 이 구간에서 소거되었다. 남은 것은 검증된 절차를 250개에 <b>반복 적용하는 실행</b>이다.</div>
+    <div class="callout"><b>이 구간의 의미</b> — 신기술 사업의 최대 리스크(“되는지 안 되는지”)는 이미 이 구간에서 소거되었다. 남은 것은 검증된 절차를 148개에 <b>반복 적용하는 실행</b>이다.</div>
   </div>
 </section>
 
@@ -272,21 +272,23 @@
         <div class="g-row"><span class="lbl" style="left:22.4%"><span class="who">수행</span><b>0.1</b> PoC 5회 반복 — 기술 가능성 검증</span><div class="bar done" style="left:4.36%;width:16.73%"></div></div>
         <div class="g-row"><span class="lbl" style="left:18.4%"><span class="who">공동</span><b>0.2–0.3</b> 고객 시연 2회 · 액션플랜·경과보고 발송</span><div class="bar done" style="left:10.55%;width:6.54%"></div></div>
         <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.4–0.6</b> 기준 시스템 구축·배포 검증·시연 자산</span><div class="bar done" style="left:26.18%;width:10.55%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.7–0.8</b> 대상 250개 식별 · 유저스토리 답변 · SRS 초안</span><div class="bar done" style="left:33.09%;width:5.09%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.7–0.8</b> DB 실사 → 대상 148개 확정(QA) · 유저스토리 답변 · SRS 초안</span><div class="bar done" style="left:33.09%;width:5.09%"></div></div>
 
         <div class="ph"><span class="p-no">PHASE 1</span><span class="p-t">준비기</span><span class="p-a">07.15 – 08.20 · 절대 날짜 (환경 불요 작업)</span></div>
         <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.1</b> SRS 리뷰·합의 → v1.0</span><div class="bar joint" style="left:40.36%;width:3.64%"></div><span class="ms-lbl" style="left:44%">M1</span><div class="ms" style="left:44%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.2</b> Bedrock 계정·리전·모델 확정 (TBD-1) — E의 전제</span><div class="bar cust" style="left:40.36%;width:10.91%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.3–1.4</b> Lifecycle 시트 공유 · SME 채널 지정 (TBD-2·3)</span><div class="bar cust" style="left:40.36%;width:6.18%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.5</b> 골든 질의 20건 수집 (TBD-6)</span><div class="bar cust" style="left:44.36%;width:6.91%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.6–1.7</b> 관리 대장 설계·기입 · 추출 쿼리 절차화</span><div class="bar we" style="left:38.55%;width:5.45%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.8–1.9</b> 역문서 작성 지침 · 검증 방법 확정</span><div class="bar we" style="left:42.91%;width:4.0%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.10</b> 드라이런 — 전 구간 리허설·속도 실측</span><div class="bar we" style="left:47.64%;width:3.64%"></div><span class="ms-lbl" style="left:51.27%">M2</span><div class="ms" style="left:51.27%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.2</b> 최종 시연 — LibreChat·OpenCode 2방식</span><div class="bar joint" style="left:40.36%;width:6.55%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.3</b> Bedrock 계정·리전·모델 확정 (TBD-1) — E의 전제</span><div class="bar cust" style="left:40.36%;width:10.91%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.4–1.5</b> Lifecycle 시트 공유 · SME 채널 지정 (TBD-2·3)</span><div class="bar cust" style="left:40.36%;width:6.18%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.6</b> 골든 질의 20건 수집 (TBD-6)</span><div class="bar cust" style="left:44.36%;width:6.91%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.7</b> 운영계 기준 대상 재확정 (QA 148개 검증)</span><div class="bar cust" style="left:42.91%;width:8.36%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.8–1.9</b> 관리 대장 설계·기입 · 추출 쿼리 절차화</span><div class="bar we" style="left:38.55%;width:5.45%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.10–1.11</b> 역문서 작성 지침 · 검증 방법 확정</span><div class="bar we" style="left:42.91%;width:4.0%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.12</b> 드라이런 — 전 구간 리허설·속도 실측</span><div class="bar we" style="left:47.64%;width:3.64%"></div><span class="ms-lbl" style="left:51.27%">M2</span><div class="ms" style="left:51.27%"></div></div>
 
         <div class="ph"><span class="p-no">PHASE 2</span><span class="p-t">실행기</span><span class="p-a">E ~ E+10주 (E=8/20 가정 → 10월 말)</span></div>
         <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.1</b> Bedrock 환경 구성·접속 검증 <span class="num">E~E+2주</span></span><div class="bar joint" style="left:51.27%;width:5.09%"></div></div>
         <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.2</b> 샘플 5개 실측 → 목표 수치 확정 <span class="num">E+1~2주</span></span><div class="bar we" style="left:53.82%;width:2.55%"></div><span class="ms-lbl" style="left:56.36%">M3</span><div class="ms" style="left:56.36%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.3</b> 250개 배치 처리 (대장 기반 진행 관리) <span class="num">E+2~8주</span></span><div class="bar we" style="left:56.36%;width:15.27%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.3</b> 148개 추출·역문서화 배치 (대장 기반 진행 관리) <span class="num">E+2~8주</span></span><div class="bar we" style="left:56.36%;width:15.27%"></div></div>
         <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.4</b> SME 질문 사이클 — 주기 발송·답변 축적 <span class="num">E+2주~</span></span><div class="bar joint" style="left:56.36%;width:20.36%"></div></div>
         <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.5</b> 적재 완료·골든 질의 품질 측정·소비 채널 검증 <span class="num">E+8~10주</span></span><div class="bar we" style="left:71.64%;width:5.09%"></div><span class="ms-lbl" style="left:71.64%">M4</span><div class="ms" style="left:71.64%"></div><span class="ms-lbl" style="left:76.73%">M5</span><div class="ms" style="left:76.73%"></div></div>
 
@@ -312,15 +314,17 @@
       <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>기간</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
       <tbody>
         <tr class="hl"><td class="wbs">1.1</td><td>SRS 리뷰·합의 — TBD 6건 협의 후 v1.0 승격<span class="msx">M1</span></td><td class="who joint">공동</td><td class="dt">7월 하순</td><td>SRS v1.0</td><td class="ref">본 문서(WBS) 전달이 리뷰 미팅 요청</td></tr>
-        <tr class="hl"><td class="wbs">1.2</td><td>Bedrock 계정·리전·모델·쿼터 확정 — <b>앵커 E의 전제</b></td><td class="who cust">고객</td><td class="dt">~8/20 필수</td><td>환경 접속 정보</td><td class="ref">TBD-1 · 지연 시 §5 R-0</td></tr>
-        <tr class="hl"><td class="wbs">1.3</td><td>Lifecycle Definition 시트 공유</td><td class="who cust">고객</td><td class="dt">7월 중</td><td>상태 정의 문서</td><td class="ref">TBD-2 (US-12 참조 문서)</td></tr>
-        <tr class="hl"><td class="wbs">1.4</td><td>SME 질문 채널 — 담당자·응답 주기 지정</td><td class="who cust">고객</td><td class="dt">8월 초</td><td>채널·주기 확약</td><td class="ref">TBD-3 · A2의 조기 검증</td></tr>
-        <tr class="hl"><td class="wbs">1.5</td><td>골든 질의 20건 수집 — “KB가 답해야 할 것”의 정의</td><td class="who cust">고객</td><td class="dt">8월 중</td><td>질의 목록</td><td class="ref">TBD-6 · R-18 측정 세트</td></tr>
-        <tr><td class="wbs">1.6</td><td>관리 대장 설계 · 250개 목록 기입 (상태·소스 버전 컬럼)</td><td class="who">수행</td><td class="dt">7월 하순</td><td>관리 대장</td><td class="ref">R-01 · R-02</td></tr>
-        <tr><td class="wbs">1.7</td><td>의존성 추출 쿼리 절차화 · 스냅샷 보관</td><td class="who">수행</td><td class="dt">7월 하순</td><td>재실행 가능 절차서</td><td class="ref">R-03 (1회 수행분을 절차로 승격)</td></tr>
-        <tr><td class="wbs">1.8</td><td>역문서 작성 지침 확정 — 코드 사실만·함수별 섹션·SME 태깅</td><td class="who">수행</td><td class="dt">8월 초</td><td>작성 지침(OKF)</td><td class="ref">R-04</td></tr>
-        <tr><td class="wbs">1.9</td><td>검증 방법 정의 — LLM 저지 기준 + 실행·데이터 대조 방식</td><td class="who">수행</td><td class="dt">8월 초</td><td>검증 기준서</td><td class="ref">R-05</td></tr>
-        <tr><td class="wbs">1.10</td><td>드라이런 — 기준 시스템 자산으로 전 구간 리허설·처리 속도 실측·골든 질의 초기 세트 도출<span class="msx">M2</span></td><td class="who">수행</td><td class="dt">8월 중순</td><td>실측 리포트</td><td class="ref">R-18 · A4의 조기 경보</td></tr>
+        <tr class="hl"><td class="wbs">1.2</td><td>최종 시연 — LibreChat(웹 채널) · OpenCode(로컬 에이전트) 2방식 동작 시연</td><td class="who joint">공동</td><td class="dt">7월 하순~8월 초</td><td>시연 실시·확인</td><td class="ref">기준 시스템(0.4~0.6) 기반 · 1.1 미팅 연계 가능</td></tr>
+        <tr class="hl"><td class="wbs">1.3</td><td>Bedrock 계정·리전·모델·쿼터 확정 — <b>앵커 E의 전제</b></td><td class="who cust">고객</td><td class="dt">~8/20 필수</td><td>환경 접속 정보</td><td class="ref">TBD-1 · 지연 시 §5 R-0</td></tr>
+        <tr class="hl"><td class="wbs">1.4</td><td>Lifecycle Definition 시트 공유</td><td class="who cust">고객</td><td class="dt">7월 중</td><td>상태 정의 문서</td><td class="ref">TBD-2 (US-12 참조 문서)</td></tr>
+        <tr class="hl"><td class="wbs">1.5</td><td>SME 질문 채널 — 담당자·응답 주기 지정</td><td class="who cust">고객</td><td class="dt">8월 초</td><td>채널·주기 확약</td><td class="ref">TBD-3 · A2의 조기 검증</td></tr>
+        <tr class="hl"><td class="wbs">1.6</td><td>골든 질의 20건 수집 — “KB가 답해야 할 것”의 정의</td><td class="who cust">고객</td><td class="dt">8월 중</td><td>질의 목록</td><td class="ref">TBD-6 · R-18 측정 세트</td></tr>
+        <tr class="hl"><td class="wbs">1.7</td><td>운영계 기준 대상 재확정 — QA 잠정 148개의 운영계 검증 (접근 권한·협조 필요)</td><td class="who cust">고객</td><td class="dt">7월 하순~8/20</td><td>확정 대상 목록</td><td class="ref">0.7 실사 기반 · R-03</td></tr>
+        <tr><td class="wbs">1.8</td><td>관리 대장 설계 · 148개 목록 기입 (상태·소스 버전 컬럼)</td><td class="who">수행</td><td class="dt">7월 하순</td><td>관리 대장</td><td class="ref">R-01 · R-02</td></tr>
+        <tr><td class="wbs">1.9</td><td>의존성 추출 쿼리 절차화 · 스냅샷 보관</td><td class="who">수행</td><td class="dt">7월 하순</td><td>재실행 가능 절차서</td><td class="ref">R-03 (1회 수행분을 절차로 승격)</td></tr>
+        <tr><td class="wbs">1.10</td><td>역문서 작성 지침 확정 — 코드 사실만·함수별 섹션·SME 태깅</td><td class="who">수행</td><td class="dt">8월 초</td><td>작성 지침(OKF)</td><td class="ref">R-04</td></tr>
+        <tr><td class="wbs">1.11</td><td>검증 방법 정의 — LLM 저지 기준 + 실행·데이터 대조 방식</td><td class="who">수행</td><td class="dt">8월 초</td><td>검증 기준서</td><td class="ref">R-05</td></tr>
+        <tr><td class="wbs">1.12</td><td>드라이런 — 기준 시스템 자산으로 전 구간 리허설·처리 속도 실측·골든 질의 초기 세트 도출<span class="msx">M2</span></td><td class="who">수행</td><td class="dt">8월 중순</td><td>실측 리포트</td><td class="ref">R-18 · A4의 조기 경보</td></tr>
       </tbody>
     </table>
 
@@ -328,9 +332,9 @@
       <caption>Phase 2 — 실행기 <span class="cap-a">E ~ E+10주 (E = Bedrock 개통, 가정 8/20 → 10월 말 완료)</span></caption>
       <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>앵커</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
       <tbody>
-        <tr><td class="wbs">2.1</td><td>Bedrock 환경 구성 · 접속 검증</td><td class="who joint">공동</td><td class="dt">E ~ E+2주</td><td>가동 환경</td><td class="ref">SRS §5.2-1 · 선행 1.2</td></tr>
+        <tr><td class="wbs">2.1</td><td>Bedrock 환경 구성 · 접속 검증</td><td class="who joint">공동</td><td class="dt">E ~ E+2주</td><td>가동 환경</td><td class="ref">SRS §5.2-1 · 선행 1.3</td></tr>
         <tr><td class="wbs">2.2</td><td>샘플 5개 실측 — 모델 품질(A1) 판정 · 처리량 실측 · <b>C1·C2 목표 수치 확정 → SRS v1.1 개정</b><span class="msx">M3</span></td><td class="who">수행</td><td class="dt">E+1 ~ 2주</td><td>실측 근거·목표치</td><td class="ref">A1 · TBD-5 · §6</td></tr>
-        <tr><td class="wbs">2.3</td><td>250개 배치 처리 — 생성→이중 검증→적재, 대장 기반 진행 관리</td><td class="who">수행</td><td class="dt">E+2 ~ 8주</td><td>역문서 250건 적재</td><td class="ref">R-04·05·06</td></tr>
+        <tr><td class="wbs">2.3</td><td>148개 배치 처리 — 소스 추출(27회차 절차)→생성→이중 검증→적재, 대장 기반 진행 관리</td><td class="who">수행</td><td class="dt">E+2 ~ 8주</td><td>역문서 148건 적재</td><td class="ref">R-04·05·06 · 선행 1.7</td></tr>
         <tr><td class="wbs">2.4</td><td>SME 질문 사이클 — 태깅 자동 집계·주기 발송·답변 지식층 축적</td><td class="who joint">공동</td><td class="dt">E+2주 ~ 상시</td><td>질문 목록·답변 문서</td><td class="ref">R-09·11 · 고객 응답 주기 의존(A2)</td></tr>
         <tr><td class="wbs">2.5</td><td>적재 완료<span class="msx">M4</span> · 골든 질의 품질 측정 · 소비 채널 연결 검증 → <b>KB 오픈 판정</b><span class="msx">M5</span></td><td class="who">수행</td><td class="dt">E+8 ~ 10주</td><td>품질 리포트 · O 확정</td><td class="ref">R-16·17·18 · §6 C1~C4 검수</td></tr>
       </tbody>
@@ -361,12 +365,12 @@
         <tr><td class="wbs">M1</td><td>SRS v1.0 합의</td><td class="dt">7월 하순</td><td>TBD 6건 협의 완료 — 최소 TBD-1(Bedrock)·TBD-3(SME 채널) 확정</td></tr>
         <tr><td class="wbs">M2</td><td>드라이런 완료</td><td class="dt">~8/20</td><td>파이프라인 전 구간 리허설 통과 + 처리 속도 실측치 + 골든 질의 초기 세트</td></tr>
         <tr><td class="wbs">M3</td><td>샘플 실측 · 목표치 확정</td><td class="dt">E+2주</td><td>샘플 5개 처리, 모델 품질(A1) 판정, C1·C2 목표 수치 확정 → SRS v1.1 개정</td></tr>
-        <tr><td class="wbs">M4</td><td>250개 적재 완료</td><td class="dt">E+8~10주</td><td>C1(커버리지) 달성 — 관리 대장 집계로 확인</td></tr>
+        <tr><td class="wbs">M4</td><td>148개 적재 완료</td><td class="dt">E+8~10주</td><td>C1(커버리지) 달성 — 관리 대장 집계로 확인</td></tr>
         <tr class="hl"><td class="wbs">M5</td><td><b>KB 오픈 판정</b></td><td class="dt">≈E+10주 (10월 말)</td><td><b>C1~C4 전체 검수 → 앵커 O 확정</b>, 2단계 착수 협의</td></tr>
       </tbody>
     </table>
     <div class="c-cards avoid">
-      <div class="c-card"><div class="cno">C1</div><div class="ct">대상 커버리지</div><div class="cv">250개 중 검증 통과·적재 비율 — 목표치는 <span class="tbd">M3에서 확정</span></div></div>
+      <div class="c-card"><div class="cno">C1</div><div class="ct">대상 커버리지</div><div class="cv">148개 중 검증 통과·적재 비율 — 목표치는 <span class="tbd">M3에서 확정</span></div></div>
       <div class="c-card"><div class="cno">C2</div><div class="ct">KB 품질</div><div class="cv">골든 질의 세트 정답률 — 목표치는 <span class="tbd">M3에서 확정</span></div></div>
       <div class="c-card"><div class="cno">C3</div><div class="ct">신뢰 규칙 준수</div><div class="cv">근거 블록 누락·무추정 위반 <b>0건 — 지금 확정</b></div></div>
       <div class="c-card"><div class="cno">C4</div><div class="ct">지식 공백의 가시화</div><div class="cv">SME 태깅 잔량 리포트 <b>존재 — 지금 확정</b>. 공백을 없애는 게 아니라 보이게 하는 것이 1단계 목표</div></div>
@@ -382,12 +386,12 @@
     <table class="ledger avoid">
       <thead><tr><th>#</th><th>가정 / 리스크</th><th>깨졌을 때</th><th>움직이는 것</th><th>조기 검증 장치</th></tr></thead>
       <tbody>
-        <tr class="risk-top"><td class="wbs">R-0</td><td><b>E 지연 — Bedrock 개통(고객 태스크 1.2)이 8/20을 넘김</b></td><td>실행기 전체 대기</td><td><b>실행기·운영기 전 구간 평행이동</b> (준비기는 무영향 — 계속 진행)</td><td>주간 확인 · M1 미팅에서 일정 확약</td></tr>
+        <tr class="risk-top"><td class="wbs">R-0</td><td><b>E 지연 — Bedrock 개통(고객 태스크 1.3)이 8/20을 넘김</b></td><td>실행기 전체 대기</td><td><b>실행기·운영기 전 구간 평행이동</b> (준비기는 무영향 — 계속 진행)</td><td>주간 확인 · M1 미팅에서 일정 확약</td></tr>
         <tr><td class="wbs">A1</td><td>Bedrock 제공 모델의 역문서화 품질 부족</td><td>지침 보강·모델 변경</td><td>M4·M5 +n주</td><td>M3 샘플 5개 실측이 조기 판정</td></tr>
         <tr><td class="wbs">A2</td><td>SME 질문에 답변이 이뤄지지 않음</td><td>KB는 코드 사실만으로 가동 — <b>중단 없음</b></td><td>일정 무영향 · C4 성숙도 지표만 하락</td><td>TBD-3 채널 협의에서 응답 주기 확약</td></tr>
         <tr><td class="wbs">A3</td><td>대상 패키지 배포 빈도가 수동 재문서화 감당 수준 초과</td><td>운영기 자동화(3.1) 우선순위 상향</td><td>운영기 착수 순서 조정</td><td>실행기 중 배포 건수 실측</td></tr>
         <tr><td class="wbs">A4</td><td>1인 수행 처리량 미달</td><td>완료 시점 조정</td><td>M4 이동 (기준: C1)</td><td>M2 드라이런 속도 실측이 조기 경보</td></tr>
-        <tr><td class="wbs">A5</td><td>250건 규모에서 검색 정확도 저하</td><td>청킹·적재 방식 조정</td><td>M5 판정에 흡수</td><td>적재 누적 구간별 골든 질의 재측정</td></tr>
+        <tr><td class="wbs">A5</td><td>148건 규모에서 검색 정확도 저하</td><td>청킹·적재 방식 조정</td><td>M5 판정에 흡수</td><td>적재 누적 구간별 골든 질의 재측정</td></tr>
       </tbody>
     </table>
 
