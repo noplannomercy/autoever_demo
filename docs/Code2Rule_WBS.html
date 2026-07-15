@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code2Rule — 사업 실행 계획서 (WBS) v1.0</title>
+<style>
+  :root{
+    --bg:#FAF9F6; --ink:#0F2440; --gold:#C9A227; --red:#C43D2F; --green:#1E7A46;
+    --dark:#0D1B2A; --ink-soft:rgba(15,36,64,.62); --line:rgba(15,36,64,.16);
+    --mono:'D2Coding',Consolas,'Courier New',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:var(--bg);color:var(--ink);
+    font-family:Pretendard,'Noto Sans KR','Malgun Gothic',sans-serif;
+    font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .sheet{max-width:1180px;margin:0 auto;padding:34px 44px}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* ── 타이틀 밴드 ─────────────────────────── */
+  .band{background:var(--dark);color:#EDE8DC;position:relative;overflow:hidden}
+  .band .sheet{padding:52px 44px 40px}
+  .band .glyph{position:absolute;right:-30px;top:-70px;font-size:340px;font-weight:800;
+    color:rgba(201,162,39,.07);font-family:var(--mono);line-height:1;user-select:none}
+  .band .eyebrow{font-size:12px;letter-spacing:.34em;color:var(--gold);font-weight:700;margin-bottom:14px}
+  .band h1{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1.2}
+  .band h1 .thin{font-weight:300;color:rgba(237,232,220,.75)}
+  .band .meta{margin-top:14px;font-size:13px;color:rgba(237,232,220,.66);display:flex;gap:18px;flex-wrap:wrap}
+  .band .meta b{color:var(--gold);font-weight:600}
+  .goldrule{height:3px;width:64px;background:var(--gold);margin:22px 0 26px}
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative}
+  .strip .cell{border-top:1px solid rgba(201,162,39,.4);padding-top:12px}
+  .strip .v{font-family:var(--mono);font-size:34px;font-weight:700;color:#fff;letter-spacing:-.02em}
+  .strip .v small{font-size:16px;color:rgba(237,232,220,.6);font-weight:400}
+  .strip .k{font-size:12px;color:rgba(237,232,220,.62);margin-top:4px}
+
+  /* ── 공통 섹션 ─────────────────────────── */
+  section{border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .sec-no{font-family:var(--mono);font-size:13px;color:var(--gold);font-weight:700;letter-spacing:.14em}
+  .sec-head h2{font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .sec-lede{color:var(--ink-soft);font-size:13.5px;margin-bottom:20px;max-width:860px}
+  .sec-lede b{color:var(--ink)}
+
+  /* ── §1 경과 실적 ─────────────────────────── */
+  .done-list{border-top:2px solid var(--ink)}
+  .done-row{display:grid;grid-template-columns:64px 120px 1fr 300px 88px;gap:14px;
+    padding:10px 4px;border-bottom:1px solid var(--line);align-items:baseline}
+  .done-row .wbs{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft)}
+  .done-row .dt{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft)}
+  .done-row .t{font-weight:600;font-size:14px}
+  .done-row .t small{display:block;font-weight:400;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .done-row .out{font-size:12.5px;color:var(--ink-soft)}
+  .badge{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;
+    background:rgba(30,122,70,.1);color:var(--green);border:1px solid rgba(30,122,70,.35);
+    text-align:center;white-space:nowrap}
+  .callout{margin-top:16px;padding:12px 16px;border-left:3px solid var(--gold);
+    background:rgba(201,162,39,.06);font-size:13px;color:var(--ink)}
+
+  /* ── §2 간트 ─────────────────────────── */
+  .legend{display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-bottom:14px;font-size:12px;color:var(--ink-soft)}
+  .legend .sw{display:inline-block;width:22px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+  .sw.done{background:var(--green)} .sw.we{background:var(--ink)}
+  .sw.cust{background:var(--gold)} .sw.joint{background:linear-gradient(90deg,var(--ink) 45%,var(--gold) 55%)}
+  .legend .ms-key{font-family:var(--mono)}
+  .anchor-note{font-size:12.5px;padding:10px 14px;border:1px solid var(--line);border-left:3px solid var(--ink);
+    background:#fff;margin-bottom:18px;color:var(--ink-soft)}
+  .anchor-note b{color:var(--ink)}
+  .anchor-note .num{color:var(--red);font-weight:700}
+
+  .gantt{position:relative;border-top:2px solid var(--ink)}
+  .g-months{display:grid;grid-template-columns:10.91% 11.27% 10.91% 11.27% 11.27% 10.91% 11.27% 10.91% 11.28%;
+    border-bottom:1px solid var(--line)}
+  .g-months div{font-family:var(--mono);font-size:11px;color:var(--ink-soft);padding:6px 0 4px;text-align:center;
+    border-left:1px dotted var(--line)}
+  .g-months div:first-child{border-left:none}
+  .g-body{position:relative}
+  .g-grid{position:absolute;inset:0;pointer-events:none;z-index:0;
+    background:repeating-linear-gradient(90deg,transparent,transparent calc(100%/9 - 1px),rgba(15,36,64,.07) calc(100%/9 - 1px),rgba(15,36,64,.07) calc(100%/9))}
+  .ph{display:flex;align-items:center;gap:10px;padding:9px 4px 5px;position:relative;z-index:2}
+  .ph .p-no{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em}
+  .ph .p-t{font-size:12.5px;font-weight:700}
+  .ph .p-a{font-size:11px;color:var(--ink-soft)}
+  .g-row{position:relative;height:27px;z-index:1}
+  .g-row .lbl{position:absolute;left:4px;top:50%;transform:translateY(-50%);
+    font-size:11.5px;color:var(--ink-soft);white-space:nowrap;z-index:2}
+  .g-row .lbl b{color:var(--ink);font-weight:600}
+  .g-row .lbl .who{font-family:var(--mono);font-size:10px;padding:1px 5px;border-radius:3px;margin-right:5px;
+    border:1px solid var(--line);color:var(--ink-soft)}
+  .bar{position:absolute;top:5px;height:15px;border-radius:3px;z-index:3}
+  .bar.done{background:var(--green)}
+  .bar.we{background:var(--ink)}
+  .bar.cust{background:var(--gold)}
+  .bar.joint{background:linear-gradient(90deg,var(--ink) 45%,var(--gold) 55%)}
+  .bar.open::after{content:'';position:absolute;right:-9px;top:2.5px;border:5px solid transparent;border-left:7px solid currentColor}
+  .bar.we.open{color:var(--ink)} .bar.joint.open{color:var(--gold)} .bar.cust.open{color:var(--gold)}
+  .bar.always{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+  .ms{position:absolute;top:6px;width:13px;height:13px;transform:translateX(-50%) rotate(45deg);
+    background:var(--gold);border:2px solid var(--dark);z-index:4}
+  .ms-lbl{position:absolute;top:-4px;transform:translateX(-50%);font-family:var(--mono);
+    font-size:10px;font-weight:700;color:var(--ink);z-index:4}
+  .vline{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--red);z-index:2;opacity:.65}
+  .vline.today{border-left:2px solid var(--gold);opacity:.9}
+  .vline .vtag{position:absolute;top:-2px;left:4px;font-family:var(--mono);font-size:10px;font-weight:700;
+    color:var(--red);background:var(--bg);padding:0 4px;white-space:nowrap}
+  .vline.today .vtag{color:var(--gold)}
+
+  /* ── §3 태스크 상세 (원장) ─────────────────────────── */
+  table.ledger{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);margin-bottom:26px}
+  table.ledger caption{text-align:left;font-weight:800;font-size:15px;padding:0 0 8px;letter-spacing:-.01em}
+  table.ledger caption .cap-a{font-family:var(--mono);font-weight:400;font-size:12px;color:var(--ink-soft);margin-left:10px}
+  table.ledger th{font-size:11.5px;font-weight:700;color:var(--ink-soft);text-align:left;
+    padding:8px 8px;border-bottom:1px solid var(--ink);letter-spacing:.04em;white-space:nowrap}
+  table.ledger td{font-size:12.5px;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.ledger td.wbs{font-family:var(--mono);font-size:12px;color:var(--ink-soft);white-space:nowrap}
+  table.ledger td.who{white-space:nowrap;font-weight:600}
+  table.ledger td.who.cust{color:#8a6d0f} table.ledger td.who.joint{color:var(--ink)}
+  table.ledger td.dt{font-family:var(--mono);font-size:11.5px;white-space:nowrap;color:var(--ink)}
+  table.ledger td.ref{font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  table.ledger tr.hl td{background:rgba(201,162,39,.07)}
+  table.ledger td .msx{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;
+    color:var(--dark);background:var(--gold);border-radius:3px;padding:0 5px;margin-left:6px}
+  .who-tag{font-family:var(--mono);font-size:10.5px;padding:1px 6px;border-radius:3px;border:1px solid var(--line)}
+
+  /* ── §4 마일스톤·검수 ─────────────────────────── */
+  .c-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px}
+  .c-card{border:1px solid var(--line);border-top:2px solid var(--ink);background:#fff;padding:12px 14px}
+  .c-card .cno{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--gold)}
+  .c-card .ct{font-weight:700;font-size:13px;margin:3px 0 5px}
+  .c-card .cv{font-size:12px;color:var(--ink-soft)}
+  .c-card .cv b{color:var(--green)}
+  .c-card .cv .tbd{color:var(--red);font-weight:600}
+
+  /* ── §5 리스크 ─────────────────────────── */
+  tr.risk-top td{background:rgba(196,61,47,.06)}
+  tr.risk-top td:first-child{border-left:3px solid var(--red)}
+
+  /* ── 푸터 ─────────────────────────── */
+  .foot{color:var(--ink-soft);font-size:12px}
+  .foot .docs{display:flex;gap:26px;flex-wrap:wrap;margin-top:10px}
+  .foot .docs div b{color:var(--ink);font-weight:600}
+  .printbtn{position:fixed;right:22px;top:22px;z-index:50;background:var(--dark);color:var(--gold);
+    border:1px solid var(--gold);border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer}
+  .printbtn:hover{background:var(--gold);color:var(--dark)}
+
+  /* ── 인쇄 ─────────────────────────── */
+  @page{size:A4 landscape;margin:9mm}
+  @media print{
+    body{font-size:11px}
+    .printbtn{display:none}
+    .sheet{max-width:none;padding:4mm 6mm}
+    .band .sheet{padding:10mm 6mm 8mm}
+    .band h1{font-size:30px}
+    .strip .v{font-size:26px}
+    section{border-bottom:none}
+    .pb{break-after:page}
+    .avoid{break-inside:avoid}
+    .g-row{height:23px}
+    .bar{top:4px;height:13px}
+    table.ledger td{font-size:10.5px;padding:5px 6px}
+    table.ledger th{font-size:10px;padding:5px 6px}
+    .done-row{padding:6px 4px}
+  }
+</style>
+</head>
+<body>
+
+<button class="printbtn" onclick="window.print()">인쇄 / PDF 저장</button>
+
+<!-- ═══ 타이틀 밴드 ═══ -->
+<header class="band pb">
+  <div class="glyph">≠</div>
+  <div class="sheet">
+    <div class="eyebrow">CODE2RULE · 오라클 패키지 지식베이스 구축·운영</div>
+    <h1>사업 실행 계획서 <span class="thin">(WBS)</span></h1>
+    <div class="meta">
+      <span>버전 <b>v1.0</b></span><span>기준일 <b>2026-07-15</b></span>
+      <span>세트 문서 <b>SRS 초안 v0.1</b> (요구사항 R-01~18)</span>
+      <span>기간 <b>2026-04-13 ~ 2단계 운영</b></span>
+    </div>
+    <div class="goldrule"></div>
+    <div class="strip">
+      <div class="cell"><div class="v num">250</div><div class="k">문서화 대상 패키지 — 전체 1,690개 중 의존성 분석으로 식별 완료</div></div>
+      <div class="cell"><div class="v num">15<small>/15</small></div><div class="k">현업 유저스토리 — 전 건 답변·요구사항 반영 완료</div></div>
+      <div class="cell"><div class="v num">18</div><div class="k">SRS 요구사항 확정 (R-01~18) — 초안 작성 완료</div></div>
+      <div class="cell"><div class="v num">6<small>/6</small></div><div class="k">기준 시스템(데모) 검증 질의 — E2E 전 건 통과</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ §1 경과 실적 ═══ -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">01</span><h2>경과 실적 — 2026.04.13 → 07.15 (완료)</h2></div>
+    <p class="sec-lede">본 사업은 계획 수립 단계가 아니다. <b>지난 3개월간 PoC 반복으로 기준 시스템(autoever_demo)을 도출·검증했고, 요구사항 분석까지 마친 상태</b>다. 아래 실적이 §2 이후 모든 계획의 근거가 된다.</p>
+    <div class="done-list">
+      <div class="done-row">
+        <span class="wbs">0.1</span><span class="dt">04.13–06.15</span>
+        <span class="t">PoC 반복 수행 — 접근 방식 검증<small>역문서화·검색·에이전트 구성을 반복 실험, 최종 아키텍처로 수렴</small></span>
+        <span class="out">기준 모델 autoever_demo 도출</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.2</span><span class="dt">06.16–07.02</span>
+        <span class="t">기준 시스템 구축 — 역문서화 + Agentic RAG<small>PL/SQL 역문서 KB + 실데이터 조회 + 코드 수정·배포까지 전 구간 시연 가능</small></span>
+        <span class="out">검증 질의 6건 E2E 통과</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.3</span><span class="dt">07.09</span>
+        <span class="t">재현 배포 검증<small>빈 서버에 문서·산출물만으로 전체 스택 재구축 성공 — 이식성 입증</small></span>
+        <span class="out">외부 서버 배포 테스트 결과서</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.4</span><span class="dt">07.09</span>
+        <span class="t">폐쇄망 시연 환경 구성<small>고객 VDI 제약(설치 불가·사이트 필터) 대응 웹 채널 구성</small></span>
+        <span class="out">폐쇄망 시연 구성서</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.5</span><span class="dt">07.10–07.11</span>
+        <span class="t">시연·보고 자산 제작<small>프레젠테이션 덱 22장 + A4 원페이저 — 의사결정자 설명용</small></span>
+        <span class="out">시연 덱 · 원페이저 PDF</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.6</span><span class="dt">07월 초</span>
+        <span class="t">문서화 대상 식별<small>DB 딕셔너리 의존성 분석 — payments/cbreports 도메인 250개 확정</small></span>
+        <span class="out">대상 목록 + 추출 쿼리·스냅샷</span><span class="badge">완료</span>
+      </div>
+      <div class="done-row">
+        <span class="wbs">0.7</span><span class="dt">07.14</span>
+        <span class="t">요구사항 분석 — 유저스토리 15건 전 건 답변 + SRS 초안<small>요구사항 R-01~18 · 완료기준 C1~C4 · 미확정 TBD 6건 정리</small></span>
+        <span class="out">SRS v0.1 (본 문서의 세트)</span><span class="badge">완료</span>
+      </div>
+    </div>
+    <div class="callout"><b>이 구간의 의미</b> — 신기술 사업의 최대 리스크(“되는지 안 되는지”)는 이미 이 구간에서 소거되었다. 남은 것은 검증된 절차를 250개에 <b>반복 적용하는 실행</b>이다.</div>
+  </div>
+</section>
+
+<!-- ═══ §2 전체 로드맵 간트 ═══ -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">02</span><h2>전체 로드맵</h2></div>
+    <div class="legend">
+      <span><span class="sw done"></span>완료(실적)</span>
+      <span><span class="sw we"></span>수행</span>
+      <span><span class="sw cust"></span>고객</span>
+      <span><span class="sw joint"></span>공동</span>
+      <span class="ms-key">◆ 마일스톤 M1–M5</span>
+      <span class="ms-key" style="color:var(--red)">┆ 앵커(E·O)</span>
+    </div>
+    <div class="anchor-note avoid">
+      <b>일정 앵커 규약</b> — 준비기까지는 절대 날짜, 실행기는 <b class="num">E</b>(Bedrock 환경 개통일, <span class="num">가정 8/20</span> · 고객 선행 TBD-1),
+      운영기는 <b class="num">O</b>(KB 오픈일, M5 검수 통과 시점) 기준의 상대 일정이다.
+      <b>앵커가 이동하면 이후 일정은 동일 간격으로 재기준(re-baseline)되며, 본 문서를 v1.x로 재발행한다.</b> 앵커 이동은 계획 실패가 아니라 전제 변경이다.
+    </div>
+
+    <div class="gantt">
+      <div class="g-months">
+        <div>4월</div><div>5월</div><div>6월</div><div>7월</div><div>8월</div><div>9월</div><div>10월</div><div>11월</div><div>12월 이후</div>
+      </div>
+      <div class="g-body">
+        <div class="g-grid"></div>
+        <div class="vline today" style="left:38.18%"><span class="vtag">오늘 7/15</span></div>
+        <div class="vline" style="left:51.27%"><span class="vtag">E = Bedrock 개통 (가정 8/20)</span></div>
+        <div class="vline" style="left:76.73%"><span class="vtag">O = KB 오픈</span></div>
+
+        <div class="ph"><span class="p-no">PHASE 0</span><span class="p-t">실적</span><span class="p-a">04.13 – 07.15 · 완료</span></div>
+        <div class="g-row"><span class="lbl" style="left:28.4%"><span class="who">수행</span><b>0.1</b> PoC 반복 → 기준 모델 도출</span><div class="bar done" style="left:4.36%;width:22.91%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.2–0.5</b> 기준 시스템 구축·배포 검증·시연 자산</span><div class="bar done" style="left:27.64%;width:9.09%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.6–0.7</b> 대상 250개 식별 · 유저스토리 답변 · SRS 초안</span><div class="bar done" style="left:33.09%;width:5.09%"></div></div>
+
+        <div class="ph"><span class="p-no">PHASE 1</span><span class="p-t">준비기</span><span class="p-a">07.15 – 08.20 · 절대 날짜 (환경 불요 작업)</span></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.1</b> SRS 리뷰·합의 → v1.0</span><div class="bar joint" style="left:40.36%;width:3.64%"></div><span class="ms-lbl" style="left:44%">M1</span><div class="ms" style="left:44%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.2</b> Bedrock 계정·리전·모델 확정 (TBD-1) — E의 전제</span><div class="bar cust" style="left:40.36%;width:10.91%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.3–1.4</b> Lifecycle 시트 공유 · SME 채널 지정 (TBD-2·3)</span><div class="bar cust" style="left:40.36%;width:6.18%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.5</b> 골든 질의 20건 수집 (TBD-6)</span><div class="bar cust" style="left:44.36%;width:6.91%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.6–1.7</b> 관리 대장 설계·기입 · 추출 쿼리 절차화</span><div class="bar we" style="left:38.55%;width:5.45%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.8–1.9</b> 역문서 작성 지침 · 검증 방법 확정</span><div class="bar we" style="left:42.91%;width:4.0%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.10</b> 드라이런 — 전 구간 리허설·속도 실측</span><div class="bar we" style="left:47.64%;width:3.64%"></div><span class="ms-lbl" style="left:51.27%">M2</span><div class="ms" style="left:51.27%"></div></div>
+
+        <div class="ph"><span class="p-no">PHASE 2</span><span class="p-t">실행기</span><span class="p-a">E ~ E+10주 (E=8/20 가정 → 10월 말)</span></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.1</b> Bedrock 환경 구성·접속 검증 <span class="num">E~E+2주</span></span><div class="bar joint" style="left:51.27%;width:5.09%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.2</b> 샘플 5개 실측 → 목표 수치 확정 <span class="num">E+1~2주</span></span><div class="bar we" style="left:53.82%;width:2.55%"></div><span class="ms-lbl" style="left:56.36%">M3</span><div class="ms" style="left:56.36%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.3</b> 250개 배치 처리 (대장 기반 진행 관리) <span class="num">E+2~8주</span></span><div class="bar we" style="left:56.36%;width:15.27%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.4</b> SME 질문 사이클 — 주기 발송·답변 축적 <span class="num">E+2주~</span></span><div class="bar joint" style="left:56.36%;width:20.36%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.5</b> 적재 완료·골든 질의 품질 측정·소비 채널 검증 <span class="num">E+8~10주</span></span><div class="bar we" style="left:71.64%;width:5.09%"></div><span class="ms-lbl" style="left:71.64%">M4</span><div class="ms" style="left:71.64%"></div><span class="ms-lbl" style="left:76.73%">M5</span><div class="ms" style="left:76.73%"></div></div>
+
+        <div class="ph"><span class="p-no">PHASE 3</span><span class="p-t">운영기 (2단계)</span><span class="p-a">O = KB 오픈 이후 · 상대 일정만 — 상세 범위는 별도 협의(SRS §2.2)</span></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>3.1</b> Bitbucket 배포 연동 — 자동 재문서화 <span class="num">O~O+4주</span></span><div class="bar joint" style="left:76.73%;width:10.18%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>3.2</b> Pylon 배치 잡 이관 + 대시보드 <span class="num">O~O+8주</span></span><div class="bar we" style="left:76.73%;width:20.36%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>3.3</b> 정기 배치 품질 평가 가동 <span class="num">O+4주~ 상시</span></span><div class="bar we open" style="left:86.91%;width:11.5%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>3.4</b> SSO·역할·감사 로그 <span class="num">O+8주~</span></span><div class="bar cust open" style="left:97.09%;width:1.5%"></div></div>
+        <div class="g-row" style="height:31px"><span class="lbl"><span class="who">공동</span><b>3.5</b> 사용자 확대·지식층 성장 운영 <span class="num">상시</span></span><div class="bar joint always open" style="left:76.73%;width:21.8%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §3 구간별 태스크 상세 ═══ -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">03</span><h2>구간별 태스크 상세</h2></div>
+    <p class="sec-lede">모든 태스크는 세트 문서 <b>SRS v0.1의 요구사항(R-nn)·미확정 항목(TBD-n)에 근거</b>한다. 담당 <span class="who-tag">고객</span> 태스크는 후속 일정의 선행 조건이다.</p>
+
+    <table class="ledger avoid">
+      <caption>Phase 1 — 준비기 <span class="cap-a">07.15 – 08.20 · 환경 없이 가능한 작업 · 이 구간 산출물이 실행 속도를 결정</span></caption>
+      <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>기간</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td class="wbs">1.1</td><td>SRS 리뷰·합의 — TBD 6건 협의 후 v1.0 승격<span class="msx">M1</span></td><td class="who joint">공동</td><td class="dt">7월 하순</td><td>SRS v1.0</td><td class="ref">본 문서(WBS) 전달이 리뷰 미팅 요청</td></tr>
+        <tr class="hl"><td class="wbs">1.2</td><td>Bedrock 계정·리전·모델·쿼터 확정 — <b>앵커 E의 전제</b></td><td class="who cust">고객</td><td class="dt">~8/20 필수</td><td>환경 접속 정보</td><td class="ref">TBD-1 · 지연 시 §5 R-0</td></tr>
+        <tr class="hl"><td class="wbs">1.3</td><td>Lifecycle Definition 시트 공유</td><td class="who cust">고객</td><td class="dt">7월 중</td><td>상태 정의 문서</td><td class="ref">TBD-2 (US-12 참조 문서)</td></tr>
+        <tr class="hl"><td class="wbs">1.4</td><td>SME 질문 채널 — 담당자·응답 주기 지정</td><td class="who cust">고객</td><td class="dt">8월 초</td><td>채널·주기 확약</td><td class="ref">TBD-3 · A2의 조기 검증</td></tr>
+        <tr class="hl"><td class="wbs">1.5</td><td>골든 질의 20건 수집 — “KB가 답해야 할 것”의 정의</td><td class="who cust">고객</td><td class="dt">8월 중</td><td>질의 목록</td><td class="ref">TBD-6 · R-18 측정 세트</td></tr>
+        <tr><td class="wbs">1.6</td><td>관리 대장 설계 · 250개 목록 기입 (상태·소스 버전 컬럼)</td><td class="who">수행</td><td class="dt">7월 하순</td><td>관리 대장</td><td class="ref">R-01 · R-02</td></tr>
+        <tr><td class="wbs">1.7</td><td>의존성 추출 쿼리 절차화 · 스냅샷 보관</td><td class="who">수행</td><td class="dt">7월 하순</td><td>재실행 가능 절차서</td><td class="ref">R-03 (1회 수행분을 절차로 승격)</td></tr>
+        <tr><td class="wbs">1.8</td><td>역문서 작성 지침 확정 — 코드 사실만·함수별 섹션·SME 태깅</td><td class="who">수행</td><td class="dt">8월 초</td><td>작성 지침(OKF)</td><td class="ref">R-04</td></tr>
+        <tr><td class="wbs">1.9</td><td>검증 방법 정의 — LLM 저지 기준 + 실행·데이터 대조 방식</td><td class="who">수행</td><td class="dt">8월 초</td><td>검증 기준서</td><td class="ref">R-05</td></tr>
+        <tr><td class="wbs">1.10</td><td>드라이런 — 기준 시스템 자산으로 전 구간 리허설·처리 속도 실측·골든 질의 초기 세트 도출<span class="msx">M2</span></td><td class="who">수행</td><td class="dt">8월 중순</td><td>실측 리포트</td><td class="ref">R-18 · A4의 조기 경보</td></tr>
+      </tbody>
+    </table>
+
+    <table class="ledger avoid">
+      <caption>Phase 2 — 실행기 <span class="cap-a">E ~ E+10주 (E = Bedrock 개통, 가정 8/20 → 10월 말 완료)</span></caption>
+      <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>앵커</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
+      <tbody>
+        <tr><td class="wbs">2.1</td><td>Bedrock 환경 구성 · 접속 검증</td><td class="who joint">공동</td><td class="dt">E ~ E+2주</td><td>가동 환경</td><td class="ref">SRS §5.2-1 · 선행 1.2</td></tr>
+        <tr><td class="wbs">2.2</td><td>샘플 5개 실측 — 모델 품질(A1) 판정 · 처리량 실측 · <b>C1·C2 목표 수치 확정 → SRS v1.1 개정</b><span class="msx">M3</span></td><td class="who">수행</td><td class="dt">E+1 ~ 2주</td><td>실측 근거·목표치</td><td class="ref">A1 · TBD-5 · §6</td></tr>
+        <tr><td class="wbs">2.3</td><td>250개 배치 처리 — 생성→이중 검증→적재, 대장 기반 진행 관리</td><td class="who">수행</td><td class="dt">E+2 ~ 8주</td><td>역문서 250건 적재</td><td class="ref">R-04·05·06</td></tr>
+        <tr><td class="wbs">2.4</td><td>SME 질문 사이클 — 태깅 자동 집계·주기 발송·답변 지식층 축적</td><td class="who joint">공동</td><td class="dt">E+2주 ~ 상시</td><td>질문 목록·답변 문서</td><td class="ref">R-09·11 · 고객 응답 주기 의존(A2)</td></tr>
+        <tr><td class="wbs">2.5</td><td>적재 완료<span class="msx">M4</span> · 골든 질의 품질 측정 · 소비 채널 연결 검증 → <b>KB 오픈 판정</b><span class="msx">M5</span></td><td class="who">수행</td><td class="dt">E+8 ~ 10주</td><td>품질 리포트 · O 확정</td><td class="ref">R-16·17·18 · §6 C1~C4 검수</td></tr>
+      </tbody>
+    </table>
+
+    <table class="ledger avoid">
+      <caption>Phase 3 — 운영기(2단계) <span class="cap-a">O = KB 오픈 이후 · 상대 일정만 제시 — 상세 범위·체계는 별도 협의(SRS §2.2)</span></caption>
+      <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>앵커</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
+      <tbody>
+        <tr><td class="wbs">3.1</td><td>Bitbucket 배포 연동 — 배포 이벤트 → 해당 패키지 자동 재문서화·교체</td><td class="who joint">공동</td><td class="dt">O ~ O+4주</td><td>자동 갱신 파이프라인</td><td class="ref">R-07① · <b>TBD-4 선행</b></td></tr>
+        <tr><td class="wbs">3.2</td><td>Pylon 배치 잡 이관 + 백오피스 대시보드 (상태·이력·저지 점수·재실행)</td><td class="who">수행</td><td class="dt">O ~ O+8주</td><td>백오피스</td><td class="ref">R-12 · R-13</td></tr>
+        <tr><td class="wbs">3.3</td><td>정기 배치 품질 평가 가동 — 미달 문서 자동 재생성</td><td class="who">수행</td><td class="dt">O+4주 ~ 상시</td><td>평가 리포트</td><td class="ref">R-07②</td></tr>
+        <tr><td class="wbs">3.4</td><td>SSO·역할 구분·액션 감사 로그 — 고객 IT 정책 협의 포함</td><td class="who cust">고객+공동</td><td class="dt">O+8주 ~</td><td>접근 통제 체계</td><td class="ref">R-15</td></tr>
+        <tr><td class="wbs">3.5</td><td>사용자 확대 · 지식층(OKF) 성장 운영 · 타 도메인 확대 판단</td><td class="who joint">공동</td><td class="dt">상시</td><td>운영 지표</td><td class="ref">SRS §5.3-5</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ §4 마일스톤 & 검수 기준 ═══ -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">04</span><h2>마일스톤 &amp; 검수 기준</h2></div>
+    <p class="sec-lede">진척은 날짜가 아니라 <b>검수 가능한 상태</b>로 정의한다. 목표 <b>수치</b>를 지금 확정하지 않는 것은 근거가 없기 때문이며, M3의 실측이 근거를 만든다 — 측정 <b>방식</b>은 아래와 같이 지금 확정한다.</p>
+    <table class="ledger avoid">
+      <thead><tr><th>M</th><th>마일스톤</th><th>시점</th><th>검수 기준 (SRS 연결)</th></tr></thead>
+      <tbody>
+        <tr><td class="wbs">M1</td><td>SRS v1.0 합의</td><td class="dt">7월 하순</td><td>TBD 6건 협의 완료 — 최소 TBD-1(Bedrock)·TBD-3(SME 채널) 확정</td></tr>
+        <tr><td class="wbs">M2</td><td>드라이런 완료</td><td class="dt">~8/20</td><td>파이프라인 전 구간 리허설 통과 + 처리 속도 실측치 + 골든 질의 초기 세트</td></tr>
+        <tr><td class="wbs">M3</td><td>샘플 실측 · 목표치 확정</td><td class="dt">E+2주</td><td>샘플 5개 처리, 모델 품질(A1) 판정, C1·C2 목표 수치 확정 → SRS v1.1 개정</td></tr>
+        <tr><td class="wbs">M4</td><td>250개 적재 완료</td><td class="dt">E+8~10주</td><td>C1(커버리지) 달성 — 관리 대장 집계로 확인</td></tr>
+        <tr class="hl"><td class="wbs">M5</td><td><b>KB 오픈 판정</b></td><td class="dt">≈E+10주 (10월 말)</td><td><b>C1~C4 전체 검수 → 앵커 O 확정</b>, 2단계 착수 협의</td></tr>
+      </tbody>
+    </table>
+    <div class="c-cards avoid">
+      <div class="c-card"><div class="cno">C1</div><div class="ct">대상 커버리지</div><div class="cv">250개 중 검증 통과·적재 비율 — 목표치는 <span class="tbd">M3에서 확정</span></div></div>
+      <div class="c-card"><div class="cno">C2</div><div class="ct">KB 품질</div><div class="cv">골든 질의 세트 정답률 — 목표치는 <span class="tbd">M3에서 확정</span></div></div>
+      <div class="c-card"><div class="cno">C3</div><div class="ct">신뢰 규칙 준수</div><div class="cv">근거 블록 누락·무추정 위반 <b>0건 — 지금 확정</b></div></div>
+      <div class="c-card"><div class="cno">C4</div><div class="ct">지식 공백의 가시화</div><div class="cv">SME 태깅 잔량 리포트 <b>존재 — 지금 확정</b>. 공백을 없애는 게 아니라 보이게 하는 것이 1단계 목표</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ §5 가정과 일정 리스크 ═══ -->
+<section>
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">05</span><h2>가정과 일정 리스크 — 깨지면 어느 앵커가 움직이는가</h2></div>
+    <p class="sec-lede">본 계획이 딛고 선 가정(SRS §7)이다. 가정이 깨지는 것은 요구사항 미달이 아니라 <b>계획 조정 사유</b>이며, 각 항목에 조기 검증 장치가 배치되어 있다.</p>
+    <table class="ledger avoid">
+      <thead><tr><th>#</th><th>가정 / 리스크</th><th>깨졌을 때</th><th>움직이는 것</th><th>조기 검증 장치</th></tr></thead>
+      <tbody>
+        <tr class="risk-top"><td class="wbs">R-0</td><td><b>E 지연 — Bedrock 개통(고객 태스크 1.2)이 8/20을 넘김</b></td><td>실행기 전체 대기</td><td><b>실행기·운영기 전 구간 평행이동</b> (준비기는 무영향 — 계속 진행)</td><td>주간 확인 · M1 미팅에서 일정 확약</td></tr>
+        <tr><td class="wbs">A1</td><td>Bedrock 제공 모델의 역문서화 품질 부족</td><td>지침 보강·모델 변경</td><td>M4·M5 +n주</td><td>M3 샘플 5개 실측이 조기 판정</td></tr>
+        <tr><td class="wbs">A2</td><td>SME 질문에 답변이 이뤄지지 않음</td><td>KB는 코드 사실만으로 가동 — <b>중단 없음</b></td><td>일정 무영향 · C4 성숙도 지표만 하락</td><td>TBD-3 채널 협의에서 응답 주기 확약</td></tr>
+        <tr><td class="wbs">A3</td><td>대상 패키지 배포 빈도가 수동 재문서화 감당 수준 초과</td><td>운영기 자동화(3.1) 우선순위 상향</td><td>운영기 착수 순서 조정</td><td>실행기 중 배포 건수 실측</td></tr>
+        <tr><td class="wbs">A4</td><td>1인 수행 처리량 미달</td><td>완료 시점 조정</td><td>M4 이동 (기준: C1)</td><td>M2 드라이런 속도 실측이 조기 경보</td></tr>
+        <tr><td class="wbs">A5</td><td>250건 규모에서 검색 정확도 저하</td><td>청킹·적재 방식 조정</td><td>M5 판정에 흡수</td><td>적재 누적 구간별 골든 질의 재측정</td></tr>
+      </tbody>
+    </table>
+
+    <div class="foot avoid" style="margin-top:26px;border-top:2px solid var(--ink);padding-top:12px">
+      <b style="color:var(--ink)">문서 정보</b>
+      <div class="docs">
+        <div><b>세트 문서</b> — SRS 초안 v0.1 (요구사항 R-01~18 · 완료기준 C1~C4 · TBD 6건)</div>
+        <div><b>근거 문서</b> — 유저스토리 15건 답변서 · 재현 배포 검증 결과서 · 폐쇄망 시연 구성서</div>
+        <div><b>개정 규약</b> — M1(SRS v1.0)·M3(수치 확정)·앵커 이동 시 v1.x 재발행</div>
+        <div><b>배포</b> — 본 문서는 PDF로 전달한다</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
