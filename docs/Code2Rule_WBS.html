@@ -349,7 +349,7 @@
       <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>앵커</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
       <tbody>
         <tr><td class="wbs">3.1</td><td>갱신 트리거 연동 — 배포 감지 → 해당 패키지 자동 재문서화·교체<span class="tsub">트리거 후보 3안(1.4ⓐ 실사로 확정): ① Bitbucket 배포 이벤트(패키지 소스가 git 정본일 때만 유효) ② <b>DBA 배포 절차 연동 — 배포 시 소스 덤프를 산출 단계로 편입(배포 조직이 곧 트리거 원천)</b> ③ 주기 비교 — LAST_DDL_TIME 스냅샷 diff(R-03 재실행이 변경 감지)</span></td><td class="who joint">공동</td><td class="dt">O ~ O+4주</td><td>자동 갱신 파이프라인</td><td class="ref">R-07① · <b>TBD-4 선행</b> · 1.4ⓐ 결과 의존</td></tr>
-        <tr><td class="wbs">3.2</td><td>Pylon 배치 잡 이관 + 백오피스 대시보드 (상태·이력·저지 점수·재실행)<span class="tsub">이관 대상은 새로 설계하지 않는다 — <b>드라이런(1.14)과 실행기(2.3·2.4)에서 실제 반복·기록된 워크플로우/배치 목록이 곧 이관 사양</b>. 목록에 없는 기능은 만들지 않음(운용 가능성 우선)</span></td><td class="who">수행</td><td class="dt">O ~ O+8주</td><td>백오피스</td><td class="ref">R-12 · R-13 · 선행: 워크플로우 목록(1.14·2.3·2.4)</td></tr>
+        <tr><td class="wbs">3.2</td><td>Pylon 배치 잡 이관 + 백오피스 대시보드 (상태·이력·저지 점수·재실행)<span class="tsub">이관 대상은 새로 설계하지 않는다 — <b>드라이런(1.14)과 실행기(2.3·2.4)에서 실제 반복·기록된 워크플로우/배치 목록이 곧 이관 사양</b>. 목록에 없는 기능은 만들지 않음(운용 가능성 우선) · 적법 근거(실행 권한·승인) 미명기 배치는 이관 불가(§4 G5)</span></td><td class="who">수행</td><td class="dt">O ~ O+8주</td><td>백오피스</td><td class="ref">R-12 · R-13 · 선행: 워크플로우 목록(1.14·2.3·2.4)</td></tr>
         <tr><td class="wbs">3.3</td><td>정기 배치 품질 평가 가동 — 미달 문서 자동 재생성<span class="tsub">실체는 신규 설계가 아니라 <b>기존 배치의 스케줄화</b> — 검증 2루프(1.13) + 시나리오 세트(2.2와 동일 세트) 정기 재실행, 미달 판정 시 재생성 경로(R-08) 자동 가동</span></td><td class="who">수행</td><td class="dt">O+4주 ~ 상시</td><td>평가 리포트</td><td class="ref">R-07② · 원천: 1.13·2.2 세트</td></tr>
         <tr><td class="wbs">3.4</td><td>운영 거버넌스 확정 — SSO·역할·감사는 그 구현<span class="tsub">ⓐ <b>운영 역할 매트릭스</b>: AWS 인프라 운용(1.3ⓐ 주체의 상시화) · 백오피스 오퍼레이터(모니터링·잡 재실행) · 품질 리포트 수신·판단 · SME 채널 유지 · 지식층 관리 — 각각 누가 하는지 확정. <b>3.2와 병행 확정(백오피스의 인수 조건)</b> ⓑ 권한 모델: 역할 구분(조회 / 오퍼레이터 / 관리자) 정의 → SSO·RBAC로 구현 ⓒ 액션 감사 로그 ⓓ 본 태스크가 SRS §2.3 "2단계 운영 체계 별도 협의"의 실체</span></td><td class="who cust">고객+공동</td><td class="dt">O+8주 ~ (ⓐ는 3.2 병행)</td><td>운영 역할 매트릭스 · 접근 통제 체계</td><td class="ref">R-15 · 3.2 인수 조건 · R-0a 연동</td></tr>
         <tr><td class="wbs">3.5</td><td>사용자·범위 확대 — KPI 기반 횡전개 판단<span class="tsub">판단 기준: §6 C1~C4 실측치 + 운영 지표(질의 사용량 · SME 태깅 잔량 감소 추이 · 변경 리드타임 단축). 만족 시 확대 2축 — ① <b>도메인 횡전개</b>: cbreports 등 잔여 패키지에 파이프라인·지침·대장 그대로 재사용(대상 선별 실사만 반복) ② <b>계층 확대</b>: 백엔드·프런트엔드 소스에 동일 개념 적용(역문서→KB→에이전트 합성 구조 재사용, 작성 지침만 언어별 번안 — 지침의 다언어 번안 패턴은 기검증)</span></td><td class="who joint">공동</td><td class="dt">상시</td><td>운영 지표 · 확대 제안서</td><td class="ref">SRS §5.3-5 · §6 연동</td></tr>
@@ -373,6 +373,19 @@
         <tr class="hl"><td class="wbs">M5</td><td><b>KB 오픈 판정</b></td><td class="dt">≈E+10주 (10월 말)</td><td><b>C1~C4 전체 검수 → 앵커 O 확정</b>, 2단계 착수 협의</td></tr>
       </tbody>
     </table>
+
+    <table class="ledger avoid">
+      <caption>판정 게이트 <span class="cap-a">일정 마일스톤(M)과 별개 — 판정 결과가 사업의 범위·방식을 바꾸는 민감 항목. 판정 지연 자체가 리스크다</span></caption>
+      <thead><tr><th>G</th><th>판정 질문</th><th>판정 시한</th><th>결과별 분기</th><th>연결</th></tr></thead>
+      <tbody>
+        <tr><td class="wbs">G1</td><td>로컬 에이전트(OpenCode) 사용 환경 — 고객 환경에서 승인되는가</td><td class="dt">1.2 시연 ~ M1</td><td>가: 2채널 확정 · 불가: LibreChat 단독으로 확정하고 진행</td><td class="ref">1.2 · 아젠다 ⑥</td></tr>
+        <tr><td class="wbs">G2</td><td>웹 채널(LibreChat) 사용 가능 — 설치·망·인증 승인</td><td class="dt">1.2 ~ E</td><td>가: 소비 채널 확정 · <b>불가: 소비 채널 부재 — 대체 채널 긴급 협의(사업 성립 위협)</b></td><td class="ref">1.2 · R-16의 전제</td></tr>
+        <tr class="hl"><td class="wbs">G3</td><td><b>운영계 데이터 직접 조회(읽기 전용) 가능한가</b></td><td class="dt">1.5 · ~8/20</td><td>가: 실행·데이터 대조 전면 유효(최선) · QA만: 공통코드류 한정 · 불가: 스냅샷(Plan B)+범위 이연</td><td class="ref">1.5 · §5 A6</td></tr>
+        <tr><td class="wbs">G4</td><td>소스 유통 경로 — 패키지가 git 정본인가, DBA 덤프 경로인가</td><td class="dt">1.4 · ~8/20</td><td>git 정본: Bitbucket 채널 · DBA 체계: 배포 절차 연동+AWS 저장소 · 미확정: E 지연(R-0)</td><td class="ref">1.4ⓐ · 3.1 트리거 3안</td></tr>
+        <tr><td class="wbs">G5</td><td>식별 워크플로우·배치의 적법성 — 실행 권한·승인 근거가 명기되어 있는가</td><td class="dt">상시 · 이관 심사는 3.2</td><td>근거 있는 배치만 목록 등재·운영 이관 · <b>근거 없는 배치는 승인 취득 전 편입 불가</b></td><td class="ref">1.14·2.3·2.4 → 3.2</td></tr>
+      </tbody>
+    </table>
+
     <div class="c-cards avoid">
       <div class="c-card"><div class="cno">C1</div><div class="ct">대상 커버리지</div><div class="cv">148개 중 검증 통과·적재 비율 — 목표치는 <span class="tbd">M3에서 확정</span></div></div>
       <div class="c-card"><div class="cno">C2</div><div class="ct">KB 품질</div><div class="cv">골든 질의 세트 정답률 — 목표치는 <span class="tbd">M3에서 확정</span></div></div>
