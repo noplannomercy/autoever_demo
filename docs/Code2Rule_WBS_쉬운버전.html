@@ -66,13 +66,14 @@
   .anchor-note .num{color:var(--red);font-weight:700}
 
   .gantt{position:relative;border-top:2px solid var(--ink)}
-  .g-months{display:grid;grid-template-columns:16.84% 16.84% 16.31% 16.84% 16.31% 16.86%;
+  .g-months{display:grid;grid-template-columns:26% 12.46% 12.46% 12.07% 12.46% 12.07% 12.48%;
     border-bottom:1px solid var(--line)}
   .g-months div{font-family:var(--mono);font-size:11px;color:var(--ink-soft);padding:6px 0 4px;text-align:center;
     border-left:1px dotted var(--line)}
   .g-months div:first-child{border-left:none}
   .g-body{position:relative}
-  .g-grid{position:absolute;inset:0;pointer-events:none;z-index:0;
+  .g-grid{position:absolute;top:0;bottom:0;left:26%;right:0;pointer-events:none;z-index:0;
+    border-left:1px dotted var(--line);
     background:repeating-linear-gradient(90deg,transparent,transparent calc(100%/6 - 1px),rgba(15,36,64,.07) calc(100%/6 - 1px),rgba(15,36,64,.07) calc(100%/6))}
   .ph{display:flex;align-items:center;gap:10px;padding:9px 4px 5px;position:relative;z-index:2}
   .ph .p-no{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em}
@@ -80,7 +81,8 @@
   .ph .p-a{font-size:11px;color:var(--ink-soft)}
   .g-row{position:relative;height:27px;z-index:1}
   .g-row .lbl{position:absolute;left:4px;top:50%;transform:translateY(-50%);
-    font-size:11.5px;color:var(--ink-soft);white-space:nowrap;z-index:2}
+    font-size:11.5px;color:var(--ink-soft);white-space:nowrap;z-index:2;
+    max-width:25%;overflow:hidden;text-overflow:ellipsis}
   .g-row .lbl b{color:var(--ink);font-weight:600}
   .g-row .lbl .who{font-family:var(--mono);font-size:10px;padding:1px 5px;border-radius:3px;margin-right:5px;
     border:1px solid var(--line);color:var(--ink-soft)}
@@ -172,60 +174,18 @@
     </div>
     <div class="goldrule"></div>
     <div class="strip">
-      <div class="cell"><div class="v num">1,613<small>→148</small></div><div class="k">전체 프로그램 분석 자료 확보 → 1단계 대상 148개 잠정 선별 (확정은 운영 기준 재확인으로)</div></div>
-      <div class="cell"><div class="v num">15<small>/15</small></div><div class="k">현업 요구 15건 — 전 건 요구사항 문서에 반영</div></div>
-      <div class="cell"><div class="v num">18</div><div class="k">요구사항 18개 항목 정리 — 문서 초안 완비</div></div>
-      <div class="cell"><div class="v num">6<small>/6</small></div><div class="k">기준 시스템(시연 환경) 검증 질문 — 전 건 정상 답변</div></div>
+      <div class="cell"><div class="v num">1,613<small>→148</small></div><div class="k">전체 프로그램 1,613개 분석 → 1단계 대상 148개 선별 (확정은 운영 기준 재확인으로)</div></div>
+      <div class="cell"><div class="v num">15<small>/15</small></div><div class="k">현업 요구 15건 — 전 건 답변해 요구사항 문서로 확정</div></div>
+      <div class="cell"><div class="v num">20</div><div class="k">품질 시험 문제 20개 — 서고 품질을 상시 검사하는 기준</div></div>
+      <div class="cell"><div class="v num">10<small>주</small></div><div class="k">환경 개통(E) 후 10주 — 서고 오픈 판정(M5)까지</div></div>
     </div>
   </div>
 </header>
 
-<!-- ═══ §1 착수 기반 ═══ -->
+<!-- ═══ §1 전체 로드맵 ═══ -->
 <section class="pb">
   <div class="sheet">
-    <div class="sec-head"><span class="sec-no">01</span><h2>착수 기반 — 이 계획이 딛고 서는 것</h2></div>
-    <p class="sec-lede">본 사업은 백지에서 시작하지 않는다. <b>아래 기반이 확보된 상태에서 착수</b>하며, 이것이 §2 이후 모든 일정의 근거다.</p>
-    <div class="done-list">
-      <div class="done-row">
-        <span class="wbs">0.1</span><span class="dt">방식</span>
-        <span class="t">검증된 접근 방식<small>정책 질문 · 오류 원인 추적 · 위험 분석 · 수정 검토 — 4개 사용 시나리오가 동작함이 확인된 방식으로 착수한다</small></span>
-        <span class="out">시나리오별 검증 기록</span><span class="badge">확보</span>
-      </div>
-      <div class="done-row">
-        <span class="wbs">0.2</span><span class="dt">시스템</span>
-        <span class="t">기준 시스템 (시연 환경)<small>코드 → 업무 설명서 생성 → 서고 적재 → 질문·답변까지 전 과정이 실제로 동작하는 실물. 착수 초기 시연으로 함께 확인한다</small></span>
-        <span class="out">동작하는 시연 환경</span><span class="badge">확보</span>
-      </div>
-      <div class="done-row">
-        <span class="wbs">0.3</span><span class="dt">배포</span>
-        <span class="t">재현 가능한 구축 절차<small>문서와 산출물만으로 빈 서버에 전체 시스템을 다시 세울 수 있음이 확인된 상태 — 특정인 없이도 재구축 가능</small></span>
-        <span class="out">구축 절차서 · 검증 기록</span><span class="badge">확보</span>
-      </div>
-      <div class="done-row">
-        <span class="wbs">0.4</span><span class="dt">분석</span>
-        <span class="t">대상 분석 자료<small>전체 프로그램 1,613개 · 독립 함수 7,020개의 분석 자료와, 1단계 대상 148개(29만 6천 줄) 잠정 목록 · 27회분 추출 계획 — 확정은 운영 기준 재확인(1.9)으로</small></span>
-        <span class="out">분석 자료 · 잠정 대상 목록</span><span class="badge">확보</span>
-      </div>
-      <div class="done-row">
-        <span class="wbs">0.5</span><span class="dt">표준</span>
-        <span class="t">작업 표준 초안 일체<small>설명서 작성 규칙 · 채점 방법 · 진행 현황표 · 추출 절차 — 준비 구간에서 정식 표준으로 확정한다</small></span>
-        <span class="out">표준 문서 초안 4종</span><span class="badge">확보</span>
-      </div>
-      <div class="done-row">
-        <span class="wbs">0.6</span><span class="dt">요구사항</span>
-        <span class="t">요구사항 정리<small>현업이 낸 요구 15건에 전 건 답변하고, 요구사항 문서(SRS) 초안으로 정리 완비 — 착수 미팅(1.1)에서 함께 확정한다</small></span>
-        <span class="out">요구사항 문서 초안</span><span class="badge">확보</span>
-      </div>
-    </div>
-    <div class="callout"><b>이 기반의 의미</b> — 신기술 사업의 가장 큰 위험("되는지 안 되는지")은 이 기반으로 제거된 상태다.
-      본 사업의 내용은 <b>확인된 절차를 148개 프로그램에 반복 적용하는 실행</b>이다.</div>
-  </div>
-</section>
-
-<!-- ═══ §2 전체 로드맵 ═══ -->
-<section class="pb">
-  <div class="sheet">
-    <div class="sec-head"><span class="sec-no">02</span><h2>전체 로드맵</h2></div>
+    <div class="sec-head"><span class="sec-no">01</span><h2>전체 로드맵</h2></div>
     <div class="legend">
       <span><span class="sw we"></span>수행사</span>
       <span><span class="sw cust"></span>고객사</span>
@@ -242,54 +202,65 @@
 
     <div class="gantt">
       <div class="g-months">
-        <div>7월</div><div>8월</div><div>9월</div><div>10월</div><div>11월</div><div>12월 이후</div>
+        <div></div><div>7월</div><div>8월</div><div>9월</div><div>10월</div><div>11월</div><div>12월 이후</div>
       </div>
       <div class="g-body">
         <div class="g-grid"></div>
-        <div class="vline today" style="left:7.61%"><span class="vtag">오늘 7/15</span></div>
-        <div class="vline" style="left:27.17%"><span class="vtag">E = AWS 환경 개통 (가정 8/20)</span></div>
-        <div class="vline" style="left:65.22%"><span class="vtag">O = 서고 오픈</span></div>
+        <div class="vline today" style="left:31.63%"><span class="vtag">오늘 7/15</span></div>
+        <div class="vline" style="left:46.11%"><span class="vtag">E = AWS 환경 개통 (가정 8/20)</span></div>
+        <div class="vline" style="left:74.26%"><span class="vtag">O = 서고 오픈</span></div>
 
         <div class="ph"><span class="p-no">구간 1</span><span class="p-t">준비</span><span class="p-a">07.15 – 08.20 · AWS 환경 없이 가능한 작업</span></div>
-        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.1</b> 요구사항 확정 미팅</span><div class="bar joint" style="left:10.87%;width:5.44%"></div><span class="ms-lbl" style="left:16.31%">M1</span><div class="ms" style="left:16.31%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.2</b> 시스템 실물 시연 — 구성 확정</span><div class="bar joint" style="left:10.87%;width:9.79%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.3</b> AWS 환경 개통 — 관리 담당자 지정부터</span><div class="bar cust" style="left:10.87%;width:16.31%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.4–1.5</b> 소스 반입 승인 · DB 접근 수준 확정</span><div class="bar joint" style="left:10.87%;width:16.31%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.6–1.7</b> 상태 정의 확인 · 질문 창구 지정</span><div class="bar cust" style="left:10.87%;width:9.24%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.8</b> 품질 시험 문제 20개 선정</span><div class="bar cust" style="left:16.84%;width:10.33%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.9</b> 대상 148개 운영 기준 재확인</span><div class="bar cust" style="left:14.68%;width:12.49%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.10–1.11</b> 진행 현황표 · 추출 절차서</span><div class="bar we" style="left:8.16%;width:8.15%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.12–1.13</b> 작성 규칙 · 채점 기준 확정</span><div class="bar we" style="left:14.68%;width:5.98%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.14</b> 전 과정 리허설 — 속도·품질 실측</span><div class="bar we" style="left:21.75%;width:5.44%"></div><span class="ms-lbl" style="left:27.17%">M2</span><div class="ms" style="left:27.17%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.1</b> 접근 방식 기술 검증</span><div class="bar we" style="left:32.04%;width:4.03%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.2</b> 시연 환경(기준 시스템) 구축</span><div class="bar we" style="left:32.04%;width:7.64%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.3</b> 재현 구축 절차 확립</span><div class="bar we" style="left:36.06%;width:5.63%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.4</b> 전체 분석 · 대상 148개 선별</span><div class="bar we" style="left:32.04%;width:5.63%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>0.5</b> 요구사항 분석 · SRS 초안</span><div class="bar we" style="left:32.04%;width:3.22%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.1</b> 요구사항 확정 미팅</span><div class="bar joint" style="left:34.04%;width:4.03%"></div><span class="ms-lbl" style="left:38.07%">M1</span><div class="ms" style="left:38.07%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.2</b> 시스템 실물 시연</span><div class="bar joint" style="left:34.04%;width:7.24%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.3</b> AWS 환경 개통</span><div class="bar cust" style="left:34.04%;width:12.07%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>1.4–1.5</b> 소스 반입 · DB 접근 확정</span><div class="bar joint" style="left:34.04%;width:12.07%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.6–1.7</b> 상태 정의 · 질문 창구 지정</span><div class="bar cust" style="left:34.04%;width:6.84%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.8</b> 품질 시험 문제 20개 선정</span><div class="bar cust" style="left:38.46%;width:7.64%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>1.9</b> 대상 148개 운영 기준 재확인</span><div class="bar cust" style="left:36.86%;width:9.24%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.10–1.11</b> 진행 현황표 · 추출 절차서</span><div class="bar we" style="left:32.04%;width:6.03%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.12–1.13</b> 작성 규칙 · 채점 기준</span><div class="bar we" style="left:36.86%;width:4.43%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>1.14</b> 전 과정 리허설</span><div class="bar we" style="left:42.1%;width:4.03%"></div><span class="ms-lbl" style="left:46.11%">M2</span><div class="ms" style="left:46.11%"></div></div>
 
         <div class="ph"><span class="p-no">구간 2</span><span class="p-t">구축</span><span class="p-a">E부터 10주 (E=8/20 가정 → 10월 말)</span></div>
-        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.1</b> AWS 환경 구성·점검 <span class="num">E~E+2주</span></span><div class="bar joint" style="left:27.17%;width:7.61%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.2</b> 표본 실측 → 목표 수치 확정 <span class="num">E+1~2주</span></span><div class="bar we" style="left:30.98%;width:3.81%"></div><span class="ms-lbl" style="left:34.78%">M3</span><div class="ms" style="left:34.78%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.3</b> 148개 처리 — 현황표 기반 진행 <span class="num">E+2~8주</span></span><div class="bar we" style="left:34.78%;width:22.82%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.4</b> 전문가 질문 사이클 <span class="num">E+2주~</span></span><div class="bar joint" style="left:34.78%;width:30.43%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.5</b> 최종 품질 측정 → 오픈 판정 <span class="num">E+8~10주</span></span><div class="bar we" style="left:57.61%;width:7.61%"></div><span class="ms-lbl" style="left:57.61%">M4</span><div class="ms" style="left:57.61%"></div><span class="ms-lbl" style="left:65.22%">M5</span><div class="ms" style="left:65.22%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.1</b> AWS 환경 구성·점검 <span class="num">E~E+2주</span></span><div class="bar joint" style="left:46.11%;width:5.63%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.2</b> 표본 실측 → 목표 확정 <span class="num">E+1~2주</span></span><div class="bar we" style="left:48.93%;width:2.82%"></div><span class="ms-lbl" style="left:51.74%">M3</span><div class="ms" style="left:51.74%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.3</b> 148개 처리 <span class="num">E+2~8주</span></span><div class="bar we" style="left:51.74%;width:16.89%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.4</b> 전문가 질문 사이클 <span class="num">E+2주~</span></span><div class="bar joint" style="left:51.74%;width:22.52%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.5</b> 품질 측정 → 오픈 판정 <span class="num">E+8~10주</span></span><div class="bar we" style="left:68.63%;width:5.63%"></div><span class="ms-lbl" style="left:68.63%">M4</span><div class="ms" style="left:68.63%"></div><span class="ms-lbl" style="left:74.26%">M5</span><div class="ms" style="left:74.26%"></div></div>
 
         <div class="ph"><span class="p-no">구간 3</span><span class="p-t">운영 (2단계)</span><span class="p-a">O = 서고 오픈 이후 · 상세 범위는 별도 협의</span></div>
-        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>3.1</b> 자동 갱신 연결 <span class="num">O~O+4주</span></span><div class="bar joint" style="left:65.22%;width:15.21%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>3.2</b> 관리 화면 구축 <span class="num">O~O+8주</span></span><div class="bar we" style="left:65.22%;width:30.43%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>3.3</b> 정기 품질 재검사 <span class="num">O+4주~ 상시</span></span><div class="bar we open" style="left:80.44%;width:17.19%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>3.4</b> 운영 역할·권한 확정 <span class="num">O+8주~</span></span><div class="bar cust open" style="left:95.65%;width:2.24%"></div></div>
-        <div class="g-row" style="height:31px"><span class="lbl"><span class="who">공동</span><b>3.5</b> 사용자 확대 · 확대 판단 <span class="num">상시</span></span><div class="bar joint always open" style="left:65.22%;width:32.58%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">공동</span><b>3.1</b> 자동 갱신 연결 <span class="num">O~O+4주</span></span><div class="bar joint" style="left:74.26%;width:11.26%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>3.2</b> 관리 화면 구축 <span class="num">O~O+8주</span></span><div class="bar we" style="left:74.26%;width:22.52%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>3.3</b> 정기 품질 재검사 <span class="num">O+4주~ 상시</span></span><div class="bar we open" style="left:85.53%;width:12.72%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">고객</span><b>3.4</b> 운영 역할·권한 확정 <span class="num">O+8주~</span></span><div class="bar cust open" style="left:96.78%;width:1.66%"></div></div>
+        <div class="g-row" style="height:31px"><span class="lbl"><span class="who">공동</span><b>3.5</b> 사용자 확대 · 확대 판단 <span class="num">상시</span></span><div class="bar joint always open" style="left:74.26%;width:24.11%"></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ §3 구간별 작업 상세 ═══ -->
+<!-- ═══ §2 구간별 작업 상세 ═══ -->
 <section class="pb">
   <div class="sheet">
-    <div class="sec-head"><span class="sec-no">03</span><h2>구간별 작업 상세</h2></div>
-    <p class="sec-lede">번호는 본문(WBS)과 동일하다. <span class="who-tag">고객</span> 담당 작업은 이후 일정의 선행 조건이다 — 늦어지면 그만큼 뒤가 밀린다.</p>
+    <div class="sec-head"><span class="sec-no">02</span><h2>구간별 작업 상세</h2></div>
+    <p class="sec-lede">번호는 본문(WBS)의 번호 체계를 따른다. <span class="who-tag">고객</span> 담당 작업은 이후 일정의 선행 조건이다 — 늦어지면 그만큼 뒤가 밀린다.
+      구간 1 앞머리의 <b>기반 작업(0.1~0.5)</b>은 수행사 단독으로 즉시 착수하는 작업이다.</p>
 
     <table class="ledger avoid">
       <caption>구간 1 — 준비 <span class="cap-a">07.15 – 08.20 · AWS 환경 없이 가능한 작업 · 이 구간의 결과물이 구축 속도를 결정</span></caption>
       <thead><tr><th>번호</th><th>할 일</th><th>담당</th><th>시기</th><th>결과물</th><th>비고</th></tr></thead>
       <tbody>
+        <tr><td class="wbs">0.1</td><td>접근 방식 기술 검증<span class="tsub">정책 질문 · 오류 원인 추적 · 위험 분석 · 수정 검토 — 4개 사용 시나리오가 실제로 동작하는지 반복 실험으로 확인한다. 이후 모든 작업이 이 검증 위에서 진행된다</span></td><td class="who">수행</td><td class="dt">7월 중</td><td>시나리오별 검증 기록</td><td class="ref">전 작업의 전제</td></tr>
+        <tr><td class="wbs">0.2</td><td>시연 환경(기준 시스템) 구축<span class="tsub">코드 → 업무 설명서 생성 → 서고 적재 → 질문·답변까지 전 과정이 실제로 도는 실물을 만든다 — 시연(1.2)과 리허설(1.14)이 이 위에서 돈다</span></td><td class="who">수행</td><td class="dt">7월 중~8월 초</td><td>동작하는 시연 환경</td><td class="ref">1.2 시연의 선행</td></tr>
+        <tr><td class="wbs">0.3</td><td>재현 구축 절차 확립<span class="tsub">문서와 산출물만으로 빈 서버에 전체 시스템을 다시 세울 수 있도록 절차서로 만들고, 실제 재구축으로 검증한다 — 특정인 없이도 재구축 가능해야 한다</span></td><td class="who">수행</td><td class="dt">7월 하순~8월 초</td><td>구축 절차서 · 재구축 검증 기록</td><td class="ref">AWS 환경 구성(2.1)의 밑그림</td></tr>
+        <tr><td class="wbs">0.4</td><td>전체 프로그램 분석 · 1단계 대상 선별<span class="tsub">전체 프로그램 1,613개 · 독립 함수 7,020개를 유효성·의존성·규모 기준으로 분석해, 1단계 대상 148개(29만 6천 줄) 잠정 목록과 소스 추출 계획(27회분)을 만든다</span></td><td class="who">수행</td><td class="dt">7월 중~하순</td><td>분석 자료 · 잠정 대상 목록 · 추출 계획</td><td class="ref">확정은 1.9 재확인으로</td></tr>
+        <tr><td class="wbs">0.5</td><td>요구사항 분석 · 요구사항 문서(SRS) 초안 작성<span class="tsub">현업이 낸 요구 15건에 전 건 답변하고, 요구사항 문서 초안으로 정리한다 — 확정 미팅(1.1)의 입력물</span></td><td class="who">수행</td><td class="dt">7월 중</td><td>요구사항 문서 초안</td><td class="ref">1.1 미팅의 선행</td></tr>
         <tr class="hl"><td class="wbs">1.1</td><td>요구사항 문서(SRS) 확정 미팅<span class="msx">M1</span><span class="tsub">미팅 1회에서 합의할 것: ① 대상 범위(148개) ② 품질을 어떻게 측정할지(수치는 표본 실측 후) ③ 역할 분담과 일정 약속 방식 ④ 필수 구성 — 검색 서고와 DB 확인 통로는 있어야 시스템이 성립한다는 것 ⑤ AWS 관리 담당자 지정</span></td><td class="who joint">공동</td><td class="dt">7월 하순</td><td>확정된 요구사항 문서</td><td class="ref">본 문서 전달이 미팅 요청</td></tr>
         <tr class="hl"><td class="wbs">1.2</td><td>시스템 실물 시연 — 구성 확정이 목적<span class="tsub">질문 → 근거 있는 답 → 데이터 확인까지 실물로 보인다. 질문 창구 2종(웹 채팅 / 개발자 PC용 도우미) 중 무엇을 쓸지 이 자리에서 확정 — 개발자용이 승인되지 않으면 웹 채팅만으로 진행</span></td><td class="who joint">공동</td><td class="dt">7월 하순~8월 초</td><td>시연 실시 · 구성 확정</td><td class="ref">1.1 미팅과 연계 가능</td></tr>
         <tr class="hl"><td class="wbs">1.3</td><td>AWS 환경 개통 — 관리 담당자 지정이 첫 단계<span class="tsub">ⓐ 관리 담당자 지정(계정·사용자·비용을 챙길 사람 — 이하 전부의 선행 조건) ⓑ 계정·사용 지역 확정 ⓒ 사내망 연결과 보안 승인 ⓓ AI 모델 사용 신청 ⓔ 비용 한도·알림 설정</span></td><td class="who cust">고객</td><td class="dt">8/20까지 필수</td><td>담당자 지정 + 접속 정보</td><td class="ref">늦어지면 구축 전체가 그만큼 이동</td></tr>
@@ -298,7 +269,7 @@
         <tr class="hl"><td class="wbs">1.6</td><td>진행 상태의 이름과 규칙(상태 정의) 확정<span class="tsub">수행사가 초안을 만들어 가고, 고객사는 O/X 확인만 한다. 상태는 시스템이 자동으로 기록하는 것이며 결재 단계가 아니다. 기한 내 의견이 없으면 초안대로 진행</span></td><td class="who cust">고객</td><td class="dt">7월 중</td><td>확정 상태 정의</td><td class="ref">별첨: 확인서 1장</td></tr>
         <tr class="hl"><td class="wbs">1.7</td><td>업무 전문가 질문 창구·주기 지정<span class="tsub">수행사가 운영안(질문 양식·주기·형식)을 만들어 가고, 고객사는 담당자 지정과 주기 약속만 한다. 주 1회 · 10건 이내로 제한</span></td><td class="who cust">고객</td><td class="dt">8월 초</td><td>창구·주기 확약</td><td class="ref">별첨: 확약서 1장</td></tr>
         <tr class="hl"><td class="wbs">1.8</td><td>품질 시험 문제 20개 선정<span class="tsub">수행사가 후보 문항을 만들어 가고, 고객사는 체크만 한다. 이 20개가 서고 품질의 상시 검사 기준이 된다</span></td><td class="who cust">고객</td><td class="dt">8월 중</td><td>질문 목록</td><td class="ref">별첨: 선별지 1장</td></tr>
-        <tr class="hl"><td class="wbs">1.9</td><td>대상 148개를 운영 기준으로 재확인<span class="tsub">고객사 DBA가 수행사의 절차서대로 실행해 공식 확정 목록을 만든다 — 잠정 목록(착수 기반 0.4)은 참고 입력</span></td><td class="who cust">고객</td><td class="dt">7월 하순~8/20</td><td>확정 대상 목록</td><td class="ref">절차서(1.11) 사용</td></tr>
+        <tr class="hl"><td class="wbs">1.9</td><td>대상 148개를 운영 기준으로 재확인<span class="tsub">고객사 DBA가 수행사의 절차서대로 실행해 공식 확정 목록을 만든다 — 잠정 목록(기반 작업 0.4)은 참고 입력</span></td><td class="who cust">고객</td><td class="dt">7월 하순~8/20</td><td>확정 대상 목록</td><td class="ref">절차서(1.11) 사용</td></tr>
         <tr><td class="wbs">1.10</td><td>진행 현황표(관리 대장) 완성<span class="tsub">148개 각각이 어느 단계까지 왔는지, 어떤 점수를 받았는지 한눈에 보이는 표 — 매주 공유의 기준</span></td><td class="who">수행</td><td class="dt">7월 하순</td><td>관리 대장</td><td class="ref">1.6 상태 정의 사용</td></tr>
         <tr><td class="wbs">1.11</td><td>소스 추출 작업의 절차서화<span class="tsub">누가 하더라도 같은 결과가 나오도록, 실행 순서와 재실행 조건을 문서로 만든다</span></td><td class="who">수행</td><td class="dt">7월 하순</td><td>재실행 가능한 절차서</td><td class="ref">1.4의 공식 경로 기준으로 기술</td></tr>
         <tr><td class="wbs">1.12</td><td>설명서 작성 규칙 확정<span class="tsub">"코드에 있는 사실만 쓴다 · 사람이 읽히는 문장으로 쓴다 · 판단이 안 서는 것은 지어내지 않고 [전문가 확인 필요]로 표시한다"</span></td><td class="who">수행</td><td class="dt">8월 초</td><td>작성 지침</td><td class="ref">표준 양식(OKF) 기반</td></tr>
@@ -333,10 +304,10 @@
   </div>
 </section>
 
-<!-- ═══ §4 중간 점검과 검수 기준 ═══ -->
+<!-- ═══ §3 중간 점검과 검수 기준 ═══ -->
 <section class="pb">
   <div class="sheet">
-    <div class="sec-head"><span class="sec-no">04</span><h2>중간 점검 &amp; 검수 기준</h2></div>
+    <div class="sec-head"><span class="sec-no">03</span><h2>중간 점검 &amp; 검수 기준</h2></div>
     <p class="sec-lede">진행은 날짜가 아니라 <b>확인 가능한 상태</b>로 점검한다. 목표 수치를 지금 적지 않는 것은 근거가 없기 때문이며,
       표본 실측(M3)이 근거를 만든 뒤 수치를 확정한다 — 측정 <b>방법</b>은 지금 확정한다.</p>
     <table class="ledger avoid">
@@ -371,10 +342,10 @@
   </div>
 </section>
 
-<!-- ═══ §5 전제와 위험 ═══ -->
+<!-- ═══ §4 전제와 위험 ═══ -->
 <section>
   <div class="sheet">
-    <div class="sec-head"><span class="sec-no">05</span><h2>전제와 위험 — 깨지면 무엇이 움직이는가</h2></div>
+    <div class="sec-head"><span class="sec-no">04</span><h2>전제와 위험 — 깨지면 무엇이 움직이는가</h2></div>
     <p class="sec-lede">이 계획이 딛고 선 전제들이다. 전제가 깨지는 것은 <b>계획을 조정할 사유</b>이지 실패가 아니며,
       각 항목에 조기에 알아차릴 장치를 붙여 두었다.</p>
     <table class="ledger avoid">
