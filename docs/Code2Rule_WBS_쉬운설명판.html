@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code2Rule 사업 계획 — 쉬운 설명판</title>
+<style>
+  :root{
+    --bg:#FAF9F6; --ink:#0F2440; --gold:#C9A227; --red:#C43D2F; --green:#1E7A46;
+    --dark:#0D1B2A; --ink-soft:rgba(15,36,64,.62); --line:rgba(15,36,64,.16);
+    --mono:'D2Coding',Consolas,'Courier New',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:var(--bg);color:var(--ink);
+    font-family:Pretendard,'Noto Sans KR','Malgun Gothic',sans-serif;
+    font-size:15px;line-height:1.8;-webkit-font-smoothing:antialiased}
+  .sheet{max-width:860px;margin:0 auto;padding:36px 40px}
+
+  .band{background:var(--dark);color:#EDE8DC}
+  .band .sheet{padding:48px 40px 38px}
+  .band .eyebrow{font-size:12px;letter-spacing:.3em;color:var(--gold);font-weight:700;margin-bottom:12px}
+  .band h1{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+  .band .sub{margin-top:12px;font-size:14px;color:rgba(237,232,220,.72);max-width:640px}
+  .band .note{margin-top:18px;font-size:12.5px;color:rgba(237,232,220,.55);border-top:1px solid rgba(201,162,39,.4);padding-top:10px}
+  .band .note b{color:var(--gold)}
+
+  section{border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+  .sec-no{font-family:var(--mono);font-size:13px;color:var(--gold);font-weight:700}
+  .sec-head h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  p{margin-bottom:12px}
+  p b{color:var(--ink)}
+  .soft{color:var(--ink-soft)}
+
+  .box{border:1px solid var(--line);border-left:3px solid var(--gold);background:#fff;
+    padding:14px 18px;margin:14px 0;font-size:14px}
+  .box b{color:var(--ink)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+  .step{border:1px solid var(--line);border-top:3px solid var(--ink);background:#fff;padding:14px 16px}
+  .step .no{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--gold)}
+  .step .tt{font-weight:800;font-size:15px;margin:4px 0 6px}
+  .step .tx{font-size:13px;color:var(--ink-soft);line-height:1.7}
+
+  table.plain{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);margin:14px 0 18px}
+  table.plain th{font-size:12.5px;font-weight:700;color:var(--ink-soft);text-align:left;
+    padding:9px 10px;border-bottom:1px solid var(--ink)}
+  table.plain td{font-size:13.5px;padding:10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.7}
+  table.plain td:first-child{white-space:nowrap;font-weight:700}
+  table.plain td .why{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:3px;font-weight:400}
+
+  .qa{margin:10px 0 4px}
+  .qa .q{font-weight:800;margin-bottom:4px}
+  .qa .q::before{content:'Q. ';color:var(--gold)}
+  .qa .a{color:var(--ink-soft);margin-bottom:14px}
+  .qa .a::before{content:'A. ';color:var(--ink);font-weight:700}
+
+  .foot{color:var(--ink-soft);font-size:12.5px;padding-top:12px;border-top:2px solid var(--ink);margin-top:8px}
+  .printbtn{position:fixed;right:22px;top:22px;z-index:50;background:var(--dark);color:var(--gold);
+    border:1px solid var(--gold);border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer}
+  .printbtn:hover{background:var(--gold);color:var(--dark)}
+
+  @page{size:A4;margin:14mm}
+  @media print{
+    body{font-size:12px}
+    .printbtn{display:none}
+    .sheet{max-width:none;padding:2mm 2mm}
+    .band .sheet{padding:8mm 4mm 6mm}
+    section{border-bottom:none}
+    .pb{break-after:page}
+    .avoid{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<button class="printbtn" onclick="window.print()">인쇄 / PDF 저장</button>
+
+<header class="band">
+  <div class="sheet">
+    <div class="eyebrow">CODE2RULE · 쉬운 설명판</div>
+    <h1>코드 속에 갇힌 업무 지식을<br>꺼내서, 누구나 물어볼 수 있게</h1>
+    <div class="sub">이 문서는 본 사업이 <b>지금부터 무엇을 만들고, 무엇을 남기는지</b>를
+      IT 지식 없이도 읽을 수 있게 쓴 설명판입니다. 전문 용어가 나오면 바로 옆에 뜻을 붙였습니다.</div>
+    <div class="note"><b>기준 문서 안내</b> — 일정·책임·검수 조건의 공식 기준은 「사업 실행 계획서(WBS) v1.0」 본문입니다.
+      이 설명판과 본문이 다르게 읽히면 본문이 우선합니다.</div>
+  </div>
+</header>
+
+<!-- 1. 왜 하나 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">01</span><h2>왜 하는 사업인가</h2></div>
+    <p>지금 시스템의 업무 규칙 — 요금을 어떻게 계산하고, 언제 청구하고, 어떤 경우 면제하는지 — 는
+      문서에 있지 않습니다. <b>전부 데이터베이스 안의 프로그램(오라클 패키지)에만 남아 있습니다.</b>
+      옛 문서는 유실됐고, 만든 분들은 회사를 떠났습니다.</p>
+    <p>그래서 지금은 코드 두 줄을 고치려 해도, 그 코드를 아는 사람을 찾아 물어보고 확인하는 데
+      몇 주가 걸립니다. 아는 사람이 없으면 더 걸립니다.</p>
+    <div class="box"><b>이 사업이 하는 일 한 줄 요약</b> — 프로그램 코드를 컴퓨터(AI)가 읽어서
+      <b>사람이 읽을 수 있는 업무 설명서를 자동으로 만들고</b>, 그 설명서를 모아둔 곳에
+      <b>채팅으로 질문하면 근거와 함께 답</b>이 나오게 합니다.
+      "이 계산이 어디서 되나요?" → 몇 주가 아니라 <b>몇 분</b>.</div>
+    <p class="soft">이 방식이 실제로 동작하는지는 기준 시스템(시연 환경)으로 언제든 직접 확인하실 수 있으며,
+      착수 초기에 시연 일정을 잡아 함께 봅니다. 본 사업은 그 검증된 방식을
+      실제 대상 프로그램 148개에 적용하는 것입니다.</p>
+  </div>
+</section>
+
+<!-- 2. 무엇으로 만드나 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">02</span><h2>무엇으로 만드는가 — 구성 요소를 쉬운 말로</h2></div>
+    <table class="plain avoid">
+      <thead><tr><th>이름</th><th>쉽게 말하면</th></tr></thead>
+      <tbody>
+        <tr><td>업무 설명서<br><span class="soft">(역문서)</span></td>
+          <td>코드를 읽고 만드는, 사람용 설명서. "이 프로그램은 무슨 일을 하고, 어떤 규칙으로 계산하는가"를 씁니다.
+          <span class="why">전 세계 공통 문서 양식(OKF 표준)을 따라서, 어느 도구에서든 읽고 검색할 수 있습니다.</span></td></tr>
+        <tr><td>지식베이스<br><span class="soft">(KB · LightRAG)</span></td>
+          <td>설명서를 모아두는 검색 가능한 서고. 단어가 정확히 일치하지 않아도 의미로 찾아줍니다.</td></tr>
+        <tr><td>웹 채팅 창구<br><span class="soft">(LibreChat)</span></td>
+          <td>브라우저에서 쓰는 질문 창구. 현업 누구나 "OO는 어떻게 계산되나요?"라고 물으면 서고를 찾아 답합니다.</td></tr>
+        <tr><td>전문가용 도우미<br><span class="soft">(OpenCode)</span></td>
+          <td>개발자 PC에서 쓰는 AI 도우미. 서고뿐 아니라 소스 코드 파일까지 직접 열어 보면서
+          디버깅(오류 원인 찾기)과 수정 검토를 돕습니다.</td></tr>
+        <tr><td>DB 확인 도구<br><span class="soft">(SQLcl)</span></td>
+          <td>AI가 "코드가 이렇다"고 말할 때, 실제 데이터도 그런지 데이터베이스에서 직접 확인하는 통로입니다.
+          <span class="why">AI 말을 믿는 게 아니라, 데이터로 검증하고 씁니다.</span></td></tr>
+        <tr><td>AI 엔진<br><span class="soft">(AWS Bedrock)</span></td>
+          <td>설명서를 만들고 질문에 답하는 AI 두뇌. <b>귀사의 AWS 클라우드 안에서만 돌며, 소스코드는 밖으로 나가지 않습니다.</b></td></tr>
+      </tbody>
+    </table>
+    <p class="soft">이 구성은 개념도가 아니라 동작하는 실물이며, 착수 초기 시연에서 직접 확인하실 수 있습니다.</p>
+  </div>
+</section>
+
+<!-- 3. 어떻게 만드나 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">03</span><h2>어떻게 만드는가 — 세 동작의 반복</h2></div>
+    <p>개발이라기보다 <b>공정</b>에 가깝습니다. 프로그램 하나마다 아래 세 동작을 반복합니다.</p>
+    <div class="steps avoid">
+      <div class="step"><div class="no">동작 1</div><div class="tt">넣기 (인제스트)</div>
+        <div class="tx">코드를 가져와 AI가 업무 설명서를 만들고, 서고에 넣습니다.
+        어떤 프로그램이 어디까지 진행됐는지는 관리 대장(진행 현황표) 한 장으로 추적합니다.</div></div>
+      <div class="step"><div class="no">동작 2</div><div class="tt">묻기 (쿼리)</div>
+        <div class="tx">현업이 실제로 궁금해할 질문(골든 질의 20개)을 미리 정해두고,
+        서고가 근거와 함께 제대로 답하는지 확인합니다. 이 20개가 품질 시험 문제지입니다.</div></div>
+      <div class="step"><div class="no">동작 3</div><div class="tt">채점 (평가)</div>
+        <div class="tx">만들어진 설명서를 다른 AI가 원본 코드와 대조해 채점하고,
+        코드의 호출 관계와도 기계적으로 대조합니다. 점수 낮은 것은 사람이 표본 검사 후 다시 만듭니다.</div></div>
+    </div>
+    <div class="box"><b>이번 사업에서 새로 발명하는 것은 없습니다.</b> 동작이 확인된 방법
+      (설명서 생성 지침 · 채점 방법 · 진행 관리 방식)을 표준으로 확정하고, 귀사 환경에 조립해서
+      148개에 반복 적용하는 것이 이 사업의 본체입니다. 관리 화면(백오피스) 같은 추가 개발은
+      2단계에서 — 그것도 실제로 반복된 작업만 골라서 — 만듭니다.</div>
+  </div>
+</section>
+
+<!-- 4. 무엇이 남나 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">04</span><h2>이 사업으로 남는 것 — 산출물</h2></div>
+    <table class="plain avoid">
+      <thead><tr><th>산출물</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td>업무 설명서 148건</td><td>대상 프로그램 전체의 사람용 설명서 — 표준 양식(OKF), 검색 서고에 적재된 상태로 인도</td></tr>
+        <tr><td>검색 서고(지식베이스)</td><td>귀사 환경 안에서 가동되는 검색·질의 시스템</td></tr>
+        <tr><td>질문 창구</td><td>웹 채팅(LibreChat) — 승인 시 개발자용 도우미(OpenCode)까지 2종</td></tr>
+        <tr><td>운영 문서 세트</td><td>관리 대장 · 소스 추출 절차서 · 설명서 작성 지침 · 품질 채점 기준서 —
+          <span class="why">사람이 바뀌어도 같은 품질로 반복할 수 있게 하는 인수인계 문서들입니다.</span></td></tr>
+        <tr><td>실측 리포트</td><td>리허설과 표본 처리의 측정 기록 — 품질 목표 수치의 근거가 됩니다</td></tr>
+        <tr><td>(2단계) 자동화</td><td>코드 변경 시 자동 재문서화 + 진행 현황 관리 화면(백오피스)</td></tr>
+      </tbody>
+    </table>
+    <p class="soft">핵심은 마지막 줄 위의 것들입니다 — 시스템만 남는 것이 아니라,
+      <b>그 시스템을 계속 운영할 수 있게 하는 절차와 기준</b>이 문서로 남습니다.</p>
+  </div>
+</section>
+
+<!-- 5. 일정 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">05</span><h2>일정 — 세 구간, 그리고 "날짜가 아니라 조건"</h2></div>
+    <table class="plain avoid">
+      <thead><tr><th>구간</th><th>기간</th><th>무슨 일이 일어나나</th></tr></thead>
+      <tbody>
+        <tr><td>준비</td><td style="white-space:nowrap">착수 ~ 약 5주<br><span class="soft">(환경 없이 진행)</span></td>
+          <td>AWS 환경이 없어도 되는 일을 먼저 끝냅니다. 저희는 진행 대장·추출 절차·작성 지침·채점 기준을
+          확정하고 전 과정을 미리 한 번 돌려봅니다(리허설). 귀사는 몇 가지 결정을 해주시면 됩니다 —
+          <b>결정마다 한 장짜리 체크시트를 준비해서, 미팅 자리에서 O/X 표시로 끝나게 합니다.</b></td></tr>
+        <tr><td>구축</td><td style="white-space:nowrap">AWS 개통 후<br>10주</td>
+          <td>먼저 표본 몇 개로 "실제 환경에서도 리허설과 같은 품질이 나오는지"를 확인하고 목표 수치를 확정합니다.
+          그다음 148개 전체를 순서대로 처리해 서고를 채우고, 질문 창구를 엽니다.</td></tr>
+        <tr><td>운영</td><td style="white-space:nowrap">서고 오픈 후</td>
+          <td>코드가 바뀌면 해당 설명서만 자동으로 다시 만들어지게 하고, 진행 현황 관리 화면을 만들고,
+          사용자를 늘립니다. 상세 범위는 오픈 후 별도 협의합니다.</td></tr>
+      </tbody>
+    </table>
+    <div class="box"><b>"날짜가 아니라 조건"이 이 계획의 특징입니다.</b> 구축 구간은 "9월 1일 시작"이 아니라
+      "AWS 환경이 열린 날부터 10주"로 정의되어 있습니다. 환경이 늦게 열리면 일정 전체가 그만큼 뒤로
+      밀릴 뿐, 계획이 실패한 것이 아닙니다. 대신 <b>무엇이 열려야 다음이 시작되는지</b>가 문서에 전부
+      드러나 있어서, 기다림의 이유를 서로 확인할 수 있습니다.</div>
+  </div>
+</section>
+
+<!-- 6. 고객 결정 사항 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">06</span><h2>귀사에서 정해 주셔야 하는 것 — 7가지</h2></div>
+    <p>기술 작업은 저희 몫입니다. 귀사 몫은 아래 <b>결정</b>들이고, 전부 "안 된다"라고 결정되어도
+      대안이 준비되어 있습니다. 다만 <b>결정이 늦어지면 그만큼 일정이 늦어집니다.</b></p>
+    <table class="plain avoid">
+      <thead><tr><th>#</th><th>정해 주실 것</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>AWS를 관리할 담당자</b> — 계정·사용자·비용을 챙길 분. 이분이 정해져야 환경 개통이 시작됩니다.
+          <span class="why">전담 조직이 없어도 됩니다. "누구한테 물어보면 되는가"가 정해지는 것이 핵심입니다.</span></td></tr>
+        <tr><td>2</td><td><b>웹 채팅 창구(LibreChat) 사용 승인</b> — 현업이 쓸 질문 창구입니다.</td></tr>
+        <tr><td>3</td><td><b>개발자 PC용 AI 도우미(OpenCode) 사용 승인</b> — 안 되면 웹 창구만으로 진행합니다(기능 일부 축소).</td></tr>
+        <tr><td>4</td><td><b>운영 데이터베이스를 "읽기 전용"으로 볼 수 있는지</b> — 가능하면 "코드와 실제 데이터가 맞는지"까지
+          검증할 수 있어 품질이 가장 좋아집니다. 안 되면 사본(스냅샷) 방식으로 진행합니다.</td></tr>
+        <tr><td>5</td><td><b>소스 코드가 어떤 경로로 나오는지 확인</b> — 형상관리(Bitbucket)에 있는지,
+          DBA 배포팀을 거치는지에 따라 가져오는 방법이 달라집니다.</td></tr>
+        <tr><td>6</td><td><b>업무 전문가(SME) 질문 담당자</b> — 코드만으로 알 수 없는 것("이 예외는 왜 있나요?")을
+          모아서 정기적으로 여쭤봅니다. 주 1회, 10건 이내로 부담을 제한합니다.</td></tr>
+        <tr><td>7</td><td><b>시험 문제 20개 고르기</b> — 평소 궁금하던 질문에 체크만 해주시면, 그것이 품질 검사 기준이 됩니다.
+          <span class="why">후보 문항은 저희가 미리 만들어 갑니다. 백지에 써주실 필요 없습니다.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 7. 기술 선택 이야기 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">07</span><h2>기술 선택 이야기 — "Lambda·Step Functions로 하자"는 안은?</h2></div>
+    <p>초기 논의에서 AWS Lambda(서버 없이 코드를 실행하는 서비스)와 Step Functions(작업들을 자동으로
+      이어주는 서비스)로 파이프라인을 만들자는 안이 있었습니다. <b>좋은 도구이고, 버리는 것이 아닙니다.
+      다만 쓰는 시점이 다릅니다.</b></p>
+    <table class="plain avoid">
+      <thead><tr><th>시점</th><th>판단</th></tr></thead>
+      <tbody>
+        <tr><td>지금 (1단계)</td>
+          <td>아직 <b>절차 자체가 실측으로 확정되기 전</b>입니다. 자동화 도구부터 고르면 절차를 도구에
+          맞추게 되어 거꾸로 갑니다. 또 AI가 설명서 하나를 만드는 데는 시간이 꽤 걸리는데, Lambda는
+          15분 이상 걸리는 작업과 잘 맞지 않습니다. 지금 필요한 진행 관리는 관리 대장(현황표 한 장)으로
+          충분해서, 도구를 늘릴 이유가 없습니다.</td></tr>
+        <tr><td>2단계 (운영기)</td>
+          <td>구축 구간을 지나면 "어떤 작업이 실제로 반복되는지"가 기록으로 확정됩니다. 그 반복 작업을
+          자동화할 때(관리 화면·배치 작업 구축), <b>실행 기반 후보로 Step Functions를 포함해 검토합니다.</b>
+          무엇을 자동화할지가 확정된 뒤라, 그때는 도구 선택이 안전합니다.</td></tr>
+      </tbody>
+    </table>
+    <div class="box"><b>요약</b> — 순서의 문제입니다. <b>절차를 먼저 확정하고(1단계), 자동화 도구는 그 다음(2단계)</b>.
+      이 순서면 어떤 도구가 선택되어도 절차는 그대로 유효합니다.</div>
+  </div>
+</section>
+
+<!-- 8. FAQ -->
+<section>
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">08</span><h2>자주 나올 질문</h2></div>
+    <div class="qa avoid">
+      <div class="q">소스코드가 회사 밖으로 나가는 것 아닌가요?</div>
+      <div class="a">나가지 않습니다. AI 처리는 전부 귀사 AWS 클라우드 안에서 이뤄지고,
+        "입력한 내용이 AI 학습에 사용되지 않는다"는 정책도 문서로 확인하는 절차가 계획에 들어 있습니다.
+        코드를 옮기는 경로 자체도 보안 승인을 받은 공식 절차로만 만듭니다.</div>
+      <div class="q">AI가 틀린 답을 하면 어떻게 하나요?</div>
+      <div class="a">세 겹의 장치가 있습니다. ① 모든 답에 근거(어느 문서·어느 코드)가 붙습니다
+        ② 확인 안 되는 것은 지어내지 않고 "확인 필요"라고 답하게 규칙이 걸려 있습니다
+        ③ 설명서 자체가 이중 채점(AI 채점 + 기계 대조)과 사람 표본 검사를 거칩니다.</div>
+      <div class="q">우리 쪽 일이 많아지는 것 아닌가요?</div>
+      <div class="a">§06의 결정 7가지와, 주 1회 이내의 질문 답변이 전부입니다.
+        문서를 작성해 주셔야 하는 일은 없습니다 — 모든 초안은 저희가 만들어 가고, 확인만 해주시면 됩니다.</div>
+      <div class="q">완성되면 무엇이 달라지나요?</div>
+      <div class="a">"이거 아는 사람 누구지?"를 찾아다니던 시간이, 검색과 질문 몇 분으로 바뀝니다.
+        신규 입사자가 시스템을 파악하는 속도도 같이 빨라집니다. 그리고 특정인의 머릿속에만 있던
+        지식이 회사의 자산으로 남습니다.</div>
+      <div class="q">목표 수치(품질 몇 %, 몇 개 완료)가 왜 지금 없나요?</div>
+      <div class="a">근거 없이 숫자를 적지 않기로 했기 때문입니다. 실제 환경에서 표본을 처리해 본 뒤(구축 구간 초입),
+        그 실측을 근거로 목표치를 확정해 문서를 개정합니다. 측정 <b>방법</b>은 지금 이미 확정되어 있습니다.</div>
+    </div>
+    <div class="foot">
+      본 설명판의 기준 문서: 사업 실행 계획서(WBS) v1.0 · SRS 초안 v0.1 — 일정·책임·검수의 공식 기준은 본문을 따릅니다.
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
