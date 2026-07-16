@@ -289,7 +289,7 @@
 
         <div class="ph"><span class="p-no">PHASE 2</span><span class="p-t">실행기</span><span class="p-a">E ~ E+10주 (E=8/20 가정 → 10월 말)</span></div>
         <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.1</b> Bedrock 환경 구성·접속 검증 <span class="num">E~E+2주</span></span><div class="bar joint" style="left:51.27%;width:5.09%"></div></div>
-        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.2</b> 샘플 5개 실측 → 목표 수치 확정 <span class="num">E+1~2주</span></span><div class="bar we" style="left:53.82%;width:2.55%"></div><span class="ms-lbl" style="left:56.36%">M3</span><div class="ms" style="left:56.36%"></div></div>
+        <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.2</b> 표본 실측 — 전환 검증+시나리오 수용 <span class="num">E+1~2주</span></span><div class="bar we" style="left:53.82%;width:2.55%"></div><span class="ms-lbl" style="left:56.36%">M3</span><div class="ms" style="left:56.36%"></div></div>
         <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.3</b> 148개 추출·역문서화 배치 (대장 기반 진행 관리) <span class="num">E+2~8주</span></span><div class="bar we" style="left:56.36%;width:15.27%"></div></div>
         <div class="g-row"><span class="lbl"><span class="who">공동</span><b>2.4</b> SME 질문 사이클 — 주기 발송·답변 축적 <span class="num">E+2주~</span></span><div class="bar joint" style="left:56.36%;width:20.36%"></div></div>
         <div class="g-row"><span class="lbl"><span class="who">수행</span><b>2.5</b> 적재 완료·골든 질의 품질 측정·소비 채널 검증 <span class="num">E+8~10주</span></span><div class="bar we" style="left:71.64%;width:5.09%"></div><span class="ms-lbl" style="left:71.64%">M4</span><div class="ms" style="left:71.64%"></div><span class="ms-lbl" style="left:76.73%">M5</span><div class="ms" style="left:76.73%"></div></div>
@@ -337,9 +337,9 @@
       <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>앵커</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
       <tbody>
         <tr><td class="wbs">2.1</td><td>Bedrock 환경 구성 · 접속 검증 — 체크리스트 기반<span class="tsub">확인 6영역: 운용 주체 · 계정/접근 통제(전용 계정·최소 권한·MFA) · 망 경계(프라이빗 엔드포인트) · Bedrock(모델 액세스·버전 고정·쿼터·<b>학습 미사용 정책 확인</b>) · 데이터 보관(암호화·종료 시 처리) · 감사/비용(호출 로그·예산 알림) — 전 항목 답 존재+접속 검증 V-1~4 통과가 완료 조건</span></td><td class="who joint">공동</td><td class="dt">E ~ E+2주</td><td>가동 환경 · 체크리스트 완료본</td><td class="ref">SRS §5.2-1 · 선행 1.3 · 별첨: 체크리스트</td></tr>
-        <tr><td class="wbs">2.2</td><td>샘플 5개 실측 — 모델 품질(A1) 판정 · 처리량 실측 · <b>C1·C2 목표 수치 확정 → SRS v1.1 개정</b><span class="msx">M3</span></td><td class="who">수행</td><td class="dt">E+1 ~ 2주</td><td>실측 근거·목표치</td><td class="ref">A1 · TBD-5 · §6 · 선행 1.4·1.5</td></tr>
-        <tr><td class="wbs">2.3</td><td>148개 배치 처리 — 소스 추출(27회차 절차)→생성→검증(1.13 기준)→적재, 대장 기반 진행 관리</td><td class="who">수행</td><td class="dt">E+2 ~ 8주</td><td>역문서 148건 적재</td><td class="ref">R-04·05·06 · 선행 1.4·1.9</td></tr>
-        <tr><td class="wbs">2.4</td><td>SME 질문 사이클 — 태깅 자동 집계·주기 발송·답변 지식층 축적</td><td class="who joint">공동</td><td class="dt">E+2주 ~ 상시</td><td>질문 목록·답변 문서</td><td class="ref">R-09·11 · 고객 응답 주기 의존(A2)</td></tr>
+        <tr><td class="wbs">2.2</td><td>표본 실측 — Bedrock 전환 검증 + 시나리오 수용 검증<span class="msx">M3</span><span class="tsub">ⓐ 전환 검증: 검증 완료된 파이프라인(지침 1.12·검증 2루프 1.13)을 Bedrock 모델로 재현 — 모델 품질(A1) 판정·처리량 실측 ⓑ 시나리오 수용: 실제 패키지 표본에 시나리오 세트(소스 디버깅·리팩토링 영향·도메인 질의) 만족 여부 측정 ⓒ <b>불만족 시 원인별 라우팅 가동(검색→청킹 A5 / 품질→지침 보강·재생성 R-07③ / 공백→SME R-11 / 모델→A1)</b> 후 재측정 → <b>C1·C2 목표 수치 확정 → SRS v1.1 개정</b> · 기준: 시나리오 수용검증 기준서</span></td><td class="who">수행</td><td class="dt">E+1 ~ 2주</td><td>실측 근거·목표치</td><td class="ref">A1 · TBD-5 · §6 · 선행 1.4·1.5</td></tr>
+        <tr><td class="wbs">2.3</td><td>148개 배치 처리 — 소스 추출(27회차 절차)→생성→검증(1.13 기준)→적재, 대장 기반 진행 관리<span class="tsub">병행 산출: 반복 워크플로우(재생성·라우팅·상태 갱신) 식별·기록 → <b>백오피스(3.2) 요구사항의 원천</b></span></td><td class="who">수행</td><td class="dt">E+2 ~ 8주</td><td>역문서 148건 적재 · 워크플로우 목록</td><td class="ref">R-04·05·06 · 선행 1.4·1.9</td></tr>
+        <tr><td class="wbs">2.4</td><td>SME 질문 사이클 — 태깅 자동 집계·주기 발송·답변 지식층 축적<span class="tsub">병행 산출: 집계·발송·회신 반영의 자동화 대상 식별 → <b>백오피스(3.2) 요구사항의 원천</b> (2.2~2.3과 함께 — 실제 반복된 것만 자동화로 승격)</span></td><td class="who joint">공동</td><td class="dt">E+2주 ~ 상시</td><td>질문 목록·답변 문서</td><td class="ref">R-09·11 · 고객 응답 주기 의존(A2)</td></tr>
         <tr><td class="wbs">2.5</td><td>적재 완료<span class="msx">M4</span> · 골든 질의 품질 측정 · 소비 채널 연결 검증 → <b>KB 오픈 판정</b><span class="msx">M5</span></td><td class="who">수행</td><td class="dt">E+8 ~ 10주</td><td>품질 리포트 · O 확정</td><td class="ref">R-16·17·18 · §6 C1~C4 검수</td></tr>
       </tbody>
     </table>
@@ -349,7 +349,7 @@
       <thead><tr><th>WBS</th><th>태스크</th><th>담당</th><th>앵커</th><th>산출물</th><th>SRS 근거 · 비고</th></tr></thead>
       <tbody>
         <tr><td class="wbs">3.1</td><td>Bitbucket 배포 연동 — 배포 이벤트 → 해당 패키지 자동 재문서화·교체</td><td class="who joint">공동</td><td class="dt">O ~ O+4주</td><td>자동 갱신 파이프라인</td><td class="ref">R-07① · <b>TBD-4 선행</b></td></tr>
-        <tr><td class="wbs">3.2</td><td>Pylon 배치 잡 이관 + 백오피스 대시보드 (상태·이력·저지 점수·재실행)</td><td class="who">수행</td><td class="dt">O ~ O+8주</td><td>백오피스</td><td class="ref">R-12 · R-13</td></tr>
+        <tr><td class="wbs">3.2</td><td>Pylon 배치 잡 이관 + 백오피스 대시보드 (상태·이력·저지 점수·재실행)</td><td class="who">수행</td><td class="dt">O ~ O+8주</td><td>백오피스</td><td class="ref">R-12 · R-13 · <b>요구 원천: 2.3·2.4 식별 워크플로우</b></td></tr>
         <tr><td class="wbs">3.3</td><td>정기 배치 품질 평가 가동 — 미달 문서 자동 재생성</td><td class="who">수행</td><td class="dt">O+4주 ~ 상시</td><td>평가 리포트</td><td class="ref">R-07②</td></tr>
         <tr><td class="wbs">3.4</td><td>SSO·역할 구분·액션 감사 로그 — 고객 IT 정책 협의 포함</td><td class="who cust">고객+공동</td><td class="dt">O+8주 ~</td><td>접근 통제 체계</td><td class="ref">R-15</td></tr>
         <tr><td class="wbs">3.5</td><td>사용자 확대 · 지식층(OKF) 성장 운영 · 타 도메인 확대 판단</td><td class="who joint">공동</td><td class="dt">상시</td><td>운영 지표</td><td class="ref">SRS §5.3-5</td></tr>
@@ -368,7 +368,7 @@
       <tbody>
         <tr><td class="wbs">M1</td><td>SRS v1.0 합의</td><td class="dt">7월 하순</td><td>범위(148)·원칙·측정 방식·가정 합의 + TBD 6건을 담당·기한 딸린 후속 태스크로 확정 (해소는 1.3~1.6·2.2에서) → v1.0 승격 · 목표 수치는 M3(v1.1)</td></tr>
         <tr><td class="wbs">M2</td><td>드라이런 완료</td><td class="dt">~8/20</td><td>파이프라인 전 구간 리허설 통과 + 처리 속도 실측치 + 골든 질의 초기 세트</td></tr>
-        <tr><td class="wbs">M3</td><td>샘플 실측 · 목표치 확정</td><td class="dt">E+2주</td><td>샘플 5개 처리, 모델 품질(A1) 판정, C1·C2 목표 수치 확정 → SRS v1.1 개정</td></tr>
+        <tr><td class="wbs">M3</td><td>표본 실측 · 목표치 확정</td><td class="dt">E+2주</td><td>Bedrock 전환 검증(A1 판정·처리량) + 시나리오 수용 검증(불만족 시 원인별 라우팅), C1·C2 목표 수치 확정 → SRS v1.1 개정</td></tr>
         <tr><td class="wbs">M4</td><td>148개 적재 완료</td><td class="dt">E+8~10주</td><td>C1(커버리지) 달성 — 관리 대장 집계로 확인</td></tr>
         <tr class="hl"><td class="wbs">M5</td><td><b>KB 오픈 판정</b></td><td class="dt">≈E+10주 (10월 말)</td><td><b>C1~C4 전체 검수 → 앵커 O 확정</b>, 2단계 착수 협의</td></tr>
       </tbody>
@@ -392,7 +392,7 @@
       <tbody>
         <tr class="risk-top"><td class="wbs">R-0</td><td><b>E 지연 — Bedrock 개통(고객 태스크 1.3)이 8/20을 넘김</b></td><td>실행기 전체 대기</td><td><b>실행기·운영기 전 구간 평행이동</b> (준비기는 무영향 — 계속 진행)</td><td>주간 확인 · M1 미팅에서 일정 확약</td></tr>
         <tr class="risk-top"><td class="wbs">R-0a</td><td><b>AWS 운용 주체 미지정 지속 — 계정·IAM·쿼터·비용의 상시 운용 담당 부재</b></td><td>1.3 전체 착수 불능 — R-0의 근본 원인</td><td><b>E 지연 + 운영기(2단계) 운용 체계 협의 지연</b></td><td>M1 선결 안건(아젠다 ⑦) · 1.3ⓐ</td></tr>
-        <tr><td class="wbs">A1</td><td>Bedrock 제공 모델의 역문서화 품질 부족</td><td>지침 보강·모델 변경</td><td>M4·M5 +n주</td><td>M3 샘플 5개 실측이 조기 판정</td></tr>
+        <tr><td class="wbs">A1</td><td>Bedrock 제공 모델의 역문서화 품질 부족</td><td>지침 보강·모델 변경</td><td>M4·M5 +n주</td><td>M3 표본 실측(전환 검증)이 조기 판정</td></tr>
         <tr><td class="wbs">A2</td><td>SME 질문에 답변이 이뤄지지 않음</td><td>KB는 코드 사실만으로 가동 — <b>중단 없음</b></td><td>일정 무영향 · C4 성숙도 지표만 하락</td><td>TBD-3 채널 협의에서 응답 주기 확약</td></tr>
         <tr><td class="wbs">A3</td><td>대상 패키지 배포 빈도가 수동 재문서화 감당 수준 초과</td><td>운영기 자동화(3.1) 우선순위 상향</td><td>운영기 착수 순서 조정</td><td>실행기 중 배포 건수 실측</td></tr>
         <tr><td class="wbs">A4</td><td>1인 수행 처리량 미달</td><td>완료 시점 조정</td><td>M4 이동 (기준: C1)</td><td>M2 드라이런 속도 실측이 조기 경보</td></tr>
