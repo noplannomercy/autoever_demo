@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code2Rule 사업 계획 (제출용 요약)</title>
+<style>
+  :root{
+    --bg:#FFFFFF; --ink:#0F2440; --gold:#C9A227; --red:#C43D2F; --green:#1E7A46;
+    --dark:#0D1B2A; --ink-soft:rgba(15,36,64,.62); --line:rgba(15,36,64,.18);
+    --mono:'D2Coding',Consolas,'Courier New',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:var(--bg);color:var(--ink);
+    font-family:Pretendard,'Noto Sans KR','Malgun Gothic',sans-serif;
+    font-size:13.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .sheet{max-width:820px;margin:0 auto;padding:34px 40px}
+
+  .head{border-bottom:3px solid var(--ink);padding-bottom:14px;margin-bottom:20px}
+  .head .eyebrow{font-size:11px;letter-spacing:.28em;color:var(--gold);font-weight:700;margin-bottom:6px}
+  .head h1{font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .head .meta{margin-top:6px;font-size:12px;color:var(--ink-soft);display:flex;gap:16px;flex-wrap:wrap}
+  .head .meta b{color:var(--ink)}
+
+  h2{font-size:15px;font-weight:800;margin:22px 0 8px;letter-spacing:-.01em}
+  h2 .no{font-family:var(--mono);font-size:12px;color:var(--gold);margin-right:8px}
+  p{margin-bottom:8px}
+  .soft{color:var(--ink-soft);font-size:12.5px}
+
+  table{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);margin:6px 0 10px}
+  th{font-size:11.5px;font-weight:700;color:var(--ink-soft);text-align:left;
+    padding:7px 8px;border-bottom:1px solid var(--ink);white-space:nowrap}
+  td{font-size:12.5px;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+  td.c1{white-space:nowrap;font-weight:700}
+  td.dt{font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+  tr.hl td{background:rgba(201,162,39,.08)}
+
+  ul{margin:2px 0 10px 18px}
+  li{margin-bottom:3px}
+
+  .note{border:1px solid var(--line);border-left:3px solid var(--ink);background:#FAF9F6;
+    padding:9px 13px;margin:8px 0 12px;font-size:12px;color:var(--ink-soft)}
+  .note b{color:var(--ink)}
+
+  .foot{margin-top:20px;border-top:2px solid var(--ink);padding-top:10px;font-size:11.5px;color:var(--ink-soft)}
+  .printbtn{position:fixed;right:22px;top:22px;z-index:50;background:var(--dark);color:var(--gold);
+    border:1px solid var(--gold);border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer}
+  .printbtn:hover{background:var(--gold);color:var(--dark)}
+
+  @page{size:A4;margin:14mm}
+  @media print{
+    body{font-size:11.5px}
+    .printbtn{display:none}
+    .sheet{max-width:none;padding:0}
+    .avoid{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<button class="printbtn" onclick="window.print()">인쇄 / PDF 저장</button>
+
+<div class="sheet">
+
+  <div class="head">
+    <div class="eyebrow">CODE2RULE</div>
+    <h1>사업 실행 계획 — 제출용 요약</h1>
+    <div class="meta">
+      <span>버전 <b>v1.0 요약</b></span><span>기준일 <b>2026-07-15</b></span>
+      <span>세부 실행 계획은 <b>WBS v1.0 본문</b>(별첨)으로 제공</span>
+    </div>
+  </div>
+
+  <h2><span class="no">01</span>사업 개요</h2>
+  <p>대상 시스템의 업무 규칙은 데이터베이스 내 프로그램(오라클 패키지) 소스에만 존재하여,
+    조회·수정·영향 파악에 특정 인력 의존도가 높다. 본 사업은 대상 프로그램 148개의
+    <b>업무 문서를 AI로 자동 생성·검증하여 검색 가능한 지식 시스템을 구축</b>하고,
+    임직원이 질문하면 근거와 함께 답을 얻는 환경을 만든다.</p>
+  <table class="avoid">
+    <tbody>
+      <tr><td class="c1">범위</td><td>payments 영역 오라클 패키지 148개 (29만 6천 라인) — 착수 후 운영 기준으로 최종 확정</td></tr>
+      <tr><td class="c1">기간</td><td>착수 후 약 4개월 (준비 5주 + 구축 10주) — 구축 일정은 AWS 환경 개통일(E, 목표 8/20) 기산</td></tr>
+      <tr><td class="c1">방식</td><td>검증을 마친 표준 절차(문서 생성 → 이중 검증 → 적재)를 148개에 반복 적용 — 신규 개발 최소화</td></tr>
+      <tr><td class="c1">환경</td><td>모든 AI 처리는 고객사 AWS 클라우드 내부에서 수행 — 소스코드 외부 반출 없음</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="no">02</span>단계별 계획</h2>
+  <table class="avoid">
+    <thead><tr><th>단계</th><th>기간</th><th>주요 작업</th><th>산출물</th><th>점검</th></tr></thead>
+    <tbody>
+      <tr><td class="c1">1. 준비</td><td class="dt">착수~5주</td>
+        <td>요구사항 확정 미팅 · 작업 표준 확정(작성 규칙·검증 기준·진행 대장·추출 절차) · 전 과정 사전 리허설 · 대상 148개 운영 기준 확정</td>
+        <td>확정 요구사항서 · 표준 문서 4종 · 리허설 실측 리포트</td><td class="dt">M1·M2</td></tr>
+      <tr><td class="c1">2. 환경</td><td class="dt">E ~ E+2주</td>
+        <td>AWS 환경 구성·보안 점검(체크리스트) · 표본 실측으로 품질 목표 수치 확정</td>
+        <td>가동 환경 · 품질 목표치</td><td class="dt">M3</td></tr>
+      <tr><td class="c1">3. 구축</td><td class="dt">E+2 ~ 8주</td>
+        <td>148개 업무 문서 생성·검증·적재 (진행 현황 주간 공유) · 업무 전문가 질의 사이클 운영</td>
+        <td>업무 문서 148건 적재 완료</td><td class="dt">M4</td></tr>
+      <tr class="hl"><td class="c1">4. 오픈</td><td class="dt">E+8 ~ 10주</td>
+        <td>최종 품질 측정(사전 합의된 시험 질의 20건) · 질의 창구 연결 검증 · <b>오픈 판정</b></td>
+        <td>품질 리포트 · 서비스 오픈</td><td class="dt">M5</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>일정 전제</b> — 2~4단계는 AWS 환경 개통일(E)부터 기산한다. 개통이 지연되면 이후 일정은
+    동일 간격으로 순연되며(1단계는 영향 없이 진행), 변경 시 계획서를 재발행한다.</div>
+
+  <h2><span class="no">03</span>최종 산출물</h2>
+  <table class="avoid">
+    <tbody>
+      <tr><td class="c1">업무 문서 148건</td><td>대상 프로그램 전체의 업무 설명 문서 — 표준 양식, 검색 시스템에 적재된 상태로 인도</td></tr>
+      <tr><td class="c1">AI 검색·질의 시스템</td><td>고객사 환경 내 가동 — 자연어 질문에 근거를 첨부해 답변</td></tr>
+      <tr><td class="c1">질의 창구</td><td>웹 채팅 기본 — 승인 시 개발자 도구 연동 추가</td></tr>
+      <tr><td class="c1">운영 문서 4종</td><td>진행 대장 · 소스 추출 절차서 · 문서 작성 지침 · 품질 검증 기준서 (운영 인수인계용)</td></tr>
+      <tr><td class="c1">실측·품질 리포트</td><td>리허설·표본·최종 품질의 측정 기록 — 목표 수치의 근거</td></tr>
+      <tr><td class="c1">(2단계) 자동화</td><td>코드 변경 시 자동 문서 갱신 + 관리 화면 — 오픈 후 별도 협의</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="no">04</span>기대효과</h2>
+  <ul class="avoid">
+    <li><b>업무 지식의 자산화</b> — 소스 코드에만 있던 업무 규칙이 검색 가능한 회사 문서로 축적</li>
+    <li><b>확인·분석 시간 단축</b> — 코드 조회, 수정 영향 파악, 업무 규칙 확인을 질문 즉시 근거와 함께 제공</li>
+    <li><b>신규 인력 적응 기간 단축</b> — 시스템 구조와 업무 규칙을 문서·질의로 자가 학습</li>
+    <li><b>특정 인력 의존도 감소</b> — 담당자 부재·교체 시에도 업무 연속성 유지</li>
+  </ul>
+
+  <h2><span class="no">05</span>고객 협조사항</h2>
+  <table class="avoid">
+    <thead><tr><th>#</th><th>항목</th><th>시기</th></tr></thead>
+    <tbody>
+      <tr><td class="dt">1</td><td>AWS 계정 개통 및 관리 담당자 지정</td><td class="dt">~8/20</td></tr>
+      <tr><td class="dt">2</td><td>소스 코드 반입 경로 확인 및 보안 승인</td><td class="dt">~8/20</td></tr>
+      <tr><td class="dt">3</td><td>데이터베이스 조회 권한 수준 확정 (읽기 전용)</td><td class="dt">~8/20</td></tr>
+      <tr><td class="dt">4</td><td>질의 창구(웹 채팅 등) 사용 승인</td><td class="dt">착수 초기</td></tr>
+      <tr><td class="dt">5</td><td>확인 체크시트 3건 회신 — 상태 정의 · 시험 질의 선정 · 전문가 답변 채널 (각 1장, 체크만)</td><td class="dt">7~8월</td></tr>
+      <tr><td class="dt">6</td><td>대상 목록 운영 기준 확인 (고객사 DBA, 수행사 절차서 제공)</td><td class="dt">~8/20</td></tr>
+      <tr><td class="dt">7</td><td>업무 전문가 질의 응답 (주 1회 · 10건 이내)</td><td class="dt">구축 기간 중</td></tr>
+    </tbody>
+  </table>
+  <p class="soft">모든 협조 항목은 수행사가 초안·절차서·체크시트를 준비하며, 고객사는 결정·승인·확인만 수행한다.</p>
+
+  <h2><span class="no">06</span>품질·검수 기준</h2>
+  <table class="avoid">
+    <tbody>
+      <tr><td class="c1">C1 완료율</td><td>148개 중 검증 통과·적재 완료 비율 — 목표치는 표본 실측(M3) 후 확정</td></tr>
+      <tr><td class="c1">C2 품질</td><td>사전 합의된 시험 질의 20건의 정답률 — 목표치는 표본 실측(M3) 후 확정</td></tr>
+      <tr><td class="c1">C3 신뢰</td><td>근거 없는 답변·추정 답변 0건 (지금 확정)</td></tr>
+      <tr><td class="c1">C4 투명성</td><td>미확인 항목 현황 리포트 상시 제공 (지금 확정)</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>수치 확정 방식</b> — 목표 수치는 근거 없이 지금 적지 않고, 실제 환경 표본 실측(2단계) 후
+    그 결과를 근거로 확정하여 계획서를 개정한다. 측정 방법은 상기와 같이 지금 확정한다.</div>
+
+  <h2><span class="no">07</span>주요 위험과 대응</h2>
+  <table class="avoid">
+    <tbody>
+      <tr><td class="c1">환경 개통 지연</td><td>구축 일정 동일 간격 순연 (준비 단계는 영향 없음) — 주간 확인으로 조기 관리</td></tr>
+      <tr><td class="c1">DB 접근 제한</td><td>사본(스냅샷) 방식으로 전환 진행 — 접근 수준에 따라 검증 범위와 목표치를 연동 확정</td></tr>
+      <tr><td class="c1">AI 품질 미달</td><td>표본 실측(M3)에서 조기 판정 — 작성 규칙 보강 또는 모델 교체 후 재측정</td></tr>
+    </tbody>
+  </table>
+
+  <div class="foot avoid">
+    <b>문서 체계</b> — 본 문서는 평가용 요약(3면)이다. 작업 25건의 세부 계획·판정 기준·위험 목록은
+    「사업 실행 계획서(WBS) v1.0」 본문으로, 배경·구성의 상세 설명은 「쉬운 설명판」으로 별첨 제공한다.
+    상충 시 WBS 본문이 우선한다.
+  </div>
+
+</div>
+</body>
+</html>
