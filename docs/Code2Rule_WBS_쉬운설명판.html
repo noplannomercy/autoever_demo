@@ -204,10 +204,60 @@
   </div>
 </section>
 
-<!-- 6. 고객 결정 사항 -->
+<!-- 6. 작업 목록 -->
 <section class="pb">
   <div class="sheet">
-    <div class="sec-head"><span class="sec-no">06</span><h2>귀사에서 정해 주셔야 하는 것 — 7가지</h2></div>
+    <div class="sec-head"><span class="sec-no">06</span><h2>작업 목록 — 한 줄씩 쉬운 말로</h2></div>
+    <p class="soft">번호는 사업 실행 계획서(WBS) 본문과 같습니다. 자세한 조건·근거가 궁금하면 본문의 같은 번호를 보시면 됩니다.</p>
+
+    <table class="plain avoid">
+      <thead><tr><th>준비</th><th>하는 일</th><th style="white-space:nowrap">담당</th></tr></thead>
+      <tbody>
+        <tr><td>1.1</td><td>요구사항 문서(SRS)를 함께 읽고 확정합니다 — 범위·측정 방법·역할 분담을 미팅 한 번에 합의</td><td>함께</td></tr>
+        <tr><td>1.2</td><td>시스템 실물을 시연하고, "이 구성으로 간다"를 확정합니다</td><td>함께</td></tr>
+        <tr><td>1.3</td><td>AWS 환경을 엽니다 — 관리할 담당자를 정하는 것이 첫 단추</td><td>귀사</td></tr>
+        <tr><td>1.4</td><td>소스 코드를 안전하게 가져오는 공식 경로를 만들고, 보안 승인을 받습니다</td><td>함께</td></tr>
+        <tr><td>1.5</td><td>데이터베이스를 어느 수준까지 볼 수 있는지 확인하고, 그 수준에 맞는 작업 방식을 확정합니다</td><td>귀사</td></tr>
+        <tr><td>1.6</td><td>프로그램 진행 상태를 부르는 이름(상태 정의)을 확정합니다 — 저희 초안에 O/X만 해주시면 됩니다</td><td>귀사</td></tr>
+        <tr><td>1.7</td><td>업무 전문가에게 질문을 전달할 창구와 주기를 정합니다</td><td>귀사</td></tr>
+        <tr><td>1.8</td><td>품질 시험 문제 20개를 고릅니다 — 후보 문항은 저희가 만들어 갑니다</td><td>귀사</td></tr>
+        <tr><td>1.9</td><td>대상 148개가 운영 시스템 기준으로도 맞는지, 귀사 DBA가 절차서대로 확인합니다</td><td>귀사</td></tr>
+        <tr><td>1.10</td><td>진행 현황표(관리 대장)를 완성합니다 — 148개가 각각 어디까지 왔는지 한눈에</td><td>저희</td></tr>
+        <tr><td>1.11</td><td>소스 추출 작업을 누구나 따라 할 수 있는 절차서로 만듭니다</td><td>저희</td></tr>
+        <tr><td>1.12</td><td>설명서 작성 규칙을 확정합니다 — "코드에 있는 사실만, 사람이 읽히는 문장으로"</td><td>저희</td></tr>
+        <tr><td>1.13</td><td>설명서 채점 기준을 확정합니다 — 무엇이 합격이고 무엇이 재작성인지</td><td>저희</td></tr>
+        <tr><td>1.14</td><td>전 과정을 미리 한 번 돌려봅니다(리허설) — 속도와 품질을 실제로 재서 일정의 근거를 만듭니다</td><td>저희</td></tr>
+      </tbody>
+    </table>
+
+    <table class="plain avoid">
+      <thead><tr><th>구축</th><th>하는 일</th><th style="white-space:nowrap">담당</th></tr></thead>
+      <tbody>
+        <tr><td>2.1</td><td>AWS 환경을 체크리스트로 점검하며 구성하고, 접속과 보안 설정을 확인합니다</td><td>함께</td></tr>
+        <tr><td>2.2</td><td>표본 몇 개를 실제 환경에서 처리해 품질·속도를 확인하고, 목표 수치를 확정합니다 — 기대에 못 미치면 정해둔 순서대로 원인을 고치고 다시 잽니다</td><td>저희</td></tr>
+        <tr><td>2.3</td><td>148개 전체를 순서대로 처리해 서고를 채웁니다 — 진행은 현황표로 매주 공유</td><td>저희</td></tr>
+        <tr><td>2.4</td><td>코드만으로 알 수 없는 것들을 모아 정기적으로 여쭙고, 답변을 회사 지식으로 쌓습니다</td><td>함께</td></tr>
+        <tr><td>2.5</td><td>시험 문제 20개로 최종 품질을 측정하고, 서고를 열어도 되는지 판정합니다</td><td>저희</td></tr>
+      </tbody>
+    </table>
+
+    <table class="plain avoid">
+      <thead><tr><th>운영</th><th>하는 일</th><th style="white-space:nowrap">담당</th></tr></thead>
+      <tbody>
+        <tr><td>3.1</td><td>코드가 바뀌면 해당 설명서가 자동으로 다시 만들어지도록 연결합니다</td><td>함께</td></tr>
+        <tr><td>3.2</td><td>진행 현황과 품질 점수를 보는 관리 화면을 만듭니다 — 실제로 반복된 작업만 화면에 올립니다</td><td>저희</td></tr>
+        <tr><td>3.3</td><td>정기적으로 품질을 재검사하고, 기준 미달 설명서는 자동으로 다시 만듭니다</td><td>저희</td></tr>
+        <tr><td>3.4</td><td>누가 무엇을 운영할지(역할표)와 로그인·권한 체계를 확정합니다</td><td>함께</td></tr>
+        <tr><td>3.5</td><td>성과 지표를 보고, 다른 업무 영역·다른 종류의 코드로 확대할지 판단합니다</td><td>함께</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 7. 고객 결정 사항 -->
+<section class="pb">
+  <div class="sheet">
+    <div class="sec-head"><span class="sec-no">07</span><h2>귀사에서 정해 주셔야 하는 것 — 7가지</h2></div>
     <p>기술 작업은 저희 몫입니다. 귀사 몫은 아래 <b>결정</b>들이고, 전부 "안 된다"라고 결정되어도
       대안이 준비되어 있습니다. 다만 <b>결정이 늦어지면 그만큼 일정이 늦어집니다.</b></p>
     <table class="plain avoid">
@@ -230,10 +280,10 @@
   </div>
 </section>
 
-<!-- 7. 기술 선택 이야기 -->
+<!-- 8. 기술 선택 이야기 -->
 <section class="pb">
   <div class="sheet">
-    <div class="sec-head"><span class="sec-no">07</span><h2>기술 선택 이야기 — "Lambda·Step Functions로 하자"는 안은?</h2></div>
+    <div class="sec-head"><span class="sec-no">08</span><h2>기술 선택 이야기 — "Lambda·Step Functions로 하자"는 안은?</h2></div>
     <p>초기 논의에서 AWS Lambda(서버 없이 코드를 실행하는 서비스)와 Step Functions(작업들을 자동으로
       이어주는 서비스)로 파이프라인을 만들자는 안이 있었습니다. <b>좋은 도구이고, 버리는 것이 아닙니다.
       다만 쓰는 시점이 다릅니다.</b></p>
@@ -256,10 +306,10 @@
   </div>
 </section>
 
-<!-- 8. FAQ -->
+<!-- 9. FAQ -->
 <section>
   <div class="sheet">
-    <div class="sec-head"><span class="sec-no">08</span><h2>자주 나올 질문</h2></div>
+    <div class="sec-head"><span class="sec-no">09</span><h2>자주 나올 질문</h2></div>
     <div class="qa avoid">
       <div class="q">소스코드가 회사 밖으로 나가는 것 아닌가요?</div>
       <div class="a">나가지 않습니다. AI 처리는 전부 귀사 AWS 클라우드 안에서 이뤄지고,
@@ -270,7 +320,7 @@
         ② 확인 안 되는 것은 지어내지 않고 "확인 필요"라고 답하게 규칙이 걸려 있습니다
         ③ 설명서 자체가 이중 채점(AI 채점 + 기계 대조)과 사람 표본 검사를 거칩니다.</div>
       <div class="q">우리 쪽 일이 많아지는 것 아닌가요?</div>
-      <div class="a">§06의 결정 7가지와, 주 1회 이내의 질문 답변이 전부입니다.
+      <div class="a">§07의 결정 7가지와, 주 1회 이내의 질문 답변이 전부입니다.
         문서를 작성해 주셔야 하는 일은 없습니다 — 모든 초안은 저희가 만들어 가고, 확인만 해주시면 됩니다.</div>
       <div class="q">완성되면 무엇이 달라지나요?</div>
       <div class="a">"이거 아는 사람 누구지?"를 찾아다니던 시간이, 검색과 질문 몇 분으로 바뀝니다.
