@@ -31,10 +31,10 @@
 rsync -av --exclude node_modules \
   "C:/workspace/doc_root/HCA_Code2Rule/05_Phase3_구현/autoever_demo/postgres-mcp" \
   "C:/workspace/doc_root/HCA_Code2Rule/05_Phase3_구현/autoever_demo/lightrag-mcp" \
-  root@72.62.242.236:/opt/autoever_demo/
+  root@76.13.214.57:/opt/autoever_demo/
 
 # VPS에서
-ssh root@72.62.242.236
+ssh root@76.13.214.57
 which node || (curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs)
 cd /opt/autoever_demo/postgres-mcp && npm install --omit=dev
 cd /opt/autoever_demo/lightrag-mcp && npm install --omit=dev
@@ -62,21 +62,21 @@ curl -s localhost:8011/healthz; curl -s localhost:8012/healthz
 ## STEP 4 — Caddy (HTTPS) — 도메인 없이 sslip.io 사용
 
 이 VPS엔 도메인이 없으므로 **무료 와일드카드 DNS `sslip.io`** 로 IP를 호스트네임화한다.
-`72-62-242-236.sslip.io` 는 자동으로 `72.62.242.236` 로 resolve → Caddy가
+`76-13-214-57.sslip.io` 는 자동으로 `76.13.214.57` 로 resolve → Caddy가
 이 호스트네임으로 **Let's Encrypt 진짜 인증서를 발급**(OpenCode가 그대로 신뢰).
 
 ```bash
 apt-get install -y caddy        # 없으면
 # Caddyfile의 {$MCP_DOMAIN} 에 sslip 호스트네임 주입
-export MCP_DOMAIN=72-62-242-236.sslip.io
+export MCP_DOMAIN=76-13-214-57.sslip.io
 cp /opt/autoever_demo/deploy/Caddyfile /etc/caddy/Caddyfile
 # 방화벽: 80(인증서 발급 챌린지) + 443(서빙) 개방 — 둘 다 필수
 ufw allow 80/tcp && ufw allow 443/tcp
 systemctl restart caddy
 ```
-1분 내 `curl https://72-62-242-236.sslip.io/postgres/healthz` → 200.
+1분 내 `curl https://76-13-214-57.sslip.io/postgres/healthz` → 200.
 > Caddy가 systemd 환경변수 `MCP_DOMAIN` 을 못 읽으면 `/etc/caddy/Caddyfile` 의
-> `{$MCP_DOMAIN}` 을 `72-62-242-236.sslip.io` 로 직접 치환해도 됨.
+> `{$MCP_DOMAIN}` 을 `76-13-214-57.sslip.io` 로 직접 치환해도 됨.
 
 **폴백 — 80포트를 못 열 때:** Caddyfile 하단 `tls internal`(자체서명) 블록 사용 +
 OpenCode를 `NODE_TLS_REJECT_UNAUTHORIZED=0 opencode` 로 실행(데모 한정, 보안 약화).
@@ -84,7 +84,7 @@ OpenCode를 `NODE_TLS_REJECT_UNAUTHORIZED=0 opencode` 로 실행(데모 한정, 
 
 ## STEP 5 — OpenCode 연결 (로컬)
 
-`opencode.json` 엔 이미 `https://72-62-242-236.sslip.io/...` 가 박혀 있다. 그대로 실행:
+`opencode.json` 엔 이미 `https://76-13-214-57.sslip.io/...` 가 박혀 있다. 그대로 실행:
 ```bash
 # 로컬 autoever_demo 폴더에서
 opencode
@@ -138,7 +138,7 @@ stdio 트랜스포트 시절 `opencode.json` (SSH 터널 + 로컬 node):
       "enabled": true },
     "lightrag": { "type": "local",
       "command": ["node", ".../lightrag-mcp/server.mjs"],
-      "environment": { "LIGHTRAG_BASE_URL": "http://72.62.242.236:9621" },
+      "environment": { "LIGHTRAG_BASE_URL": "http://76.13.214.57:9621" },
       "enabled": true }
   }
 }

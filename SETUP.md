@@ -5,7 +5,7 @@
 > 이 문서는 **콘텐츠(데이터·규정) 적재·갱신·리셋 + 트러블슈팅** 전용이다.
 > **연결·실행(OpenCode 전역설정)은 → `docs/00_사용자환경구성.md`**, 최초 서버 배포는 → `docs/05_운영배포.md`.
 > 연결은 OpenCode 전역설정의 remote MCP로 한다 — **폴더에서 opencode를 켤 필요 없음.** SSH 터널·로컬 node도 불필요.
-> **폐쇄망(오토에버 VDI) 시연은 → `docs/09_폐쇄망_시연구성_LibreChat.md`** — 브라우저로 `https://srv1768237.hstgr.cloud/` 접속만 하면 됨 (클라이언트 설치 불필요).
+> **폐쇄망(오토에버 VDI) 시연은 → `docs/09_폐쇄망_시연구성_LibreChat.md`** — 브라우저로 `https://srv1842066.hstgr.cloud/` 접속만 하면 됨 (클라이언트 설치 불필요).
 
 ## 0. 구조 한 장
 
@@ -19,7 +19,7 @@
 
 ## 1. 전제
 
-- **VPS(`72.62.242.236`)** 에 두 MCP 서버 + Caddy가 systemd로 가동 중이어야 한다. (배포 안 돼 있으면 `docs/05_운영배포.md`)
+- **VPS(`76.13.214.57`)** 에 두 MCP 서버 + Caddy가 systemd로 가동 중이어야 한다. (배포 안 돼 있으면 `docs/05_운영배포.md`)
 - **운영자가 콘텐츠를 만지려면** 이 폴더(`data/`·`rules/` + VPS SSH 접근)가 필요하다.
 - **연결·실행**은 전역설정으로 → `docs/00`. 환경 상수/토큰: `docs/01_아키텍처.md §8`.
 
@@ -30,7 +30,7 @@
 MCP 게이트웨이가 살아있는지 외부에서 확인:
 ```bash
 TOK="<MCP_TOKEN>"
-curl -s -o /dev/null -w "%{http_code}\n" -X POST https://72-62-242-236.sslip.io/postgres/mcp \
+curl -s -o /dev/null -w "%{http_code}\n" -X POST https://76-13-214-57.sslip.io/postgres/mcp \
   -H "Authorization: Bearer $TOK" -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
@@ -47,8 +47,8 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST https://72-62-242-236.sslip.io/
 ### 3-1. Postgres 데이터 → `data/01_demo_data.sql`
 노트북에 psql이 없으므로 VPS에서 docker로 직결 적재:
 ```bash
-scp data/01_demo_data.sql root@72.62.242.236:/root/
-ssh root@72.62.242.236 'docker exec -i postgres-vector psql -U postgres -d demo_legacy < /root/01_demo_data.sql'
+scp data/01_demo_data.sql root@76.13.214.57:/root/
+ssh root@76.13.214.57 'docker exec -i postgres-vector psql -U postgres -d demo_legacy < /root/01_demo_data.sql'
 ```
 끝의 검증표에서 **갭 3종이 정확히** 떨어지면 정상: `★갭1=6 · ★갭2=5 · ★갭3=4`.
 (상세: `docs/02_데이터모델.md`)
@@ -56,7 +56,7 @@ ssh root@72.62.242.236 'docker exec -i postgres-vector psql -U postgres -d demo_
 ### 3-2. LightRAG 규정 → `rules/회수규정_*.md` (13장)
 > ⚠️ 9621은 **API 키 인증**(X-API-Key)이 걸려 있다(2026-07-09). 키는 VPS `/opt/autoever_demo/lightrag-mcp.env` 또는 `SECRETS.local.md` 참조. 아래는 서버 위 실행 기준 (rules/는 서버 `/opt/autoever_demo/rules`에 있음, 갱신 시 scp 동기화).
 ```bash
-ssh root@72.62.242.236
+ssh root@76.13.214.57
 cd /opt/autoever_demo/rules
 export LIGHTRAG_API_KEY=$(grep ^LIGHTRAG_API_KEY /opt/autoever_demo/lightrag-mcp.env | cut -d= -f2)   # 9621에 키 인증 있음
 node clean_kb.mjs          # dry-run: KB 현황 확인(회수규정_ 보존 / 그 외 삭제대상)

@@ -3,7 +3,7 @@
   "mcp": {
     "postgres": {
       "type": "remote",
-      "url": "https://72-62-242-236.sslip.io/postgres/mcp",
+      "url": "https://76-13-214-57.sslip.io/postgres/mcp",
       "headers": {
         "Authorization": "Bearer <MCP_TOKEN>"
       },
@@ -11,7 +11,7 @@
     },
     "lightrag": {
       "type": "remote",
-      "url": "https://72-62-242-236.sslip.io/lightrag/mcp",
+      "url": "https://76-13-214-57.sslip.io/lightrag/mcp",
       "headers": {
         "Authorization": "Bearer <MCP_TOKEN>"
       },

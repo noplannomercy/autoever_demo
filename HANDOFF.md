@@ -35,14 +35,14 @@ node -v   # v20.x 확인
    ```bash
    apt-get install -y caddy
    cp deploy/Caddyfile /etc/caddy/Caddyfile
-   sed -i 's/{$MCP_DOMAIN}/72-62-242-236.sslip.io/' /etc/caddy/Caddyfile
+   sed -i 's/{$MCP_DOMAIN}/76-13-214-57.sslip.io/' /etc/caddy/Caddyfile
    ufw allow 80/tcp && ufw allow 443/tcp     # 80=ACME 챌린지, 443=서빙
    systemctl restart caddy
    ```
    - ⚠️ 클라우드 보안그룹(있다면)에서도 80/443 인바운드 허용 필요(ufw만으론 부족할 수 있음).
 5. **최종 검증 — `/healthz`는 프리픽스 밑에 없으니 외부는 MCP 엔드포인트로 확인:**
    ```bash
-   curl -s -X POST https://72-62-242-236.sslip.io/postgres/mcp \
+   curl -s -X POST https://76-13-214-57.sslip.io/postgres/mcp \
      -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
      -H "Authorization: Bearer <MCP_TOKEN>" \
      -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
@@ -52,7 +52,7 @@ node -v   # v20.x 확인
 
 ## 로컬(사용자 노트북)에서
 
-`opencode.json` 에 이미 `https://72-62-242-236.sslip.io/{postgres,lightrag}/mcp` + 토큰이 박혀 있음.
+`opencode.json` 에 이미 `https://76-13-214-57.sslip.io/{postgres,lightrag}/mcp` + 토큰이 박혀 있음.
 배포 끝나면 `autoever_demo` 폴더에서 그냥 `opencode` → SSH 터널/로컬 node 불필요.
 
 ## 주의
